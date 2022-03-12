@@ -1,5 +1,7 @@
 # foodblog
 
+https://foodblog-c62fc.web.app/
+
 ## Project setup
 ```
 npm install
