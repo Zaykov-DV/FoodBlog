@@ -2,10 +2,27 @@
   <div class="blog-card-wrap">
     <div class="blog-cards container">
       <div v-if="profileUser" class="toggle-edit">
-        <span>Toggle Editing Post</span>
-        <input type="checkbox" v-model="editPost">
+        <div class="categories">
+          <div class="category" @click="filteredProducts(1)">
+            Выпечка
+          </div>
+          <div class="category" @click="filteredProducts(2)">
+            Горячее
+          </div>
+          <div class="category" @click="filteredProducts(3)">
+            Тортики
+          </div>
+        </div>
+        <div>
+          <span>Toggle Editing Post</span>
+          <input type="checkbox" v-model="editPost">
+        </div>
       </div>
       <BlogCard :post="post" v-for="(post, index) in blogPosts" :key="index"/>
+      <div v-show="blogPosts.length <= 0">
+        В данной категории рецептов нет
+        <button>Вернуться к рецептам</button>
+      </div>
     </div>
   </div>
 </template>
@@ -16,7 +33,12 @@ import BlogCard from "../components/BlogCard";
 
 export default {
   name: "Blogs",
-  components: { BlogCard },
+  components: {BlogCard},
+  methods: {
+    filteredProducts(category) {
+      this.$store.commit('filterCategory', category)
+    },
+  },
   computed: {
     blogPosts() {
       return this.$store.state.blogPosts
@@ -46,15 +68,29 @@ export default {
 
 .blog-cards {
   position: relative;
+
+  .categories {
+    display: flex;
+
+    .category {
+      margin-right: 15px;
+      cursor: pointer;
+    }
+  }
+
   .toggle-edit {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
+    justify-content: space-between;
     position: absolute;
     top: -70px;
     right: 0;
+    width: 100%;
+
     span {
       margin-right: 16px;
     }
+
     input[type="checkbox"] {
       position: relative;
       border: none;
@@ -66,6 +102,7 @@ export default {
       border-radius: 20px;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
+
     input[type="checkbox"]:before {
       content: "";
       position: absolute;
@@ -79,6 +116,7 @@ export default {
       transition: 750ms ease all;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
+
     input:checked[type="checkbox"]:before {
       background: #fff;
       left: 52px;

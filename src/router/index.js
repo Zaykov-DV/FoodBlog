@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Blogs from "../views/Blogs.vue";
 import Login from "../views/Login";
-import Register from "../views/Register";
+// import Register from "../views/Register";
 import ForgotPassword from "../views/ForgotPassword";
 import Profile from "../views/Profile";
 import Admin from "../views/Admin";
@@ -40,14 +40,14 @@ const routes = [
       title: 'Login'
     }
   },
-  {
-    path: "/register",
-    name: "Register",
-    component: Register,
-    meta: {
-      title: 'Register'
-    }
-  },
+  // {
+  //   path: "/register",
+  //   name: "Register",
+  //   component: Register,
+  //   meta: {
+  //     title: 'Register'
+  //   }
+  // },
   {
     path: "/forgot-password",
     name: "ForgotPassword",

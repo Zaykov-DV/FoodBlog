@@ -23,6 +23,18 @@
       <div class="blog-actions">
         <button @click="updateBlog">Save Changes</button>
         <router-link class="router-button" :to="{ name: 'BlogPreview' }">Preview Changes</router-link>
+
+        <select v-model="selectedCategory">
+          <option disabled value="0">Все категории</option>
+          <option v-for="category in this.$store.state.categories"
+                  :key="category.id"
+                  :value="category.id"
+                  :selected="category.category"
+          >{{ category.category }}</option>
+        </select>
+
+        <span>Выбрано {{ selectedCategory }} </span>
+
       </div>
     </div>
   </div>
@@ -54,6 +66,7 @@ export default {
       loading: null,
       routeID: null,
       currentBlog: null,
+      selectedCategory: 0,
       editorSettings: {
         modules: {
           imageResize: {},
@@ -123,6 +136,7 @@ export default {
                   blogCoverPhoto: downloadURL,
                   blogCoverPhotoName: this.blogCoverPhotoName,
                   blogTitle: this.blogTitle,
+                  categoryID: this.categoryID
                 });
                 await this.$store.dispatch("updatePost", this.routeID);
                 this.loading = false;
@@ -151,6 +165,9 @@ export default {
 
   },
   computed: {
+    categoryID() {
+      return this.selectedCategory;
+    },
     profileId() {
       return this.$store.state.profileId;
     },

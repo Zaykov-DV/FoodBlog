@@ -23,6 +23,18 @@
       <div class="blog-actions">
         <button @click="uploadBlog">Publish Blog</button>
         <router-link class="router-button" :to="{ name: 'BlogPreview' }">Post Preview</router-link>
+
+        <select v-model="selectedCategory">
+          <option disabled value="0">Все категории</option>
+          <option v-for="category in this.$store.state.categories"
+                  :key="category.id"
+                  :value="category.id"
+                  :selected="category.category"
+          >{{ category.category }}</option>
+        </select>
+
+      <span>Выбрано {{ selectedCategory }} </span>
+
       </div>
     </div>
   </div>
@@ -52,6 +64,7 @@ export default {
       error: null,
       errorMsg: null,
       loading: null,
+      selectedCategory: 0,
       editorSettings: {
         modules: {
           imageResize: {},
@@ -118,7 +131,9 @@ export default {
                   blogTitle: this.blogTitle,
                   profileId: this.profileId,
                   date: timestamp,
+                  categoryID: this.categoryID
                 });
+                console.log(this.categoryID)
                 await this.$store.dispatch("getPost");
                 this.loading = false;
                 this.$router.push({ name: "ViewBlog", params: { blogid: dataBase.id } });
@@ -142,6 +157,9 @@ export default {
 
   },
   computed: {
+    categoryID() {
+      return this.selectedCategory;
+    },
     profileId() {
       return this.$store.state.profileId;
     },
@@ -163,7 +181,7 @@ export default {
       set(payload) {
         this.$store.commit("newBlogPost", payload);
       },
-    },
+    }
   },
 }
 </script>

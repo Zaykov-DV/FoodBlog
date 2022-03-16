@@ -1,10 +1,10 @@
 <template>
   <div class="form-wrap">
     <form class="login">
-      <p class="login-register">
-        Don't have an account?
-        <router-link class="router-link" :to="{ name: 'Register' }">Register</router-link>
-      </p>
+<!--      <p class="login-register">-->
+<!--        Don't have an account?-->
+<!--        <router-link class="router-link" :to="{ name: 'Register' }">Register</router-link>-->
+<!--      </p>-->
       <h2>Login to FoodBlogs</h2>
       <div class="inputs">
         <div class="input">
