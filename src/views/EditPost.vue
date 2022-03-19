@@ -114,7 +114,7 @@ export default {
 
     async updateBlog() {
       const dataBase = await db.collection("blogPosts").doc(this.routeID);
-      if (this.blogTitle.length !== 0 && this.blogHTML.length !== 0) {
+      if (this.blogTitle.length !== 0 && this.blogHTML.length !== 0 && this.selectedCategory !== 0) {
         if (this.file) {
           this.loading = true;
           const storageRef = firebase.storage().ref();
@@ -136,7 +136,7 @@ export default {
                   blogCoverPhoto: downloadURL,
                   blogCoverPhotoName: this.blogCoverPhotoName,
                   blogTitle: this.blogTitle,
-                  categoryID: this.categoryID
+                  categoryID: this.categoryID,
                 });
                 await this.$store.dispatch("updatePost", this.routeID);
                 this.loading = false;
@@ -149,6 +149,7 @@ export default {
         await dataBase.update({
           blogHTML: this.blogHTML,
           blogTitle: this.blogTitle,
+          categoryID: this.categoryID,
         });
         await this.$store.dispatch("updatePost", this.routeID);
         this.loading = false;
@@ -160,7 +161,6 @@ export default {
       setTimeout(() => {
         this.error = false;
       }, 5000);
-      return;
     },
 
   },

@@ -30,7 +30,6 @@ export default new Vuex.Store({
             { id: 3, category: 'Тортики' }
         ],
         selectedCategory: 0,
-        filteredProducts: []
     },
     getters: {
         blogPostsFeed(state) {

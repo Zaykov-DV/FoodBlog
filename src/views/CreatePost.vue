@@ -35,6 +35,8 @@
 
       <span>Выбрано {{ selectedCategory }} </span>
 
+        <span class="error">выберите категорию!</span>
+
       </div>
     </div>
   </div>
@@ -104,7 +106,7 @@ export default {
     },
 
     uploadBlog() {
-      if (this.blogTitle.length !== 0 && this.blogHTML.length !== 0) {
+      if (this.blogTitle.length !== 0 && this.blogHTML.length !== 0 && this.selectedCategory !== 0) {
         if (this.file) {
           this.loading = true;
           const storageRef = firebase.storage().ref();
@@ -149,7 +151,7 @@ export default {
         return;
       }
       this.error = true;
-      this.errorMsg = "Please ensure Blog Title & Blog Post has been filled!";
+      this.errorMsg = "Please ensure fields has been filled!";
       setTimeout(() => {
         this.error = false;
       }, 5000);

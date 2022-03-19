@@ -3,25 +3,28 @@
     <div class="blog-cards container">
       <div v-if="profileUser" class="toggle-edit">
         <div class="categories">
-          <div class="category" @click="filteredProducts(1)">
+          <h3>Категории:</h3>
+          <div class="category" @click="filterProducts(1)">
             Выпечка
           </div>
-          <div class="category" @click="filteredProducts(2)">
+          <div class="category" @click="filterProducts(2)">
             Горячее
           </div>
-          <div class="category" @click="filteredProducts(3)">
+          <div class="category" @click="filterProducts(3)">
             Тортики
           </div>
         </div>
+
         <div>
           <span>Toggle Editing Post</span>
           <input type="checkbox" v-model="editPost">
         </div>
+
       </div>
       <BlogCard :post="post" v-for="(post, index) in blogPosts" :key="index"/>
       <div v-show="blogPosts.length <= 0">
         В данной категории рецептов нет
-        <button>Вернуться к рецептам</button>
+        <button @click="blogPosts()">Вернуться к рецептам</button>
       </div>
     </div>
   </div>
@@ -35,7 +38,7 @@ export default {
   name: "Blogs",
   components: {BlogCard},
   methods: {
-    filteredProducts(category) {
+    filterProducts(category) {
       this.$store.commit('filterCategory', category)
     },
   },
@@ -69,23 +72,23 @@ export default {
 .blog-cards {
   position: relative;
 
-  .categories {
-    display: flex;
-
-    .category {
-      margin-right: 15px;
-      cursor: pointer;
-    }
-  }
-
   .toggle-edit {
+    width: 100%;
     display: flex;
-    align-items: flex-end;
+    align-items: baseline;
     justify-content: space-between;
     position: absolute;
     top: -70px;
     right: 0;
-    width: 100%;
+
+    .categories {
+      display: flex;
+      align-items: center;
+    }
+
+    .category {
+      margin: 0 5px;
+    }
 
     span {
       margin-right: 16px;
