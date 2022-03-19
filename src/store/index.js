@@ -10,6 +10,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         blogPosts: [],
+        filterBlogPosts: [],
         postLoaded: null,
         blogHTML: 'Write your blog title here...',
         blogTitle: '',
@@ -58,20 +59,24 @@ export default new Vuex.Store({
         },
         toggleEditPost(state, payload) {
             state.editPost = payload
-            console.log(state.editPost)
         },
         filterBlogPost(state, payload) {
             state.blogPosts = state.blogPosts.filter(post => post.blogID !== payload)
         },
         // фильтр по категории
         filterCategory(state, payload) {
-            state.blogPosts = state.blogPosts.filter(post => post.categoryID === payload)
+            state.filterBlogPosts = state.blogPosts.filter(post => post.categoryID === payload)
+        },
+        // сбросить фильтры по категории
+        showAllCategories(state) {
+            state.filterBlogPosts = state.blogPosts
         },
         setBlogState(state, payload) {
             state.blogTitle = payload.blogTitle;
             state.blogHTML = payload.blogHTML;
             state.blogPhotoFileURL = payload.blogCoverPhoto;
             state.blogPhotoName = payload.blogCoverPhotoName;
+            state.selectedCategory = payload.selectedCategory
         },
         updateUser(state, payload) {
             state.user = payload

@@ -4,6 +4,9 @@
       <div v-if="profileUser" class="toggle-edit">
         <div class="categories">
           <h3>Категории:</h3>
+          <div class="category" @click="filterProducts(0)">
+            Все категории
+          </div>
           <div class="category" @click="filterProducts(1)">
             Выпечка
           </div>
@@ -21,10 +24,10 @@
         </div>
 
       </div>
-      <BlogCard :post="post" v-for="(post, index) in blogPosts" :key="index"/>
-      <div v-show="blogPosts.length <= 0">
+      <BlogCard :post="post" v-for="(post, index) in filterBlogs" :key="index"/>
+      <div v-show="filterBlogs.length <= 0">
         В данной категории рецептов нет
-        <button @click="blogPosts()">Вернуться к рецептам</button>
+        <button @click="filterProducts(0)">Вернуться к рецептам</button>
       </div>
     </div>
   </div>
@@ -39,12 +42,20 @@ export default {
   components: {BlogCard},
   methods: {
     filterProducts(category) {
-      this.$store.commit('filterCategory', category)
+      if (category === 0 || undefined ) {
+        this.$store.commit('showAllCategories')
+        console.log(category)
+      } else {
+        this.$store.commit('filterCategory', category)
+      }
     },
   },
   computed: {
     blogPosts() {
       return this.$store.state.blogPosts
+    },
+    filterBlogs() {
+      return this.$store.state.filterBlogPosts
     },
     sampleBlogCards() {
       return this.$store.state.sampleBlogCards
