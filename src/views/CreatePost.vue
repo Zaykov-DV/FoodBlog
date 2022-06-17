@@ -86,6 +86,10 @@ export default {
       this.$store.commit('openPhotoPreview');
     },
 
+    clearPost() {
+      this.$store.commit('clearBlogState');
+    },
+
     imageHandler(file, Editor, cursorLocation, resetUploader) {
       const storageRef = firebase.storage().ref();
       const docRef = storageRef.child(`documents/blogPostPhotos/${file.name}`);
@@ -135,10 +139,10 @@ export default {
                   date: timestamp,
                   categoryID: this.categoryID
                 });
-                console.log(this.categoryID)
                 await this.$store.dispatch("getPost");
                 this.loading = false;
-                this.$router.push({ name: "ViewBlog", params: { blogid: dataBase.id } });
+                await this.$router.push({name: "ViewBlog", params: {blogid: dataBase.id}});
+                this.clearPost()
               }
           );
           return;
@@ -189,6 +193,43 @@ export default {
 </script>
 
 <style lang="scss">
+
+$glass: rgba(255, 255, 255, 0.2);
+$glass-icon: rgba(255, 255, 255, 0.3);
+$gradient: linear-gradient(35deg, red, purple);
+$option: #320a28;
+
+/* <select> styles */
+select {
+  /* Reset */
+  appearance: none;
+  border: 0;
+  outline: 0;
+  font: inherit;
+  /* Personalize */
+  width: 20em;
+  height: 3em;
+  padding: 0 4em 0 1em;
+  background: url('https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg') no-repeat right 0.8em center / 1.4em, linear-gradient(to left, $glass-icon 3em, $glass 3em);
+  color: white;
+  border-radius: 0.25em;
+  box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  /* <option> colors */
+  option {
+    color: inherit;
+    background-color: $option;
+  }
+  /* Remove focus outline */
+  &:focus {
+    outline: none;
+  }
+  /* Remove IE arrow */
+  &::-ms-expand {
+    display: none;
+  }
+}
+
 .create-post {
   position: relative;
   height: 100%;

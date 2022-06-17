@@ -4,7 +4,7 @@
     <BlogPost :post="post" v-for="(post, index) in blogPostsFeed" :key="index"/>
     <div class="blog-card-wrap">
       <div class="container">
-        <h3>View More Recent Blogs</h3>
+        <h3 class="home__subtitle">View More Recent Blogs</h3>
         <div class="blog-cards">
           <BlogCard :post="post" v-for="(post, index) in blogPostsCards" :key="index"/>
         </div>
@@ -58,11 +58,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.blog-card-wrap {
-  h3 {
-    font-weight: 300;
-    font-size: 28px;
-    margin-bottom: 32px;
+
+.home {
+  &__subtitle {
+    margin-bottom: 20px;
   }
 }
 
@@ -78,28 +77,6 @@ export default {
       flex-direction: row;
     }
   }
-
-  .router-button {
-    display: flex;
-    font-size: 14px;
-    text-decoration: none;
-
-    @media (min-width: 800px) {
-      margin-left: auto;
-    }
-  }
-
-  h2 {
-    font-weight: 300;
-    font-size: 32px;
-    max-width: 425px;
-    width: 100%;
-    text-align: center;
-    text-transform: uppercase;
-    @media (min-width: 800px) {
-      text-align: initial;
-      font-size: 40px;
-    }
-  }
 }
+
 </style>

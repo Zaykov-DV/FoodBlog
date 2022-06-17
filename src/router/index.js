@@ -12,6 +12,7 @@ import BlogPreview from "../views/BlogPreview";
 import ViewBlog from "../views/ViewBlog";
 import EditPost from "../views/EditPost";
 import firebase from "firebase";
+import BloomCalc from "../views/BloomCalc";
 
 Vue.use(VueRouter);
 
@@ -107,6 +108,15 @@ const routes = [
     meta: {
       title: 'Edit Post',
       requiresAuth: true,
+    }
+  },
+  {
+    path: "/bloom-calc",
+    name: "BloomCalc",
+    component: BloomCalc,
+    meta: {
+      title: 'Bloom calculator',
+      requiresAuth: false,
     }
   },
 ];

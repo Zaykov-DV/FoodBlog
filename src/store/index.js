@@ -62,6 +62,7 @@ export default new Vuex.Store({
         },
         filterBlogPost(state, payload) {
             state.blogPosts = state.blogPosts.filter(post => post.blogID !== payload)
+            state.filterBlogPosts = state.blogPosts
         },
         // фильтр по категории
         filterCategory(state, payload) {
@@ -77,6 +78,14 @@ export default new Vuex.Store({
             state.blogPhotoFileURL = payload.blogCoverPhoto;
             state.blogPhotoName = payload.blogCoverPhotoName;
             state.selectedCategory = payload.selectedCategory
+        },
+        // очистить стейт
+        clearBlogState(state) {
+            state.blogTitle = '';
+            state.blogHTML = 'Write your blog title here...';
+            state.blogPhotoFileURL = null;
+            state.blogPhotoName = '';
+            state.selectedCategory = null
         },
         updateUser(state, payload) {
             state.user = payload
@@ -128,6 +137,7 @@ export default new Vuex.Store({
                 }
             });
             state.postLoaded = true;
+            state.filterBlogPosts = state.blogPosts
         },
 
         async updatePost({commit, dispatch}, payload) {

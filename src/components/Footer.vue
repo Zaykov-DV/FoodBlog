@@ -1,21 +1,15 @@
 <template>
-  <footer>
+  <footer class="footer">
     <div class="container">
       <div class="left">
         <div class="col-1">
-          <router-link class="header" :to="{ name: 'Home' }">FireBlogs</router-link>
+          <router-link class="header" :to="{ name: 'Home' }">FoodBlog</router-link>
           <ul>
             <li>
-              <a href="#"><youTube class="svg-icon"/></a>
-            </li>
-            <li>
-              <a href="#"><twitter class="svg-icon"/></a>
+              <a href="#"><vk class="svg-icon"/></a>
             </li>
             <li>
               <a href="#"><instagram class="svg-icon"/></a>
-            </li>
-            <li>
-              <a href="#"><linkedin class="svg-icon"/></a>
             </li>
           </ul>
         </div>
@@ -29,24 +23,21 @@
         </div>
       </div>
       <div class="right">
-        <p>Copyright 2021 All Rights Reserved</p>
+        <p>Copyright 2022 All Rights Reserved</p>
       </div>
     </div>
   </footer>
 </template>
 
 <script>
-import youTube from "../assets/Icons/youtube-brands.svg";
-import twitter from "../assets/Icons/twitter-brands.svg";
 import instagram from "../assets/Icons/instagram-brands.svg";
-import linkedin from "../assets/Icons/linkedin-brands.svg";
+import vk from "../assets/Icons/vk-logo.svg";
+
 export default {
   name: "footer-vue",
   components: {
-    youTube,
-    twitter,
     instagram,
-    linkedin,
+    vk
   },
   computed: {
     user() {
@@ -60,10 +51,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-footer {
+
+.footer {
   margin-top: auto;
   padding: 100px 25px;
   background-color: #303030;
+
   .container {
     display: flex;
     flex-direction: column;
