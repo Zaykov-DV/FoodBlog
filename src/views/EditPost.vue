@@ -23,6 +23,18 @@
       <div class="blog-actions">
         <button @click="updateBlog">Save Changes</button>
         <router-link class="router-button" :to="{ name: 'BlogPreview' }">Preview Changes</router-link>
+
+        <select v-model="selectedCategory">
+          <option disabled value="0">Все категории</option>
+          <option v-for="category in this.$store.state.categories"
+                  :key="category.id"
+                  :value="category.id"
+                  :selected="category.category"
+          >{{ category.category }}</option>
+        </select>
+
+        <span>Выбрано {{ selectedCategory }} </span>
+
       </div>
     </div>
   </div>
@@ -54,6 +66,7 @@ export default {
       loading: null,
       routeID: null,
       currentBlog: null,
+      selectedCategory: 0,
       editorSettings: {
         modules: {
           imageResize: {},
@@ -101,7 +114,7 @@ export default {
 
     async updateBlog() {
       const dataBase = await db.collection("blogPosts").doc(this.routeID);
-      if (this.blogTitle.length !== 0 && this.blogHTML.length !== 0) {
+      if (this.blogTitle.length !== 0 && this.blogHTML.length !== 0 && this.selectedCategory !== 0) {
         if (this.file) {
           this.loading = true;
           const storageRef = firebase.storage().ref();
@@ -123,6 +136,7 @@ export default {
                   blogCoverPhoto: downloadURL,
                   blogCoverPhotoName: this.blogCoverPhotoName,
                   blogTitle: this.blogTitle,
+                  categoryID: this.categoryID,
                 });
                 await this.$store.dispatch("updatePost", this.routeID);
                 this.loading = false;
@@ -135,6 +149,7 @@ export default {
         await dataBase.update({
           blogHTML: this.blogHTML,
           blogTitle: this.blogTitle,
+          categoryID: this.categoryID,
         });
         await this.$store.dispatch("updatePost", this.routeID);
         this.loading = false;
@@ -146,11 +161,13 @@ export default {
       setTimeout(() => {
         this.error = false;
       }, 5000);
-      return;
     },
 
   },
   computed: {
+    categoryID() {
+      return this.selectedCategory;
+    },
     profileId() {
       return this.$store.state.profileId;
     },

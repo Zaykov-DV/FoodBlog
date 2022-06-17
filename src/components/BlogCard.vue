@@ -122,13 +122,9 @@ export default {
 
     h4 {
       padding-bottom: 8px;
-      font-size: 20px;
-      font-weight: 300;
     }
 
     h6 {
-      font-weight: 400;
-      font-size: 12px;
       padding-bottom: 16px;
     }
 

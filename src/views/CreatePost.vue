@@ -23,6 +23,20 @@
       <div class="blog-actions">
         <button @click="uploadBlog">Publish Blog</button>
         <router-link class="router-button" :to="{ name: 'BlogPreview' }">Post Preview</router-link>
+
+        <select v-model="selectedCategory">
+          <option disabled value="0">Все категории</option>
+          <option v-for="category in this.$store.state.categories"
+                  :key="category.id"
+                  :value="category.id"
+                  :selected="category.category"
+          >{{ category.category }}</option>
+        </select>
+
+      <span>Выбрано {{ selectedCategory }} </span>
+
+        <span class="error">выберите категорию!</span>
+
       </div>
     </div>
   </div>
@@ -52,6 +66,7 @@ export default {
       error: null,
       errorMsg: null,
       loading: null,
+      selectedCategory: 0,
       editorSettings: {
         modules: {
           imageResize: {},
@@ -69,6 +84,10 @@ export default {
 
     openPreview() {
       this.$store.commit('openPhotoPreview');
+    },
+
+    clearPost() {
+      this.$store.commit('clearBlogState');
     },
 
     imageHandler(file, Editor, cursorLocation, resetUploader) {
@@ -91,7 +110,7 @@ export default {
     },
 
     uploadBlog() {
-      if (this.blogTitle.length !== 0 && this.blogHTML.length !== 0) {
+      if (this.blogTitle.length !== 0 && this.blogHTML.length !== 0 && this.selectedCategory !== 0) {
         if (this.file) {
           this.loading = true;
           const storageRef = firebase.storage().ref();
@@ -118,10 +137,12 @@ export default {
                   blogTitle: this.blogTitle,
                   profileId: this.profileId,
                   date: timestamp,
+                  categoryID: this.categoryID
                 });
                 await this.$store.dispatch("getPost");
                 this.loading = false;
-                this.$router.push({ name: "ViewBlog", params: { blogid: dataBase.id } });
+                await this.$router.push({name: "ViewBlog", params: {blogid: dataBase.id}});
+                this.clearPost()
               }
           );
           return;
@@ -134,7 +155,7 @@ export default {
         return;
       }
       this.error = true;
-      this.errorMsg = "Please ensure Blog Title & Blog Post has been filled!";
+      this.errorMsg = "Please ensure fields has been filled!";
       setTimeout(() => {
         this.error = false;
       }, 5000);
@@ -142,6 +163,9 @@ export default {
 
   },
   computed: {
+    categoryID() {
+      return this.selectedCategory;
+    },
     profileId() {
       return this.$store.state.profileId;
     },
@@ -163,12 +187,49 @@ export default {
       set(payload) {
         this.$store.commit("newBlogPost", payload);
       },
-    },
+    }
   },
 }
 </script>
 
 <style lang="scss">
+
+$glass: rgba(255, 255, 255, 0.2);
+$glass-icon: rgba(255, 255, 255, 0.3);
+$gradient: linear-gradient(35deg, red, purple);
+$option: #320a28;
+
+/* <select> styles */
+select {
+  /* Reset */
+  appearance: none;
+  border: 0;
+  outline: 0;
+  font: inherit;
+  /* Personalize */
+  width: 20em;
+  height: 3em;
+  padding: 0 4em 0 1em;
+  background: url('https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg') no-repeat right 0.8em center / 1.4em, linear-gradient(to left, $glass-icon 3em, $glass 3em);
+  color: white;
+  border-radius: 0.25em;
+  box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  /* <option> colors */
+  option {
+    color: inherit;
+    background-color: $option;
+  }
+  /* Remove focus outline */
+  &:focus {
+    outline: none;
+  }
+  /* Remove IE arrow */
+  &::-ms-expand {
+    display: none;
+  }
+}
+
 .create-post {
   position: relative;
   height: 100%;

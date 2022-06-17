@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Blogs from "../views/Blogs.vue";
 import Login from "../views/Login";
-import Register from "../views/Register";
+// import Register from "../views/Register";
 import ForgotPassword from "../views/ForgotPassword";
 import Profile from "../views/Profile";
 import Admin from "../views/Admin";
@@ -12,6 +12,7 @@ import BlogPreview from "../views/BlogPreview";
 import ViewBlog from "../views/ViewBlog";
 import EditPost from "../views/EditPost";
 import firebase from "firebase";
+import BloomCalc from "../views/BloomCalc";
 
 Vue.use(VueRouter);
 
@@ -40,14 +41,14 @@ const routes = [
       title: 'Login'
     }
   },
-  {
-    path: "/register",
-    name: "Register",
-    component: Register,
-    meta: {
-      title: 'Register'
-    }
-  },
+  // {
+  //   path: "/register",
+  //   name: "Register",
+  //   component: Register,
+  //   meta: {
+  //     title: 'Register'
+  //   }
+  // },
   {
     path: "/forgot-password",
     name: "ForgotPassword",
@@ -107,6 +108,15 @@ const routes = [
     meta: {
       title: 'Edit Post',
       requiresAuth: true,
+    }
+  },
+  {
+    path: "/bloom-calc",
+    name: "BloomCalc",
+    component: BloomCalc,
+    meta: {
+      title: 'Bloom calculator',
+      requiresAuth: false,
     }
   },
 ];

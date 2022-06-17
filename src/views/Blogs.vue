@@ -2,10 +2,33 @@
   <div class="blog-card-wrap">
     <div class="blog-cards container">
       <div v-if="profileUser" class="toggle-edit">
-        <span>Toggle Editing Post</span>
-        <input type="checkbox" v-model="editPost">
+        <div class="categories">
+          <h4>Категории:</h4>
+          <div class="category" :class="{ 'is-active' : categoryActive === 0}" @click="filterProducts(0)" >
+            Все категории
+          </div>
+          <div class="category" :class="{ 'is-active' : categoryActive === 1}" @click="filterProducts(1)">
+            Выпечка
+          </div>
+          <div class="category" :class="{ 'is-active' : categoryActive === 2}" @click="filterProducts(2)">
+            Горячее
+          </div>
+          <div class="category" :class="{ 'is-active' : categoryActive === 3}" @click="filterProducts(3)">
+            Тортики
+          </div>
+        </div>
+
+        <div class="toggle-edit-checkbox">
+          <span>Редактировать пост</span>
+          <input type="checkbox" v-model="editPost">
+        </div>
+
       </div>
-      <BlogCard :post="post" v-for="(post, index) in blogPosts" :key="index"/>
+      <BlogCard :post="post" v-for="(post, index) in filterBlogs" :key="index"/>
+      <div v-show="filterBlogs.length <= 0">
+        В данной категории рецептов нет
+        <button @click="filterProducts(0)">Вернуться к рецептам</button>
+      </div>
     </div>
   </div>
 </template>
@@ -17,9 +40,28 @@ import BlogCard from "../components/BlogCard";
 export default {
   name: "Blogs",
   components: { BlogCard },
+  data() {
+    return {
+      categoryActive: 0,
+    }
+  },
+  methods: {
+    filterProducts(category) {
+      if (category === 0 || undefined ) {
+        this.$store.commit('showAllCategories')
+        this.categoryActive = 0
+      } else {
+        this.$store.commit('filterCategory', category)
+        this.categoryActive = category
+      }
+    },
+  },
   computed: {
     blogPosts() {
       return this.$store.state.blogPosts
+    },
+    filterBlogs() {
+      return this.$store.state.filterBlogPosts
     },
     sampleBlogCards() {
       return this.$store.state.sampleBlogCards
@@ -46,42 +88,42 @@ export default {
 
 .blog-cards {
   position: relative;
+
   .toggle-edit {
+    width: 100%;
     display: flex;
-    align-items: center;
+    align-items: baseline;
+    justify-content: space-between;
     position: absolute;
     top: -70px;
     right: 0;
+
+    .categories {
+      display: flex;
+      align-items: baseline;
+    }
+
+    .category {
+      cursor: pointer;
+      margin: 0 5px;
+
+      &.is-active {
+        color: #1eb8b8;
+      }
+
+      &:hover {
+        color: rgba(48, 48, 48, 0.8);
+      }
+    }
+
     span {
       margin-right: 16px;
     }
-    input[type="checkbox"] {
-      position: relative;
-      border: none;
-      -webkit-appearance: none;
-      background: #fff;
-      outline: none;
-      width: 80px;
-      height: 30px;
-      border-radius: 20px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    }
-    input[type="checkbox"]:before {
-      content: "";
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      border-radius: 20px;
-      top: 0;
-      left: 0;
-      background: #303030;
-      transform: scale(1.1);
-      transition: 750ms ease all;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    }
-    input:checked[type="checkbox"]:before {
-      background: #fff;
-      left: 52px;
+
+    .toggle-edit-checkbox {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
     }
   }
 }

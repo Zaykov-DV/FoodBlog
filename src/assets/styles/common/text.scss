@@ -1,0 +1,33 @@
+h3 {
+  font-weight: 300;
+  font-size: 28px;
+}
+
+h2 {
+  font-weight: 300;
+  font-size: 32px;
+  max-width: 425px;
+  width: 100%;
+  text-align: center;
+  text-transform: uppercase;
+  @media (min-width: 800px) {
+    text-align: initial;
+    font-size: 40px;
+  }
+}
+
+h4 {
+  font-size: 20px;
+  font-weight: 300;
+}
+
+h6 {
+  font-weight: 400;
+  font-size: 12px;
+}
+
+p {
+  font-size: 16px;
+  font-weight: 30;
+  line-height: 1.7;
+}

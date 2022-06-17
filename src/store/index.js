@@ -10,6 +10,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         blogPosts: [],
+        filterBlogPosts: [],
         postLoaded: null,
         blogHTML: 'Write your blog title here...',
         blogTitle: '',
@@ -24,6 +25,12 @@ export default new Vuex.Store({
         profileEmail: null,
         profileId: null,
         profileInitials: null,
+        categories: [
+            { id: 1, category: 'Выпечка' },
+            { id: 2, category: 'Горячее' },
+            { id: 3, category: 'Тортики' }
+        ],
+        selectedCategory: 0,
     },
     getters: {
         blogPostsFeed(state) {
@@ -31,7 +38,7 @@ export default new Vuex.Store({
         },
         blogPostsCards(state) {
             return state.blogPosts.slice(2, 6);
-        }
+        },
     },
     mutations: {
         newBlogPost(state, payload) {
@@ -52,16 +59,33 @@ export default new Vuex.Store({
         },
         toggleEditPost(state, payload) {
             state.editPost = payload
-            console.log(state.editPost)
         },
         filterBlogPost(state, payload) {
-          state.blogPosts = state.blogPosts.filter(post => post.blogID !== payload)
+            state.blogPosts = state.blogPosts.filter(post => post.blogID !== payload)
+            state.filterBlogPosts = state.blogPosts
+        },
+        // фильтр по категории
+        filterCategory(state, payload) {
+            state.filterBlogPosts = state.blogPosts.filter(post => post.categoryID === payload)
+        },
+        // сбросить фильтры по категории
+        showAllCategories(state) {
+            state.filterBlogPosts = state.blogPosts
         },
         setBlogState(state, payload) {
-          state.blogTitle = payload.blogTitle;
-          state.blogHTML = payload.blogHTML;
-          state.blogPhotoFileURL = payload.blogCoverPhoto;
-          state.blogPhotoName = payload.blogCoverPhotoName;
+            state.blogTitle = payload.blogTitle;
+            state.blogHTML = payload.blogHTML;
+            state.blogPhotoFileURL = payload.blogCoverPhoto;
+            state.blogPhotoName = payload.blogCoverPhotoName;
+            state.selectedCategory = payload.selectedCategory
+        },
+        // очистить стейт
+        clearBlogState(state) {
+            state.blogTitle = '';
+            state.blogHTML = 'Write your blog title here...';
+            state.blogPhotoFileURL = null;
+            state.blogPhotoName = '';
+            state.selectedCategory = null
         },
         updateUser(state, payload) {
             state.user = payload
@@ -74,8 +98,8 @@ export default new Vuex.Store({
             state.profileUserName = doc.data().userName;
         },
         setProfileInitials(state) {
-            state.profileInitials =
-                state.profileFirstName.match(/(\b\S)?/g).join("") + state.profileLastName.match(/(\b\S)?/g).join("");
+            state.profileInitials = state.profileFirstName.match(/(\b\S)?/g).join("")
+                + state.profileLastName.match(/(\b\S)?/g).join("");
         },
         changeFirstName(state, payload) {
             state.profileFirstName = payload
@@ -95,7 +119,7 @@ export default new Vuex.Store({
             commit('setProfileInitials')
         },
 
-        async getPost({ state }) {
+        async getPost({state}) {
             const dataBase = await db.collection("blogPosts").orderBy("date", "desc");
             const dbResults = await dataBase.get();
             dbResults.forEach((doc) => {
@@ -107,11 +131,13 @@ export default new Vuex.Store({
                         blogTitle: doc.data().blogTitle,
                         blogDate: doc.data().date,
                         blogCoverPhotoName: doc.data().blogCoverPhotoName,
+                        categoryID: doc.data().categoryID
                     };
                     state.blogPosts.push(data);
                 }
             });
             state.postLoaded = true;
+            state.filterBlogPosts = state.blogPosts
         },
 
         async updatePost({commit, dispatch}, payload) {

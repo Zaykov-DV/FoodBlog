@@ -6,7 +6,6 @@
         <h2 v-else>{{ post.blogTitle }}</h2>
 
         <p v-if="post.welcomeScreen">{{ post.blogPost }}</p>
-        <p v-else class="content-preview" v-html="post.blogHTML" ></p>
 
         <router-link v-if="post.welcomeScreen" class="link link-light" :to="{ name: 'Login' }">
           Login / Register
@@ -90,19 +89,7 @@ export default {
       }
 
       h2 {
-        font-size: 32px;
-        font-weight: 300;
-        text-transform: uppercase;
         margin-bottom: 24px;
-        @media (min-width: 700px) {
-          font-size: 40px;
-        }
-      }
-
-      p {
-        font-size: 16px;
-        font-weight: 30;
-        line-height: 1.7;
       }
 
       .content-preview {

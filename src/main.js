@@ -9,6 +9,8 @@ import 'firebase/auth'
 Vue.use(Vue2Editor);
 Vue.config.productionTip = false;
 
+import './assets/styles/main.scss'
+
 let app;
 firebase.auth().onAuthStateChanged(() => {
   if(!app) {
@@ -19,5 +21,3 @@ firebase.auth().onAuthStateChanged(() => {
     }).$mount("#app");
   }
 })
-
-
