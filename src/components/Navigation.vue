@@ -12,6 +12,7 @@
             <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
             <router-link class="link" :to="{ name: 'Blogs' }">Recipes</router-link>
             <router-link class="link" :to="{ name: 'BloomCalc' }">Bloom Calculator</router-link>
+            <router-link class="link" :to="{ name: 'Quiz' }">Quiz</router-link>
             <router-link v-if="user" class="link" :to="{ name: 'CreatePost' }">Create Post</router-link>
             <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login/Register</router-link>
           </ul>

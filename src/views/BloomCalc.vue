@@ -118,6 +118,10 @@ export default {
     }
     &__wrapper {
       min-width: 300px;
+      margin-bottom: 40px;
+    }
+    &__container {
+      flex-direction: column;
     }
   }
 }

@@ -13,6 +13,7 @@ import ViewBlog from "../views/ViewBlog";
 import EditPost from "../views/EditPost";
 import firebase from "firebase";
 import BloomCalc from "../views/BloomCalc";
+import Quiz from "../views/Quiz";
 
 Vue.use(VueRouter);
 
@@ -116,6 +117,15 @@ const routes = [
     component: BloomCalc,
     meta: {
       title: 'Bloom calculator',
+      requiresAuth: false,
+    }
+  },
+  {
+    path: "/quiz",
+    name: "Quiz",
+    component: Quiz,
+    meta: {
+      title: 'Quiz',
       requiresAuth: false,
     }
   },
