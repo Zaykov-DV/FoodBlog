@@ -30,8 +30,8 @@
 </template>
 
 <script>
-import instagram from "../assets/Icons/instagram-brands.svg";
-import vk from "../assets/Icons/vk-logo.svg";
+import instagram from "@/assets/Icons/instagram-brands.svg";
+import vk from "@/assets/Icons/vk-logo.svg";
 
 export default {
   name: "footer-vue",
@@ -63,7 +63,7 @@ export default {
     gap: 32px;
     @media (min-width: 800px) {
       flex-direction: row;
-      gap: 0px;
+      gap: 0;
     }
 
     > div {

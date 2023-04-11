@@ -1,23 +1,16 @@
-import Vue from "vue";
+import { createApp } from 'vue'
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import Vue2Editor from "vue2-editor";
 import firebase from "firebase";
 import 'firebase/auth'
+import { QuillEditor } from '@vueup/vue-quill'
 
-Vue.use(Vue2Editor);
-Vue.config.productionTip = false;
+// Vue.config.productionTip = false;
 
 import './assets/styles/main.scss'
 
-let app;
+
 firebase.auth().onAuthStateChanged(() => {
-  if(!app) {
-    new Vue({
-      router,
-      store,
-      render: (h) => h(App),
-    }).$mount("#app");
-  }
+  createApp(App).component('QuillEditor', QuillEditor).use(router).use(store).mount('#app')
 })

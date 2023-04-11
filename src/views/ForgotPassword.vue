@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import email from "../assets/Icons/envelope-regular.svg";
+import email from "@/assets/Icons/envelope-regular.svg";
 import Modal from "../components/UI/Modal";
 import Loading from "../components/Loading";
 

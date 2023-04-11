@@ -9,28 +9,30 @@
     "deploy": "firebase deploy"
   },
   "dependencies": {
+    "@vue/compat": "^3.1.0-0",
+    "@vueup/vue-quill": "^1.1.1",
     "core-js": "^3.6.5",
     "firebase": "^8.10.1",
     "quill": "^1.3.7",
-    "quill-image-resize-module": "^3.0.0",
+    "quill-blot-formatter": "^1.0.5",
     "sass": "^1.55.0",
-    "vue": "^2.6.11",
-    "vue-quill-editor": "^3.0.6",
-    "vue-router": "^3.2.0",
-    "vue-svg-loader": "^0.16.0",
-    "vue2-editor": "^2.10.2",
-    "vuex": "^3.4.0"
+    "svg-vue3-loader": "^1.0.2",
+    "vue": "^3.2.47",
+    "vue-loader": "^17.0.1",
+    "vue-router": "^4.0.0",
+    "vuex": "^4.0.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-plugin-router": "~4.5.0",
-    "@vue/cli-plugin-vuex": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^6.2.2",
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
+    "@vue/cli-plugin-babel": "^5.0.8",
+    "@vue/cli-plugin-eslint": "^5.0.8",
+    "@vue/cli-plugin-router": "^5.0.8",
+    "@vue/cli-plugin-vuex": "^5.0.8",
+    "@vue/cli-service": "^5.0.8",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.0.3",
     "sass-loader": "^8.0.2",
-    "vue-template-compiler": "^2.6.11"
+    "@vue/compiler-sfc": "^3.1.0-0"
   }
 }

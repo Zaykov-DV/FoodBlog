@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="blog-photo">
-      <img v-if="post.welcomeScreen" :src="require(`../assets/blogPhotos/${post.photo}.jpg`)">
+      <img v-if="post.welcomeScreen" :src="require(`../assets/blogPhotos/${post.photo}.jpg`)" alt="welcome-img">
       <img v-else :src="post.blogCoverPhoto" :alt="post.blogCoverPhoto">
     </div>
   </div>
@@ -27,7 +27,7 @@
 
 <script>
 
-import Arrow from '../assets/Icons/arrow-right-light.svg'
+import Arrow from '@/assets/Icons/arrow-right-light.svg'
 
 export default {
   name: "BlogPost",
