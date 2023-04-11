@@ -78,7 +78,7 @@ export default {
       return this.$store.state.user;
     },
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.$store.commit('toggleEditPost', false)
   }
 }

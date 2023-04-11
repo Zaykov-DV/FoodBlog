@@ -9,7 +9,6 @@
     "deploy": "firebase deploy"
   },
   "dependencies": {
-    "@vue/compat": "^3.1.0-0",
     "@vueup/vue-quill": "^1.1.1",
     "core-js": "^3.6.5",
     "firebase": "^8.10.1",

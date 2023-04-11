@@ -6,11 +6,8 @@ import firebase from "firebase";
 import 'firebase/auth'
 import { QuillEditor } from '@vueup/vue-quill'
 
-// Vue.config.productionTip = false;
-
 import './assets/styles/main.scss'
 
-
 firebase.auth().onAuthStateChanged(() => {
-  createApp(App).component('QuillEditor', QuillEditor).use(router).use(store).mount('#app')
+  createApp(App).use(QuillEditor).use(router).use(store).mount('#app')
 })
