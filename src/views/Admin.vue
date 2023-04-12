@@ -7,32 +7,27 @@
         <div class="input">
           <input placeholder="Enter user email to make them an admin" type="text" id="addAdmins" v-model="adminEmail" />
         </div>
-        <span>{{ this.functionMsg }}</span>
+        <span>{{ functionMsg }}</span>
         <button @click="addAdmin" class="button">Submit</button>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import firebase from "firebase/app";
 import "firebase/functions";
-export default {
-  name: "Admin",
-  data() {
-    return {
-      adminEmail: "",
-      functionMsg: null,
-    };
-  },
-  methods: {
-    async addAdmin() {
-      const addAdmin = await firebase.functions().httpsCallable("addAdminRole");
-      const result = await addAdmin({ email: this.adminEmail });
-      this.functionMsg = result.data.message;
-    },
-  },
-};
+import {ref} from 'vue'
+
+const adminEmail = ref('')
+const functionMsg = ref(null)
+
+const addAdmin = async () => {
+  const addAdmin = await firebase.functions().httpsCallable("addAdminRole");
+  const result = await addAdmin({ email: adminEmail.value });
+  functionMsg.value = result.data.message;
+}
+
 </script>
 
 <style lang="scss" scoped>

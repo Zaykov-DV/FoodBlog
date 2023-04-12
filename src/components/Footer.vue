@@ -29,25 +29,22 @@
   </footer>
 </template>
 
-<script>
-import instagram from "../assets/Icons/instagram-brands.svg";
-import vk from "../assets/Icons/vk-logo.svg";
+<script setup>
+import instagram from "@/assets/Icons/instagram-brands.svg";
+import vk from "@/assets/Icons/vk-logo.svg";
+import {computed} from "vue";
+import { useStore } from "vuex";
 
-export default {
-  name: "footer-vue",
-  components: {
-    instagram,
-    vk
-  },
-  computed: {
-    user() {
-      return this.$store.state.user;
-    },
-    // admin() {
-    //   return this.$store.state.profileAdmin;
-    // },
-  },
-};
+const store = useStore()
+
+const  user = computed(() => {
+  return store.state.user;
+});
+
+// const admin = computed(() => {
+//   return store.state.profileAdmin;
+// });
+
 </script>
 
 <style lang="scss" scoped>
@@ -63,7 +60,7 @@ export default {
     gap: 32px;
     @media (min-width: 800px) {
       flex-direction: row;
-      gap: 0px;
+      gap: 0;
     }
 
     > div {

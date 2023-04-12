@@ -2,7 +2,7 @@
   <div class="calc">
     <div class="calc__container">
       <div class="calc__wrapper">
-        <Modal v-if="modalActive" :modal-message="modalMessage" v-on:close-modal="closeModal" />
+        <Modal v-if="modalActive" :modal-message="modalMessage" v-on:close-modal="closeModal"/>
         <form class="calc__form">
           <label for="#recipeBloom" class="calc__label">
             Сила желатина в рецепте
@@ -18,7 +18,8 @@
           <input id="#currentBloom" type="number" placeholder="0" v-model="currentBloom">
         </form>
 
-        <p v-if="currentWeight !== null">Нужно взять <strong>{{currentWeight}}</strong> грамм желатина силой {{currentBloom}} блум </p>
+        <p v-if="currentWeight !== 0">Нужно взять <strong>{{ currentWeight }}</strong> грамм желатина силой
+          {{ currentBloom }} блум </p>
 
         <button @click="calcCurrentWeight()">Рассчитать</button>
       </div>
@@ -34,7 +35,8 @@
           </label>
           <input id="#ownDiameter" type="number" placeholder="0" v-model="ownDiameter">
         </form>
-        <p v-if="koefIngredients !== null">Коэффициент для рассчета ингридиентов <strong>{{koefIngredients}}</strong></p>
+        <p v-if="koefIngredients !== null">Коэффициент для рассчета ингридиентов <strong>{{ koefIngredients }}</strong>
+        </p>
         <button @click="calcIngredients()">Рассчитать</button>
 
       </div>
@@ -43,50 +45,46 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import Modal from "@/components/UI/Modal";
 
-import Modal from "../components/UI/Modal";
+import {ref} from 'vue'
 
-export default {
-  name: "BloomCalc",
-  components: { Modal },
-  data() {
-    return {
-      recipeBloom: null,
-      recipeWeight: null,
-      currentBloom: null,
-      currentWeight: null,
-      modalActive: false,
-      modalMessage: 'Заполните поля',
-      recipeDiameter: null,
-      ownDiameter: null,
-      koefIngredients: null
-    }
-  },
-  methods: {
-    closeModal() {
-      this.modalActive = !this.modalActive;
-    },
-    calcCurrentWeight() {
-      let koef = this.recipeWeight / this.currentBloom;
-      if (isNaN(koef)) {
-        this.modalActive = true
-      } else {
-        return this.currentWeight = (this.recipeBloom * koef).toFixed(1)
-      }
-    },
-    calcIngredients() {
-      let koef = (this.ownDiameter **2) / (this.recipeDiameter **2)
-      console.log(this.ownDiameter **2)
-      console.log(this.recipeDiameter **2)
-      if (isNaN(koef)) {
-        this.modalActive = true
-      } else {
-        return this.koefIngredients = koef.toFixed(2)
-      }
-    }
+const recipeBloom = ref(0)
+const recipeWeight = ref(0)
+const currentBloom = ref(0)
+const currentWeight = ref(0)
+const modalActive = ref(false)
+const modalMessage = ref('Заполните поля')
+const recipeDiameter = ref(0)
+const ownDiameter = ref(0)
+const koefIngredients = ref(0)
+
+
+const closeModal = () => {
+  modalActive.value = !modalActive.value;
+}
+
+const calcCurrentWeight = () => {
+  let koef = recipeWeight.value / currentBloom.value
+  if (isNaN(koef)) {
+    modalActive.value = true
+  } else {
+    return currentWeight.value = (recipeBloom.value * koef).toFixed(1)
   }
 }
+
+const calcIngredients = () => {
+  let koef = (ownDiameter.value ** 2) / (recipeDiameter.value ** 2)
+  console.log(ownDiameter.value ** 2)
+  console.log(recipeDiameter.value ** 2)
+  if (isNaN(koef)) {
+    modalActive.value = true
+  } else {
+    return koefIngredients.value = koef.toFixed(2)
+  }
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -116,10 +114,12 @@ export default {
     &__form {
       width: 100%;
     }
+
     &__wrapper {
       min-width: 300px;
       margin-bottom: 40px;
     }
+
     &__container {
       flex-direction: column;
     }

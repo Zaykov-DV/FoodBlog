@@ -2,7 +2,6 @@
   <transition name="modal">
     <div class="modal__wrapper" @click="$emit('close-modal')">
       <div class="modal__content" @click.stop="">
-
         <!-- header -->
         <div class="modal__header">
           <h4 class="modal__title"> Ошибка! </h4>
@@ -11,7 +10,7 @@
 
         <!-- body -->
         <div class="modal__body">
-          <p> {{ this.modalMessage }} </p>
+          <p> {{ modalMessage }} </p>
           <button @click="closeModal">Закрыть</button>
         </div>
       </div>
@@ -19,20 +18,21 @@
   </transition>
 </template>
 
-<script>
-export default {
-  props: ["modalMessage"],
-  methods: {
-    closeModal() {
-      this.$emit("close-modal");
-    },
-  },
-  mounted () {
-    document.body.addEventListener('keyup', e => {
-      if (e.keyCode === 27) this.$emit('close-modal')
-    })
-  },
-};
+<script setup>
+import {defineProps, defineEmits, onMounted} from "vue";
+
+defineProps(["modalMessage"])
+const emit = defineEmits(['close-modal'])
+
+const closeModal = () => {
+  emit("close-modal")
+}
+
+onMounted(() => {
+  document.body.addEventListener('keyup', e => {
+    if (e.keyCode === 27) emit('close-modal')
+  })
+})
 </script>
 
 <style lang="scss" scoped>

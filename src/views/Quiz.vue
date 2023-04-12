@@ -38,130 +38,130 @@
   </main>
 </template>
 
-<script>
-export default {
-  name: "Quiz",
-  data() {
-    return {
-      questions: [
-        {
-          question: 'Знаменитые американские булочки с корицей и глазурью',
-          answer: 0,
-          options: [
-            'синнабон',
-            'профитроли',
-            'панеттоне',
-            'тирамису'
-          ],
-          selected: null
-        },
-        {
-          question: 'Как звучит слоган знаменитого печенья Орео?',
-          answer: 1,
-          options: [
-            'Покрути, кусай, грызи',
-            'Поверни, лизни, макни',
-            'Не верь, не бойся, не проси',
-          ],
-          selected: null
-        },
-        {
-          question: 'Вспомните любимый десерт Гарри Поттера?',
-          answer: 2,
-          options: [
-            'Пудинг',
-            'Яблочный пай',
-            'Пирог с патокой'
-          ],
-          selected: null
-        },
-        {
-          question: 'Какой ингредиент обязательно входит в состав марципана?',
-          answer: 0,
-          options: [
-            'Миндаль',
-            'Какао',
-            'Кокосовая стружка'
-          ],
-          selected: null
-        },
-        {
-          question: 'Что из этого не является видом мороженого?',
-          answer: 2,
-          options: [
-            'Фалуде',
-            'Джелато',
-            'Брецель'
-          ],
-          selected: null
-        },
-        {
-          question: 'В честь кого назван десерт "Павлова" - торт-безе, начиненный фруктами?',
-          answer: 1,
-          options: [
-            'Софья Павлова, актриса театра и кино',
-            'Анна Павлова, балерина',
-            'Каролина Павлова, поэтесса'
-          ],
-          selected: null
-        },
-        {
-          question: 'Какой сыр составляет основу десерта тирамису?',
-          answer: 0,
-          options: [
-            'Маскарпоне',
-            'Рикотта',
-            'Филадельфия',
-            'Пармезан',
-          ],
-          selected: null
-        },
-        {
-          question: 'Почему торт «Наполеон» так называется?',
-          answer: 2,
-          options: [
-            'В оригинальной версии этот торт готовился в форме треугольника, напоминающего головной убор Наполеона.',
-            'Возможно, торт изобретён в Неаполе под названием Napolitano, а современное название — искажение.',
-            'По этому поводу существует множество версий, и все они примерно одинаково достоверны.',
-          ],
-          selected: null
-        },
-      ],
-      quizCompleted: false,
-      currentQuestion: 0
-    }
-  },
-  methods: {
-    setAnswer(event){
-      this.questions[this.currentQuestion].selected.value = event.target
-      event.target = null
-    },
-    nextQuestion() {
-      if (this.currentQuestion < this.questions.length - 1) {
-        this.currentQuestion++
-      } else {
-        this.quizCompleted = true
-      }
-    }
-  },
-  computed: {
-    score() {
-      let value = 0
-      this.questions.map(q => {
-        if (q.selected !== null && q.answer == q.selected) {
-          value++
-        }
-      })
-      return value
-    },
+<script setup>
+import {ref, computed} from 'vue'
 
-    getCurrentQuestion(){
-      let question = this.questions[this.currentQuestion]
-      question.index = this.currentQuestion
-      return question
+const questions = ref([
+  {
+    question: 'Знаменитые американские булочки с корицей и глазурью',
+    answer: 0,
+    options: [
+      'синнабон',
+      'профитроли',
+      'панеттоне',
+      'тирамису'
+    ],
+    selected: null
+  },
+  {
+    question: 'Как звучит слоган знаменитого печенья Орео?',
+    answer: 1,
+    options: [
+      'Покрути, кусай, грызи',
+      'Поверни, лизни, макни',
+      'Не верь, не бойся, не проси',
+    ],
+    selected: null
+  },
+  {
+    question: 'Вспомните любимый десерт Гарри Поттера?',
+    answer: 2,
+    options: [
+      'Пудинг',
+      'Яблочный пай',
+      'Пирог с патокой'
+    ],
+    selected: null
+  },
+  {
+    question: 'Какой ингредиент обязательно входит в состав марципана?',
+    answer: 0,
+    options: [
+      'Миндаль',
+      'Какао',
+      'Кокосовая стружка'
+    ],
+    selected: null
+  },
+  {
+    question: 'Что из этого не является видом мороженого?',
+    answer: 2,
+    options: [
+      'Фалуде',
+      'Джелато',
+      'Брецель'
+    ],
+    selected: null
+  },
+  {
+    question: 'В честь кого назван десерт "Павлова" - торт-безе, начиненный фруктами?',
+    answer: 1,
+    options: [
+      'Софья Павлова, актриса театра и кино',
+      'Анна Павлова, балерина',
+      'Каролина Павлова, поэтесса'
+    ],
+    selected: null
+  },
+  {
+    question: 'Какой сыр составляет основу десерта тирамису?',
+    answer: 0,
+    options: [
+      'Маскарпоне',
+      'Рикотта',
+      'Филадельфия',
+      'Пармезан',
+    ],
+    selected: null
+  },
+  {
+    question: 'Почему торт «Наполеон» так называется?',
+    answer: 2,
+    options: [
+      'В оригинальной версии этот торт готовился в форме треугольника, напоминающего головной убор Наполеона.',
+      'Возможно, торт изобретён в Неаполе под названием Napolitano, а современное название — искажение.',
+      'По этому поводу существует множество версий, и все они примерно одинаково достоверны.',
+    ],
+    selected: null
+  },
+
+
+])
+
+const quizCompleted = ref(false)
+const currentQuestion = ref(0)
+
+const score = computed(() => {
+  let value = 0
+  questions.value.map(q => {
+    console.log(`q.answer ${q.answer}`)
+    console.log(`q.selected ${q.selected}`)
+    if (q.selected !== null && q.answer == q.selected) {
+      value++
     }
+  })
+  return value
+})
+
+const getCurrentQuestion = computed(() => {
+  let question = questions.value[currentQuestion.value]
+  question.index = currentQuestion.value
+  return question
+})
+
+const setAnswer = event => {
+  questions.value[currentQuestion.value].selected = event.target.value
+  event.target.value = null
+}
+
+const nextQuestion = () => {
+  if (currentQuestion.value < questions.value.length - 1) {
+    currentQuestion.value++
+  } else {
+    quizCompleted.value = true
   }
 }
+
 </script>
 
 <style scoped>

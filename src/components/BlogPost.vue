@@ -12,35 +12,32 @@
           <Arrow class="arrow arrow-light" />
         </router-link>
 
-        <router-link v-else class="link" :to="{name: 'ViewBlog', params: { blogid: this.post.blogID }}">
+        <router-link v-else class="link" :to="{name: 'ViewBlog', params: { blogid: post.blogID }}">
           View The Post
           <Arrow class="arrow" />
         </router-link>
       </div>
     </div>
     <div class="blog-photo">
-      <img v-if="post.welcomeScreen" :src="require(`../assets/blogPhotos/${post.photo}.jpg`)">
+      <img v-if="post.welcomeScreen" :src="require(`../assets/blogPhotos/${post.photo}.jpg`)" alt="welcome-img">
       <img v-else :src="post.blogCoverPhoto" :alt="post.blogCoverPhoto">
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
+import Arrow from '@/assets/Icons/arrow-right-light.svg'
 
-import Arrow from '../assets/Icons/arrow-right-light.svg'
+import {defineProps, computed} from "vue";
+import { useStore } from "vuex";
 
-export default {
-  name: "BlogPost",
-  props: ['post'],
-  components: {
-    Arrow
-  },
-  computed: {
-    user() {
-      return this.$store.state.user
-    }
-  }
-}
+const store = useStore()
+defineProps(['post'])
+
+const user = computed(() => {
+  return store.state.user
+});
+
 </script>
 
 <style lang="scss" scoped>

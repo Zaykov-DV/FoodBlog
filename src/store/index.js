@@ -1,13 +1,10 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-
 import firebase from "firebase/app";
 import 'firebase/auth'
 import db from '../firebase/firebaseInit'
 
-Vue.use(Vuex)
+import { createStore } from 'vuex'
 
-export default new Vuex.Store({
+const store = createStore({
     state: {
         blogPosts: [],
         filterBlogPosts: [],
@@ -163,3 +160,5 @@ export default new Vuex.Store({
     },
     modules: {}
 })
+
+export default store

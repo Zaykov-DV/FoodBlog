@@ -4,7 +4,7 @@
     <div class="container">
       <h2>Account Settings</h2>
       <div class="profile-info">
-        <div class="initials">{{ $store.state.profileInitials }}</div>
+        <div class="initials">{{ store.state.profileInitials }}</div>
         <div class="admin-badge">
           <adminIcon class="icon" />
           <span>admin</span>
@@ -31,61 +31,56 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import Modal from "../components/UI/Modal";
-import adminIcon from "../assets/Icons/user-crown-light.svg";
+import adminIcon from "@/assets/Icons/user-crown-light.svg";
 
-export default {
-  name: "Profile",
-  components: {
-    Modal,
-    adminIcon,
+import {ref, computed} from 'vue'
+import { useStore } from 'vuex'
+const store = useStore()
+
+const modalMessage = ref("Changes were saved!")
+const modalActive = ref(null)
+
+const updateProfile = () => {
+  store.dispatch("updateUserSettings");
+  modalActive.value = !modalActive.value
+}
+const closeModal = () => {
+  modalActive.value = !modalActive.value
+}
+
+const firstName = computed({
+  get() {
+    return store.state.profileFirstName;
   },
-  data() {
-    return {
-      modalMessage: "Changes were saved!",
-      modalActive: null,
-    };
+  set(payload) {
+    store.commit("changeFirstName", payload);
+  }
+})
+
+const lastName = computed({
+  get() {
+    return store.state.profileLastName;
   },
-  methods: {
-    updateProfile() {
-      this.$store.dispatch("updateUserSettings");
-      this.modalActive = !this.modalActive;
-    },
-    closeModal() {
-      this.modalActive = !this.modalActive;
-    },
+  set(payload) {
+    store.commit("changeLastName", payload);
   },
-  computed: {
-    firstName: {
-      get() {
-        return this.$store.state.profileFirstName;
-      },
-      set(payload) {
-        this.$store.commit("changeFirstName", payload);
-      },
-    },
-    lastName: {
-      get() {
-        return this.$store.state.profileLastName;
-      },
-      set(payload) {
-        this.$store.commit("changeLastName", payload);
-      },
-    },
-    userName: {
-      get() {
-        return this.$store.state.profileUserName;
-      },
-      set(payload) {
-        this.$store.commit("changeUserName", payload);
-      },
-    },
-    email() {
-      return this.$store.state.profileEmail;
-    },
+})
+
+const userName = computed({
+  get() {
+    return store.state.profileUserName;
   },
-};
+  set(payload) {
+    store.commit("changeUserName", payload);
+  }
+})
+
+const email = computed(() => {
+  return store.state.profileEmail;
+});
+
 </script>
 <style lang="scss" scoped>
 .profile {

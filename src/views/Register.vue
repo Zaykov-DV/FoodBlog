@@ -27,7 +27,7 @@
           <input type="password" placeholder="Password" v-model="password">
           <password class="icon"/>
         </div>
-        <div class="error" v-show="error">{{ this.errorMessage }}</div>
+        <div class="error" v-show="error">{{ errorMessage }}</div>
       </div>
       <button @click.prevent="register">Sign Up</button>
       <div class="angle"></div>
@@ -36,53 +36,44 @@
   </div>
 </template>
 
-<script>
+<script setup>
 //svg
-import email from "../assets/Icons/envelope-regular.svg";
-import password from "../assets/Icons/lock-alt-solid.svg";
-import user from "../assets/Icons/user-alt-light.svg";
+import email from "@/assets/Icons/envelope-regular.svg";
+import password from "@/assets/Icons/lock-alt-solid.svg";
+import user from "@/assets/Icons/user-alt-light.svg";
 
 import firebase from "firebase/app";
 import 'firebase/auth'
 import db from '../firebase/firebaseInit'
+import {useRouter} from 'vue-router'
 
-export default {
-  name: "Register",
-  components: {
-    email, password, user
-  },
-  data() {
-    return {
-      firstName: '',
-      lastName: '',
-      userName: '',
-      email: '',
-      password: '',
-      error: null,
-      errorMessage: ''
-    }
-  },
-  methods: {
-    async register() {
-        if (this.firstName !== '' && this.lastName !== '' && this.userName !== '' && this.email !== '' && this.password !== '') {
-          this.error = false;
-          this.errorMessage = ''
-          const firebaseAuth = await firebase.auth();
-          const createUser = await firebaseAuth.createUserWithEmailAndPassword(this.email, this.password)
-          const result = await createUser;
-          const dataBase = db.collection('users').doc(result.user.uid)
-          await dataBase.set({
-            firstName: this.firstName,
-            lastName: this.lastName,
-            userName: this.userName,
-            email: this.email,
-          });
-          this.$router.push({name: 'Home'})
-        }
-      this.error = true
-      this.errorMessage = 'Please fill out all the fields!'
-    }
+const router = useRouter()
+const firstName = ref('')
+const lastName = ref('')
+const userName = ref('')
+const email = ref('')
+const password = ref('')
+const error = ref(null)
+const errorMessage = ref('')
+
+const register = async () => {
+  if (firstName.value !== '' && lastName.value !== '' && userName.value !== '' && email.value !== '' && password.value !== '') {
+    error.value = false;
+    errorMessage.value = ''
+    const firebaseAuth = await firebase.auth();
+    const createUser = await firebaseAuth.createUserWithEmailAndPassword(email.value, password.value)
+    const result = await createUser;
+    const dataBase = db.collection('users').doc(result.user.uid)
+    await dataBase.set({
+      firstName: firstName.value,
+      lastName: lastName.value,
+      userName: userName.value,
+      email: email.value,
+    });
+    router.push({name: 'Home'})
   }
+  error.value = true
+  errorMessage.value = 'Please fill out all the fields!'
 }
 </script>
 

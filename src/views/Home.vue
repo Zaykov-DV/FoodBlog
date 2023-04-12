@@ -22,39 +22,34 @@
   </div>
 </template>
 
-<script>
+<script setup>
 
 import BlogPost from "../components/BlogPost";
 import BlogCard from "../components/BlogCard";
 import Arrow from '../assets/Icons/arrow-right-light.svg'
+import {ref, computed} from 'vue'
+import {useStore} from 'vuex'
+const store = useStore()
 
-export default {
-  name: "Home",
-  components: { BlogCard, BlogPost, Arrow },
-  data() {
-    return {
-      welcomeScreen: {
-        title: "Welcome!",
-        blogPost:
-            "Weekly blog articles with recipes. Register today to never miss a post!",
-        welcomeScreen: true,
-        photo: "welcome",
-      },
+const welcomeScreen = ref({
+  title: "Welcome!",
+  blogPost: "Weekly blog articles with recipes. Register today to never miss a post!",
+  welcomeScreen: true,
+  photo: "welcome",
+})
 
-    };
-  },
-  computed: {
-    blogPostsFeed() {
-      return this.$store.getters.blogPostsFeed;
-    },
-    blogPostsCards() {
-      return this.$store.getters.blogPostsCards;
-    },
-    user() {
-      return this.$store.state.user
-    }
-  }
-};
+const blogPostsFeed = computed(() => {
+  return store.getters.blogPostsFeed;
+});
+
+const blogPostsCards = computed(() => {
+  return store.getters.blogPostsCards;
+});
+
+const user = computed(() => {
+  return store.state.user
+});
+
 </script>
 
 <style lang="scss" scoped>

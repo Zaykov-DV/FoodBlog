@@ -12,39 +12,39 @@
     <div class="info">
       <h4>{{post.blogTitle}}</h4>
       <h6>Posted on {{ new Date(post.blogDate).toLocaleString('en-us', {dataStyle: 'long'}) }}</h6>
-      <router-link class="link" :to="{name: 'ViewBlog', params: { blogid: this.post.blogID }}">
+      <router-link class="link" :to="{name: 'ViewBlog', params: { blogid: props.post.blogID }}">
         View The Post <Arrow class="arrow" />
       </router-link>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 
-import Arrow from '../assets/Icons/arrow-right-light.svg'
-import Edit from '../assets/Icons/edit-regular.svg'
-import Delete from '../assets/Icons/trash-regular.svg'
+import Arrow from '@/assets/Icons/arrow-right-light.svg'
+import Edit from '@/assets/Icons/edit-regular.svg'
+import Delete from '@/assets/Icons/trash-regular.svg'
 
-export default {
-  name: "BlogCard",
-  props: ['post'],
-  components: {
-    Arrow, Edit, Delete
-  },
-  methods: {
-    deletePost() {
-      this.$store.dispatch('deletePost', this.post.blogID)
-    },
-    editBlog() {
-      this.$router.push({name: 'EditPost', params: { blogid: this.post.blogID }})
-    }
-  },
-  computed: {
-    editPost() {
-      return this.$store.state.editPost
-    }
-  }
+import {defineProps, computed} from "vue";
+import { useStore } from "vuex";
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+const store = useStore()
+
+const props = defineProps(['post'])
+
+const deletePost = () => {
+  store.dispatch('deletePost', props.post.blogID)
 }
+const editBlog = () => {
+  router.push({name: 'EditPost', params: { blogid: props.post.blogID }})
+}
+
+const editPost = computed(() => {
+  return store.state.editPost
+});
+
 </script>
 
 <style lang="scss" scoped>

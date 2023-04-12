@@ -1,21 +1,21 @@
 <template>
   <div class="form-wrap">
     <form class="login">
-<!--      <p class="login-register">-->
-<!--        Don't have an account?-->
-<!--        <router-link class="router-link" :to="{ name: 'Register' }">Register</router-link>-->
-<!--      </p>-->
+      <!--      <p class="login-register">-->
+      <!--        Don't have an account?-->
+      <!--        <router-link class="router-link" :to="{ name: 'Register' }">Register</router-link>-->
+      <!--      </p>-->
       <h2>Login to FoodBlogs</h2>
       <div class="inputs">
         <div class="input">
           <input type="text" placeholder="Email" v-model="email">
-          <email class="icon"/>
+          <emailIcon class="icon"/>
         </div>
         <div class="input">
           <input type="password" placeholder="Password" v-model="password">
-          <password class="icon"/>
+          <passwordIcon class="icon"/>
         </div>
-        <div class="error" v-show="error">{{ this.errorMessage }}</div>
+        <div class="error" v-show="error">{{ errorMessage }}</div>
       </div>
       <router-link class="forgot-password" :to="{ name: 'ForgotPassword' }">Forgot your password?</router-link>
       <button @click.prevent="signIn">Sign In</button>
@@ -25,39 +25,33 @@
   </div>
 </template>
 
-<script>
-import email from "../assets/Icons/envelope-regular.svg";
-import password from "../assets/Icons/lock-alt-solid.svg";
+<script setup>
+import emailIcon from "@/assets/Icons/envelope-regular.svg";
+import passwordIcon from "@/assets/Icons/lock-alt-solid.svg";
 import firebase from "firebase";
 import 'firebase/auth'
 
-export default {
-  name: "Login",
-  components: {
-    email, password
-  },
-  data() {
-    return {
-      email: '',
-      password: '',
-      error: null,
-      errorMessage: ''
-    }
-  },
-  methods: {
-    signIn() {
-      firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-          .then(() => {
-            this.$router.push({name: 'Home'});
-            this.error = false;
-            this.errorMessage = ''
+import {ref} from 'vue'
+import {useRouter} from 'vue-router'
+
+const router = useRouter()
+
+const email = ref('')
+const password = ref('')
+const error = ref(null)
+const errorMessage = ref('')
+
+const signIn = () => {
+  firebase.auth().signInWithEmailAndPassword(email.value, password.value)
+      .then(() => {
+        router.push({name: 'Home'});
+        error.value = false;
+        errorMessage.value = ''
       })
       .catch((err) => {
-        this.error = true;
-        this.errorMessage = err.message
+        error.value = true;
+        errorMessage.value = err.message
       })
-    }
-  }
 }
 </script>
 
@@ -73,12 +67,15 @@ export default {
   @media (min-width: 900px) {
     width: 100%;
   }
+
   .login-register {
     margin-bottom: 32px;
+
     .router-link {
       color: #000;
     }
   }
+
   form {
     padding: 0 10px;
     position: relative;
@@ -90,6 +87,7 @@ export default {
     @media (min-width: 900px) {
       padding: 0 50px;
     }
+
     h2 {
       text-align: center;
       font-size: 32px;
@@ -99,25 +97,30 @@ export default {
         font-size: 40px;
       }
     }
+
     .inputs {
       width: 100%;
       max-width: 350px;
+
       .input {
         position: relative;
         display: flex;
         justify-content: center;
         align-items: center;
         margin-bottom: 8px;
+
         input {
           width: 100%;
           border: none;
           background-color: #f2f7f6;
           padding: 4px 4px 4px 30px;
           height: 50px;
+
           &:focus {
             outline: none;
           }
         }
+
         .icon {
           width: 12px;
           position: absolute;
@@ -125,6 +128,7 @@ export default {
         }
       }
     }
+
     .forgot-password {
       text-decoration: none;
       color: #000;
@@ -133,10 +137,12 @@ export default {
       margin: 16px 0 32px;
       border-bottom: 1px solid transparent;
       transition: 0.5s ease all;
+
       &:hover {
         border-color: #303030;
       }
     }
+
     .angle {
       display: none;
       position: absolute;
@@ -150,6 +156,7 @@ export default {
       }
     }
   }
+
   .background {
     display: none;
     flex: 2;
