@@ -17,14 +17,14 @@
             <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login/Register</router-link>
           </ul>
           <div @click="toggleProfileMenu" v-if="user" class="profile" ref="profile">
-            <span>{{ this.$store.state.profileInitials }}</span>
+            <span>{{ store.state.profileInitials }}</span>
             <div v-show="profileMenu" class="profile-menu">
               <div class="info">
-                <p class="initials">{{ this.$store.state.profileInitials }}</p>
+                <p class="initials">{{ store.state.profileInitials }}</p>
                 <div class="right">
-                  <p>{{ this.$store.state.profileFirstName }} {{ this.$store.state.profileLastName }}</p>
-                  <p>{{ this.$store.state.profileUserName }}</p>
-                  <p>{{ this.$store.state.profileEmail }}</p>
+                  <p>{{ store.state.profileFirstName }} {{ store.state.profileLastName }}</p>
+                  <p>{{ store.state.profileUserName }}</p>
+                  <p>{{ store.state.profileEmail }}</p>
                 </div>
               </div>
               <div class="options">
@@ -75,7 +75,7 @@
   </header>
 </template>
 
-<script>
+<script setup>
 
 import menuIcon from '@/assets/Icons/bars-regular.svg'
 import userIcon from '@/assets/Icons/user-alt-light.svg'
@@ -84,51 +84,47 @@ import signOutIcon from '@/assets/Icons/sign-out-alt-regular.svg'
 
 import firebase from "firebase";
 import 'firebase/auth'
+import {onMounted, ref, computed} from "vue";
 
-export default {
-  name: "Navigation",
-  components: {
-    menuIcon, userIcon, adminIcon, signOutIcon
-  },
-  data() {
-    return {
-      mobile: null,
-      mobileNav: null,
-      windowWidth: null,
-      profileMenu: null
-    }
-  },
-  created() {
-    window.addEventListener('resize', this.checkScreen)
-    this.checkScreen()
-  },
-  methods: {
-    checkScreen() {
-      this.windowWidth = window.innerWidth;
-      if (this.windowWidth <= 755) return this.mobile = true;
-      this.mobile = false;
-      this.mobileNav = false;
-    },
+import { useStore } from 'vuex'
+const store = useStore()
 
-    toggleMobileNav() {
-      this.mobileNav = !this.mobileNav
-    },
+const mobile = ref(null)
+const mobileNav = ref(null)
+const windowWidth = ref(null)
+const profileMenu = ref(null)
 
-    toggleProfileMenu(e) {
-      if (e.target === this.$refs.profile) this.profileMenu = !this.profileMenu
-    },
+const profile = ref(null)
 
-    signOut() {
-      firebase.auth().signOut();
-      window.location.reload()
-    }
-  },
-  computed: {
-    user() {
-      return this.$store.state.user
-    }
-  }
+const checkScreen = () => {
+  windowWidth.value = window.innerWidth;
+  if (windowWidth.value <= 755) return mobile.value = true;
+  mobile.value = false;
+  mobileNav.value = false;
 }
+
+const toggleMobileNav = () => {
+  mobileNav.value = !mobileNav.value
+}
+
+const toggleProfileMenu = (e)=>  {
+  if (e.target === profile) profileMenu.value = !profileMenu.value
+}
+
+const signOut = () => {
+  firebase.auth().signOut();
+  window.location.reload()
+}
+
+const user = computed(() => {
+  return store.state.user
+})
+
+onMounted(() => {
+  window.addEventListener('resize', checkScreen)
+  checkScreen()
+})
+
 </script>
 
 <style lang="scss" scoped>

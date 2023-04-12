@@ -12,7 +12,7 @@
           <Arrow class="arrow arrow-light" />
         </router-link>
 
-        <router-link v-else class="link" :to="{name: 'ViewBlog', params: { blogid: this.post.blogID }}">
+        <router-link v-else class="link" :to="{name: 'ViewBlog', params: { blogid: post.blogID }}">
           View The Post
           <Arrow class="arrow" />
         </router-link>
@@ -25,22 +25,19 @@
   </div>
 </template>
 
-<script>
-
+<script setup>
 import Arrow from '@/assets/Icons/arrow-right-light.svg'
 
-export default {
-  name: "BlogPost",
-  props: ['post'],
-  components: {
-    Arrow
-  },
-  computed: {
-    user() {
-      return this.$store.state.user
-    }
-  }
-}
+import {defineProps, computed} from "vue";
+import { useStore } from "vuex";
+
+const store = useStore()
+defineProps(['post'])
+
+const user = computed(() => {
+  return store.state.user
+});
+
 </script>
 
 <style lang="scss" scoped>

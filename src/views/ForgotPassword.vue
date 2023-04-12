@@ -15,7 +15,7 @@
         <div class="inputs">
           <div class="input">
             <input type="text" placeholder="Email" v-model="email">
-            <email class="icon"/>
+            <emailIcon class="icon"/>
           </div>
         </div>
         <button @click.prevent="resetPassword">Reset</button>
@@ -26,49 +26,39 @@
   </div>
 </template>
 
-<script>
-import email from "@/assets/Icons/envelope-regular.svg";
+<script setup>
+import emailIcon from "@/assets/Icons/envelope-regular.svg";
 import Modal from "../components/UI/Modal";
 import Loading from "../components/Loading";
 
 import firebase from "firebase";
 import 'firebase/auth'
 
-export default {
-  name: "ForgotPassword",
-  data() {
-    return {
-      email: null,
-      modalActive: null,
-      modalMessage: '',
-      loading: null
-    }
-  },
-  components: {
-    Loading,
-    Modal,
-    email
-  },
-  methods: {
-    closeModal() {
-      this.modalActive = !this.modalActive;
-      this.email = '';
-    },
-    resetPassword() {
-      this.loading = true
-      firebase.auth().sendPasswordResetEmail(this.email)
+import {ref} from 'vue'
+
+const email = ref(null)
+const modalActive = ref(null)
+const modalMessage = ref('')
+const loading = ref(null)
+
+const closeModal = () => {
+  modalActive.value = !modalActive.value;
+  email.value = '';
+}
+
+const resetPassword = () => {
+  loading.value = true
+  firebase.auth().sendPasswordResetEmail(email.value)
       .then(() => {
-        this.modalMessage = 'If your account exists, you will receive a email';
-        this.loading = false;
-        this.modalActive = true
+        modalMessage.value = 'If your account exists, you will receive a email';
+        loading.value = false;
+        modalActive.value = true
       })
       .catch((err) => {
-        this.modalMessage = err.message;
-        this.loading = false;
-        this.modalActive = true
+        modalMessage.value = err.message;
+        loading.value = false;
+        modalActive.value = true
       })
-    }
-  }
 }
 </script>
 

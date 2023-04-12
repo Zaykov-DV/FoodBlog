@@ -2,30 +2,26 @@
   <div class="modal" ref="modal">
     <div class="modal-content">
       <close @click="closePreview" class="icon" />
-      <img :src="this.blogCoverPhoto" :alt="this.blogCoverPhoto" />
+      <img :src="blogCoverPhoto" :alt="blogCoverPhoto" />
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import close from "@/assets/Icons/times-circle-light.svg";
 
-export default {
-  name: "BlogCoverPreview",
-  components: {
-    close
-  },
-  methods: {
-    closePreview () {
-      this.$store.commit('openPhotoPreview')
-    },
-  },
-  computed: {
-    blogCoverPhoto () {
-      return this.$store.state.blogPhotoFileURL
-    }
-  }
+import {computed} from "vue";
+import { useStore } from "vuex";
+const store = useStore()
+
+const closePreview = () => {
+  store.commit('openPhotoPreview')
 }
+
+const blogCoverPhoto = computed(() => {
+  return store.state.blogPhotoFileURL
+});
+
 </script>
 
 <style lang="scss" scoped>

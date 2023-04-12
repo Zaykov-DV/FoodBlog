@@ -33,55 +33,51 @@
   </div>
 </template>
 
-<script>
-
+<script setup>
 import BlogCard from "../components/BlogCard";
+import {computed, ref, onBeforeUnmount} from 'vue'
+import { useStore } from 'vuex'
+const store = useStore()
 
-export default {
-  name: "Blogs",
-  components: { BlogCard },
-  data() {
-    return {
-      categoryActive: 0,
-    }
-  },
-  methods: {
-    filterProducts(category) {
-      if (category === 0 || undefined ) {
-        this.$store.commit('showAllCategories')
-        this.categoryActive = 0
-      } else {
-        this.$store.commit('filterCategory', category)
-        this.categoryActive = category
-      }
-    },
-  },
-  computed: {
-    blogPosts() {
-      return this.$store.state.blogPosts
-    },
-    filterBlogs() {
-      return this.$store.state.filterBlogPosts
-    },
-    sampleBlogCards() {
-      return this.$store.state.sampleBlogCards
-    },
-    editPost: {
-      get() {
-        return this.$store.state.editPost
-      },
-      set(payload) {
-        this.$store.commit('toggleEditPost', payload)
-      }
-    },
-    profileUser() {
-      return this.$store.state.user;
-    },
-  },
-  beforeUnmount() {
-    this.$store.commit('toggleEditPost', false)
+const categoryActive = ref(0)
+
+const filterProducts = (category) => {
+  if (category === 0 || undefined ) {
+    store.commit('showAllCategories')
+    categoryActive.value = 0
+  } else {
+    store.commit('filterCategory', category)
+    categoryActive.value = category
   }
 }
+
+// const blogPosts = computed(() => {
+//   return store.state.blogPosts
+// })
+
+const filterBlogs = computed(() => {
+  return store.state.filterBlogPosts
+})
+
+
+const editPost = computed({
+  get() {
+    return store.state.editPost
+  },
+  set(payload) {
+    store.commit('toggleEditPost', payload)
+  }
+})
+
+
+const profileUser = computed(() => {
+  return store.state.user;
+})
+
+onBeforeUnmount(() => {
+  store.commit('toggleEditPost', false)
+})
+
 </script>
 
 <style lang="scss" scoped>

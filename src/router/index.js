@@ -14,6 +14,7 @@ import BloomCalc from "../views/BloomCalc";
 import Quiz from "../views/Quiz";
 
 import { createRouter, createWebHistory } from 'vue-router'
+import firebase from 'firebase'
 
 const router = createRouter({
   routes: [
@@ -137,19 +138,19 @@ router.beforeEach((to, from, next) => {
   document.title = `${to.meta.title} | FoodBlog`
   next()
 })
-//
-// router.beforeEach(async (to, from, next) => {
-//   let user = firebase.auth().currentUser;
-//   if (to.matched.some((res) => res.meta.requiresAuth)) {
-//     if (user) {
-//       if (to.matched.some((res) => res.meta.requiresAdmin)) {
-//         return next({ name: "Home" });
-//       }
-//       return next();
-//     }
-//     return next({ name: "Home" });
-//   }
-//   return next();
-// });
-//
+
+router.beforeEach(async (to, from, next) => {
+  let user = firebase.auth().currentUser;
+  if (to.matched.some((res) => res.meta.requiresAuth)) {
+    if (user) {
+      if (to.matched.some((res) => res.meta.requiresAdmin)) {
+        return next({ name: "Home" });
+      }
+      return next();
+    }
+    return next({ name: "Home" });
+  }
+  return next();
+});
+
 export default router;
