@@ -28,7 +28,7 @@
 
 <script setup>
 import Modal from "../components/UI/Modal";
-import Loading from "../components/Loading";
+import Loading from "../components/UI/Loading";
 
 
 import { getAuth } from 'firebase/auth'
