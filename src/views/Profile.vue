@@ -6,7 +6,7 @@
       <div class="profile-info">
         <div class="initials">{{ store.state.profileInitials }}</div>
         <div class="admin-badge">
-          <adminIcon class="icon" />
+          <SvgIcon name="user-crown-light" />
           <span>admin</span>
         </div>
         <div class="input">
@@ -33,10 +33,10 @@
 
 <script setup>
 import Modal from "../components/UI/Modal";
-import adminIcon from "@/assets/Icons/user-crown-light.svg";
 
 import {ref, computed} from 'vue'
 import { useStore } from 'vuex'
+import SvgIcon from "../components/UI/SvgIcon";
 const store = useStore()
 
 const modalMessage = ref("Changes were saved!")

@@ -6,10 +6,10 @@
           <router-link class="header" :to="{ name: 'Home' }">FoodBlog</router-link>
           <ul>
             <li>
-              <a href="#"><vk class="svg-icon"/></a>
+              <a href="#"><SvgIcon name="instagram-brands" class="svg-icon"/></a>
             </li>
             <li>
-              <a href="#"><instagram class="svg-icon"/></a>
+              <a href="#"><SvgIcon name="vk-logo" class="svg-icon"/></a>
             </li>
           </ul>
         </div>
@@ -30,10 +30,9 @@
 </template>
 
 <script setup>
-import instagram from "@/assets/Icons/instagram-brands.svg";
-import vk from "@/assets/Icons/vk-logo.svg";
 import {computed} from "vue";
 import { useStore } from "vuex";
+import SvgIcon from "./UI/SvgIcon";
 
 const store = useStore()
 

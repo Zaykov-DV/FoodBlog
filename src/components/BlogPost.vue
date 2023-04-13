@@ -9,12 +9,12 @@
 
         <router-link v-if="post.welcomeScreen" class="link link-light" :to="{ name: 'Login' }">
           Login / Register
-          <Arrow class="arrow arrow-light" />
+          <SvgIcon name="arrow-right-light" class="arrow arrow-light" />
         </router-link>
 
         <router-link v-else class="link" :to="{name: 'ViewBlog', params: { blogid: post.blogID }}">
           View The Post
-          <Arrow class="arrow" />
+          <SvgIcon name="arrow-right-light" class="arrow" />
         </router-link>
       </div>
     </div>
@@ -26,10 +26,9 @@
 </template>
 
 <script setup>
-import Arrow from '@/assets/Icons/arrow-right-light.svg'
-
 import {defineProps, computed} from "vue";
 import { useStore } from "vuex";
+import SvgIcon from "./UI/SvgIcon";
 
 const store = useStore()
 defineProps(['post'])
