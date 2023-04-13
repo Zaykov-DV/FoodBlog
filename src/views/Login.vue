@@ -28,8 +28,7 @@
 <script setup>
 import emailIcon from "@/assets/Icons/envelope-regular.svg";
 import passwordIcon from "@/assets/Icons/lock-alt-solid.svg";
-import firebase from "firebase";
-import 'firebase/auth'
+import {signInWithEmailAndPassword, getAuth} from 'firebase/auth'
 
 import {ref} from 'vue'
 import {useRouter} from 'vue-router'
@@ -42,7 +41,8 @@ const error = ref(null)
 const errorMessage = ref('')
 
 const signIn = () => {
-  firebase.auth().signInWithEmailAndPassword(email.value, password.value)
+  const auth = getAuth()
+  signInWithEmailAndPassword(auth, email.value, password.value)
       .then(() => {
         router.push({name: 'Home'});
         error.value = false;

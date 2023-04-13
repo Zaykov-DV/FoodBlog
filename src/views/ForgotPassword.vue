@@ -31,8 +31,8 @@ import emailIcon from "@/assets/Icons/envelope-regular.svg";
 import Modal from "../components/UI/Modal";
 import Loading from "../components/Loading";
 
-import firebase from "firebase";
-import 'firebase/auth'
+
+import { getAuth } from 'firebase/auth'
 
 import {ref} from 'vue'
 
@@ -46,9 +46,10 @@ const closeModal = () => {
   email.value = '';
 }
 
-const resetPassword = () => {
+const resetPassword = async () => {
   loading.value = true
-  firebase.auth().sendPasswordResetEmail(email.value)
+  const auth = await getAuth()
+  await auth.sendPasswordResetEmail(auth, email.value)
       .then(() => {
         modalMessage.value = 'If your account exists, you will receive a email';
         loading.value = false;

@@ -42,8 +42,8 @@ import email from "@/assets/Icons/envelope-regular.svg";
 import password from "@/assets/Icons/lock-alt-solid.svg";
 import user from "@/assets/Icons/user-alt-light.svg";
 
-import firebase from "firebase/app";
-import 'firebase/auth'
+import {createUserWithEmailAndPassword, getAuth} from 'firebase/auth'
+
 import db from '../firebase/firebaseInit'
 import {useRouter} from 'vue-router'
 
@@ -57,11 +57,11 @@ const error = ref(null)
 const errorMessage = ref('')
 
 const register = async () => {
+  const auth = await getAuth()
   if (firstName.value !== '' && lastName.value !== '' && userName.value !== '' && email.value !== '' && password.value !== '') {
     error.value = false;
     errorMessage.value = ''
-    const firebaseAuth = await firebase.auth();
-    const createUser = await firebaseAuth.createUserWithEmailAndPassword(email.value, password.value)
+    const createUser = await createUserWithEmailAndPassword(auth, email.value, password.value)
     const result = await createUser;
     const dataBase = db.collection('users').doc(result.user.uid)
     await dataBase.set({
@@ -70,7 +70,10 @@ const register = async () => {
       userName: userName.value,
       email: email.value,
     });
-    router.push({name: 'Home'})
+    .then(() => {
+      router.push({name: 'Home'})
+    })
+
   }
   error.value = true
   errorMessage.value = 'Please fill out all the fields!'

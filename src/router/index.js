@@ -9,12 +9,10 @@ import CreatePost from "../views/CreatePost";
 import BlogPreview from "../views/BlogPreview";
 import ViewBlog from "../views/ViewBlog";
 import EditPost from "../views/EditPost";
-// import firebase from "firebase";
 import BloomCalc from "../views/BloomCalc";
 import Quiz from "../views/Quiz";
-
+import {getAuth, onAuthStateChanged} from 'firebase/auth'
 import { createRouter, createWebHistory } from 'vue-router'
-import firebase from 'firebase'
 
 const router = createRouter({
   routes: [
@@ -139,18 +137,30 @@ router.beforeEach((to, from, next) => {
   next()
 })
 
-router.beforeEach(async (to, from, next) => {
-  let user = firebase.auth().currentUser;
-  if (to.matched.some((res) => res.meta.requiresAuth)) {
-    if (user) {
-      if (to.matched.some((res) => res.meta.requiresAdmin)) {
-        return next({ name: "Home" });
-      }
-      return next();
+const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const removeListener = onAuthStateChanged(
+        getAuth(),
+        (user) => {
+          removeListener();
+          resolve(user)
+        },
+        reject
+    )
+  })
+}
+
+router.beforeEach(async function (to, from, next) {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (await getCurrentUser()) {
+      next(true);
+    } else {
+      // alert('you dont have access')
+      next({path: '/login'})
     }
-    return next({ name: "Home" });
+  } else {
+    next()
   }
-  return next();
-});
+})
 
 export default router;

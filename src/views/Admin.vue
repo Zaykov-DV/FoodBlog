@@ -15,8 +15,8 @@
 </template>
 
 <script setup>
-import firebase from "firebase/app";
-import "firebase/functions";
+import firebase from "firebase/compat/app";
+import "firebase/compat/functions";
 import {ref} from 'vue'
 
 const adminEmail = ref('')
