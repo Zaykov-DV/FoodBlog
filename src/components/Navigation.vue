@@ -30,18 +30,18 @@
               <div class="options">
                 <div class="option">
                   <router-link class="option" :to="{name: 'Profile'}">
-                    <userIcon class="icon"/>
+                    <SvgIcon name="user-alt-light"/>
                     <p>Profile</p>
                   </router-link>
                 </div>
                 <div class="option">
                   <router-link class="option" :to="{name: 'Admin'}">
-                    <adminIcon class="icon"/>
+                    <SvgIcon name="user-crown-light"/>
                     <p>Admin</p>
                   </router-link>
                 </div>
                 <div @click="signOut" class="option">
-                  <signOutIcon class="icon"/>
+                  <SvgIcon name="sign-out-alt-regular"/>
                   <p>Sign Out</p>
                 </div>
               </div>
@@ -51,7 +51,7 @@
       </div>
     </nav>
 
-    <menuIcon @click="toggleMobileNav" class="menu-icon" v-show="mobile"/>
+    <SvgIcon @click="toggleMobileNav" name="bars-regular" class="menu-icon" v-show="mobile"/>
 
     <transition name="mobile-nav">
       <ul class="mobile-nav" v-show="mobileNav">
@@ -67,7 +67,7 @@
         <li v-if="user" @click="toggleMobileNav" class="link">
           <router-link :to="{ name: 'CreatePost' }">Create Post</router-link>
         </li>
-        <li v-if="!user" @click="toggleMobileNav"  class="link">
+        <li v-if="!user" @click="toggleMobileNav" class="link">
           <router-link :to="{ name: 'Login' }">Login/Register</router-link>
         </li>
       </ul>
@@ -76,12 +76,7 @@
 </template>
 
 <script setup>
-
-import menuIcon from '@/assets/Icons/bars-regular.svg'
-import userIcon from '@/assets/Icons/user-alt-light.svg'
-import adminIcon from '@/assets/Icons/user-crown-light.svg'
-import signOutIcon from '@/assets/Icons/sign-out-alt-regular.svg'
-
+import SvgIcon from './UI/SvgIcon'
 
 import {getAuth} from "firebase/auth";
 

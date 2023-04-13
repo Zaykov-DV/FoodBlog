@@ -1,17 +1,16 @@
 <template>
   <div class="modal" ref="modal">
     <div class="modal-content">
-      <close @click="closePreview" class="icon" />
+      <SvgIcon name="times-circle-light" @click="closePreview" class="icon" />
       <img :src="blogCoverPhoto" :alt="blogCoverPhoto" />
     </div>
   </div>
 </template>
 
 <script setup>
-import close from "@/assets/Icons/times-circle-light.svg";
-
 import {computed} from "vue";
 import { useStore } from "vuex";
+import SvgIcon from "./UI/SvgIcon";
 const store = useStore()
 
 const closePreview = () => {

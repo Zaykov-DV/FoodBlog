@@ -9,23 +9,23 @@
       <div class="inputs">
         <div class="input">
           <input type="text" placeholder="First Name" v-model="firstName">
-          <user class="icon"/>
+          <SvgIcon name="user-alt-light" class="icon"/>
         </div>
         <div class="input">
           <input type="text" placeholder="Last Name" v-model="lastName">
-          <user class="icon"/>
+          <SvgIcon name="user-alt-light" class="icon"/>
         </div>
         <div class="input">
           <input type="text" placeholder="Username" v-model="userName">
-          <user class="icon"/>
+          <SvgIcon name="user-alt-light" class="icon"/>
         </div>
         <div class="input">
           <input type="text" placeholder="Email" v-model="email">
-          <email class="icon"/>
+          <SvgIcon name="envelope-regular" class="icon"/>
         </div>
         <div class="input">
           <input type="password" placeholder="Password" v-model="password">
-          <password class="icon"/>
+          <SvgIcon name="lock-alt-solid" class="icon"/>
         </div>
         <div class="error" v-show="error">{{ errorMessage }}</div>
       </div>
@@ -37,15 +37,14 @@
 </template>
 
 <script setup>
-//svg
-import email from "@/assets/Icons/envelope-regular.svg";
-import password from "@/assets/Icons/lock-alt-solid.svg";
-import user from "@/assets/Icons/user-alt-light.svg";
 
 import {createUserWithEmailAndPassword, getAuth} from 'firebase/auth'
 
 import db from '../firebase/firebaseInit'
 import {useRouter} from 'vue-router'
+
+import { ref } from 'vue'
+import SvgIcon from "../components/UI/SvgIcon";
 
 const router = useRouter()
 const firstName = ref('')
@@ -69,7 +68,7 @@ const register = async () => {
       lastName: lastName.value,
       userName: userName.value,
       email: email.value,
-    });
+    })
     .then(() => {
       router.push({name: 'Home'})
     })

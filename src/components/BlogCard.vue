@@ -2,10 +2,10 @@
   <div class="blog-card">
     <div class="icons" v-show="editPost">
       <div @click="editBlog" class="icon">
-        <Edit class="edit"/>
+        <SvgIcon name="edit-regular" class="edit"/>
       </div>
       <div @click="deletePost" class="icon">
-        <Delete class="delete"/>
+        <SvgIcon name="trash-regular" class="delete"/>
       </div>
     </div>
     <img :src="post.blogCoverPhoto" :alt="post.blogCoverPhoto">
@@ -13,17 +13,14 @@
       <h4>{{post.blogTitle}}</h4>
       <h6>Posted on {{ new Date(post.blogDate).toLocaleString('en-us', {dataStyle: 'long'}) }}</h6>
       <router-link class="link" :to="{name: 'ViewBlog', params: { blogid: props.post.blogID }}">
-        View The Post <Arrow class="arrow" />
+        View The Post <SvgIcon name="arrow-right-light" class="icon" />
       </router-link>
     </div>
   </div>
 </template>
 
 <script setup>
-
-import Arrow from '@/assets/Icons/arrow-right-light.svg'
-import Edit from '@/assets/Icons/edit-regular.svg'
-import Delete from '@/assets/Icons/trash-regular.svg'
+import SvgIcon from "./UI/SvgIcon";
 
 import {defineProps, computed} from "vue";
 import { useStore } from "vuex";

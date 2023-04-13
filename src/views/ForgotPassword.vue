@@ -15,7 +15,7 @@
         <div class="inputs">
           <div class="input">
             <input type="text" placeholder="Email" v-model="email">
-            <emailIcon class="icon"/>
+            <SvgIcon name="envelope-regular" class="icon"/>
           </div>
         </div>
         <button @click.prevent="resetPassword">Reset</button>
@@ -27,7 +27,6 @@
 </template>
 
 <script setup>
-import emailIcon from "@/assets/Icons/envelope-regular.svg";
 import Modal from "../components/UI/Modal";
 import Loading from "../components/Loading";
 
@@ -35,6 +34,7 @@ import Loading from "../components/Loading";
 import { getAuth } from 'firebase/auth'
 
 import {ref} from 'vue'
+import SvgIcon from "../components/UI/SvgIcon";
 
 const email = ref(null)
 const modalActive = ref(null)

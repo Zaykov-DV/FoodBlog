@@ -9,11 +9,11 @@
       <div class="inputs">
         <div class="input">
           <input type="text" placeholder="Email" v-model="email">
-          <emailIcon class="icon"/>
+          <SvgIcon name="envelope-regular" class="icon"/>
         </div>
         <div class="input">
           <input type="password" placeholder="Password" v-model="password">
-          <passwordIcon class="icon"/>
+          <SvgIcon name="lock-alt-solid" class="icon"/>
         </div>
         <div class="error" v-show="error">{{ errorMessage }}</div>
       </div>
@@ -26,12 +26,11 @@
 </template>
 
 <script setup>
-import emailIcon from "@/assets/Icons/envelope-regular.svg";
-import passwordIcon from "@/assets/Icons/lock-alt-solid.svg";
 import {signInWithEmailAndPassword, getAuth} from 'firebase/auth'
 
 import {ref} from 'vue'
 import {useRouter} from 'vue-router'
+import SvgIcon from "../components/UI/SvgIcon";
 
 const router = useRouter()
 

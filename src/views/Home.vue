@@ -15,7 +15,7 @@
         <h2>Never miss a post. Register your free account today</h2>
         <router-link class="router-button" to="#">
           Register for FoodBlogs
-          <Arrow class="arrow"/>
+          <SvgIcon name="arrow-right-light" class="icon"/>
         </router-link>
       </div>
     </div>
@@ -26,9 +26,9 @@
 
 import BlogPost from "../components/BlogPost";
 import BlogCard from "../components/BlogCard";
-import Arrow from '../assets/Icons/arrow-right-light.svg'
 import {ref, computed} from 'vue'
 import {useStore} from 'vuex'
+import SvgIcon from "../components/UI/SvgIcon";
 const store = useStore()
 
 const welcomeScreen = ref({
