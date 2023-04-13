@@ -82,8 +82,10 @@ import userIcon from '@/assets/Icons/user-alt-light.svg'
 import adminIcon from '@/assets/Icons/user-crown-light.svg'
 import signOutIcon from '@/assets/Icons/sign-out-alt-regular.svg'
 
-import firebase from "firebase";
-import 'firebase/auth'
+
+import {getAuth} from "firebase/auth";
+
+'firebase/auth'
 import {onMounted, ref, computed} from "vue";
 
 import { useStore } from 'vuex'
@@ -108,11 +110,12 @@ const toggleMobileNav = () => {
 }
 
 const toggleProfileMenu = (e)=>  {
-  if (e.target === profile) profileMenu.value = !profileMenu.value
+  if (e.target === profile.value) profileMenu.value = !profileMenu.value
 }
 
-const signOut = () => {
-  firebase.auth().signOut();
+const signOut = async () => {
+  const auth = await getAuth()
+  await auth.signOut();
   window.location.reload()
 }
 

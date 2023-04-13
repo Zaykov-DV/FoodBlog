@@ -9,12 +9,14 @@
 <script setup>
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
-import firebase from "firebase";
 import 'firebase/auth'
 
 import {onMounted, ref, watchEffect} from 'vue'
 import { useRoute } from "vue-router";
 import { useStore } from 'vuex'
+
+import {getAuth} from 'firebase/auth'
+
 
 const route = useRoute()
 const store = useStore()
@@ -31,8 +33,9 @@ watchEffect(() => {
   checkRoute()
 })
 
-onMounted(() => {
-  firebase.auth().onAuthStateChanged((user) => {
+onMounted(async () => {
+  const auth = await getAuth()
+  auth.onAuthStateChanged((user) => {
     store.commit('updateUser', user);
     if (user) store.dispatch('getCurrentUser', user)
   })
