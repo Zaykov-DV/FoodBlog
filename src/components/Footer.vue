@@ -1,29 +1,42 @@
 <template>
   <footer class="footer">
-    <div class="container">
-      <div class="left">
-        <div class="col-1">
-          <router-link class="header" :to="{ name: 'Home' }">FoodBlog</router-link>
-          <ul>
-            <li>
-              <a href="#"><SvgIcon name="instagram-brands" class="svg-icon"/></a>
-            </li>
-            <li>
-              <a href="#"><SvgIcon name="vk-logo" class="svg-icon"/></a>
-            </li>
-          </ul>
+    <div class="footer__container">
+      <div class="footer__block">
+        <div>
+          <router-link class="footer__title" :to="{ name: 'Home' }">FoodBlog</router-link>
+          <p>Lorem ipsum dolor sit amet, consectetur.</p>
         </div>
-        <div class="col-2">
-          <ul>
-            <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
-            <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
-            <router-link class="link" :to="{ name: 'CreatePost' }">Create Post</router-link>
-            <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login/Register</router-link>
-          </ul>
-        </div>
+        <ul class="footer__links">
+          <router-link class="footer__link" :to="{ name: 'Home' }">Home</router-link>
+          <router-link class="footer__link" :to="{ name: 'Blogs' }">Blogs</router-link>
+          <router-link class="footer__link" :to="{ name: 'CreatePost' }">Create Post</router-link>
+          <router-link v-if="!user" class="footer__link" :to="{ name: 'Login' }">Login/Register</router-link>
+        </ul>
       </div>
-      <div class="right">
-        <p>Copyright 2022 All Rights Reserved</p>
+      <div class="footer__copyright">
+        <div class="footer__info">
+          <p class="footer__info-text">© Copyright 2023 All Rights Reserved</p>
+          <span class="footer__info-link">Design by <a href="https://www.flowbase.co/">Flowbase</a></span>
+        </div>
+        <div class="footer__social">
+          <ul class="footer__links footer__links_social">
+            <li>
+              <a href="https://www.instagram.com/avedima/">
+                <SvgIcon name="instagram" class="footer__link-icon"/>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.facebook.com/grunger.ekb">
+                <SvgIcon name="facebook" class="footer__link-icon"/>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.facebook.com/grunger.ekb">
+                <SvgIcon name="vk" class="footer__link-icon"/>
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </footer>
@@ -31,12 +44,12 @@
 
 <script setup>
 import {computed} from "vue";
-import { useStore } from "vuex";
+import {useStore} from "vuex";
 import SvgIcon from "./UI/SvgIcon";
 
 const store = useStore()
 
-const  user = computed(() => {
+const user = computed(() => {
   return store.state.user;
 });
 
@@ -47,121 +60,102 @@ const  user = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-
 .footer {
-  margin-top: auto;
-  padding: 100px 25px;
-  background-color: #303030;
 
-  .container {
+  &__container {
+    padding: 0 80px 50px;
+  }
+
+  &__title {
+    font-family: "Lobster Two", cursive;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 30px;
+    color: #000000;
+    border-bottom: none;
+  }
+
+  &__block {
     display: flex;
-    flex-direction: column;
-    gap: 32px;
-    @media (min-width: 800px) {
-      flex-direction: row;
-      gap: 0;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 50px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 50px;
+  }
+
+  &__links {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+
+    &_social {
+      justify-content: flex-end;
+      gap: 40px;
+    }
+  }
+
+  &__link {
+    &.router-link-active {
+      border-bottom: none;
+    }
+  }
+
+  &__copyright {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  &__info {
+    grid-column: 2/3;
+    text-align: center;
+  }
+
+  &__social {
+    grid-column: 3/3;
+  }
+
+  &__info-text {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 23px;
+    letter-spacing: -0.02em;
+    color: rgba(0, 0, 0, 0.6);
+    margin-bottom: 5px;
+  }
+
+  &__info-link {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 23px;
+    letter-spacing: -0.02em;
+    color: rgba(0, 0, 0, 0.6);
+
+    a {
+      color: #FF7967;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .footer {
+
+    &__container {
+      padding: 0 60px 60px;
     }
 
-    > div {
-      display: flex;
-      flex: 1;
-    }
-
-    .left {
-      gap: 32px;
-      color: #fff;
-      display: flex;
+    &__block {
+      align-items: flex-start;
       flex-direction: column;
-      align-items: center;
-      @media (min-width: 800px) {
-        flex-direction: row;
-        align-items: initial;
-        gap: 0;
-      }
-
-      .header {
-        text-align: center;
-        font-size: 24px;
-        color: #fff;
-        margin-bottom: 16px;
-        text-decoration: none;
-        font-weight: 600;
-        @media (min-width: 800px) {
-          text-align: initial;
-        }
-      }
-      ul {
-        gap: 16px;
-        list-style: none;
-        display: flex;
-      }
-
-      .col-1,
-      .col-2 {
-        gap: 32px;
-        display: flex;
-        flex: 1;
-        @media (min-width: 800px) {
-          gap: 0;
-        }
-      }
-
-      .col-1 {
-        flex-direction: column;
-
-        h2 {
-          text-align: center;
-          @media (min-width: 800px) {
-            text-align: initial;
-          }
-        }
-        ul {
-          margin-top: auto;
-
-          li {
-            display: flex;
-            align-items: center;
-            .svg-icon {
-              width: 24px;
-              height: auto;
-              color: #fff;
-            }
-          }
-        }
-      }
-
-      .col-2 {
-        ul {
-          height: 100%;
-          justify-content: center;
-          flex-direction: row;
-          flex-wrap: wrap;
-          @media (min-width: 800px) {
-            flex-direction: column;
-          }
-          .link {
-            font-size: 16px;
-            font-weight: 500;
-            color: #fff;
-            text-decoration: none;
-          }
-        }
-      }
     }
 
-    .right {
-      gap: 32px;
-      color: #fff;
-      align-items: center;
-      flex-direction: column;
-      @media (min-width: 800px) {
-        align-items: flex-end;
-        gap: 0;
-      }
-    }
-
-    p {
-      margin-top: auto;
+    &__links {
+      margin-top: 20px;
     }
   }
 }

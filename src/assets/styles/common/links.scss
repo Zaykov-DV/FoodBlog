@@ -5,11 +5,12 @@
   font-size: 16px;
   line-height: 19px;
   color: #333333;
-  transition: color 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   border-bottom: none;
   
   &:hover {
     color: #000000;
+    border-bottom: 2px solid #000000;
   }
 }
 

@@ -1,0 +1,109 @@
+<template>
+  <router-link class="blog-recent" :to="{name: 'ViewBlog', params: { blogid: props.post.blogID }}">
+    <div class="blog-recent__item">
+      <div class="blog-recent__item-image" :style="{ backgroundImage: `url('` + post.blogCoverPhoto + `')` }"></div>
+      <h4 class="blog-recent__item-title">{{ post.blogTitle }}</h4>
+      <div class="blog-recent__labels">
+        <div class="blog-recent__label">
+          <SvgIcon class="blog-recent__label-icon" name="timer"/>
+          <span class="blog-recent__label-text">30 minutes</span>
+        </div>
+        <div class="blog-recent__label">
+          <SvgIcon class="blog-recent__label-icon" name="category"/>
+          <span class="blog-recent__label-text">{{ postCategory }}</span>
+        </div>
+      </div>
+    </div>
+  </router-link>
+</template>
+
+<script setup>
+import SvgIcon from "./UI/SvgIcon";
+
+import {defineProps, ref, onMounted} from "vue";
+import {useStore} from "vuex";
+
+const store = useStore()
+
+const props = defineProps(['post'])
+const postCategory = ref('')
+
+const blogCategory = () => {
+  for (let category of store.state.categories) {
+    if (props.post.categoryID === category.id)
+      return postCategory.value = category.category
+  }
+}
+
+onMounted(() => {
+  blogCategory()
+})
+</script>
+
+<style lang="scss" scoped>
+
+.blog-recent {
+  &__item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__item-image {
+    width: 290px;
+    height: 200px;
+    border-radius: 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-bottom: 16px;
+  }
+
+  &__item-title {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 26px;
+    letter-spacing: -0.04em;
+    color: #000000;
+  }
+
+  &__labels {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-top: 24px;
+  }
+
+  &__label {
+    display: flex;
+    align-items: center;
+  }
+
+  &__label-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+  }
+
+  &__label-text {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    letter-spacing: -0.02em;
+    color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+@media (max-width: 1025px) {
+  .blog-recent {
+    &__item-image {
+      width: 275px;
+    }
+  }
+
+}
+
+</style>

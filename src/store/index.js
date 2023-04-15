@@ -23,19 +23,39 @@ const store = createStore({
         profileId: null,
         profileInitials: null,
         categories: [
-            { id: 1, category: 'Выпечка' },
-            { id: 2, category: 'Горячее' },
-            { id: 3, category: 'Тортики' }
+            { id: 1, category: 'Выпечка', image: 'breakfast' },
+            { id: 2, category: 'Горячее', image: 'breakfast' },
+            { id: 3, category: 'Тортики', image: 'breakfast' },
+            { id: 4, category: 'Завтрак', image: 'breakfast' },
+            { id: 5, category: 'Салаты', image: 'salad' },
+            { id: 6, category: 'Десерты', image: 'tort' },
+            { id: 7, category: 'Ланч', image: 'lunch' },
+            { id: 8, category: 'Шоколад', image: 'chocolate' },
+            { id: 8, category: 'Мясо', image: 'meat' },
         ],
         selectedCategory: 0,
     },
     getters: {
-        blogPostsFeed(state) {
-            return state.blogPosts.slice(0, 2);
+        getBlogPostsFeed(state) {
+            // @TODO слайдер
+            return state.blogPosts.slice(0, 1);
         },
-        blogPostsCards(state) {
-            return state.blogPosts.slice(2, 6);
+        getBlogPostsCards(state) {
+            if (document.documentElement.clientWidth > 1280) {
+                return state.blogPosts.slice(0, 8)
+            } else {
+                return state.blogPosts.slice(0, 6)
+            }
         },
+        getBlogCategories(state) {
+            if (document.documentElement.clientWidth <= 1280) {
+                return state.categories.slice(3, 7)
+            } else if (document.documentElement.clientWidth > 1280 && document.documentElement.clientWidth < 1440) {
+                return state.categories.slice(3, 8)
+            } else {
+                return state.categories.slice(3)
+            }
+        }
     },
     mutations: {
         newBlogPost(state, payload) {

@@ -1,44 +1,43 @@
 <template>
   <header class="navigation">
-    <nav class="navigation__container container">
+    <nav class="navigation__container">
       <h1 class="navigation__title">FoodBlog</h1>
-      <div class="nav-links">
-        <ul v-show="!mobile">
-          <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
-          <router-link class="link" :to="{ name: 'Blogs' }">Recipes</router-link>
-          <router-link class="link" :to="{ name: 'BloomCalc' }">Bloom Calculator</router-link>
-          <router-link class="link" :to="{ name: 'Quiz' }">Quiz</router-link>
-          <router-link v-if="user" class="link" :to="{ name: 'CreatePost' }">Create Post</router-link>
-          <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login/Register</router-link>
-        </ul>
-        <div @click="toggleProfileMenu" v-if="user" class="profile" ref="profile">
+      <ul class="navigation__links" v-show="!mobile">
+        <router-link class="navigation__link" :to="{ name: 'Home' }">Home</router-link>
+        <router-link class="navigation__link" :to="{ name: 'Blogs' }">Recipes</router-link>
+        <router-link class="navigation__link" :to="{ name: 'BloomCalc' }">Bloom Calculator</router-link>
+        <router-link class="navigation__link" :to="{ name: 'Quiz' }">Quiz</router-link>
+        <router-link v-if="!user" class="navigation__link" :to="{ name: 'Login' }">Login/Register</router-link>
+      </ul>
+      <div v-if="user" class="navigation__profile-wrapper">
+        <router-link v-if="user" class="navigation__link" :to="{ name: 'CreatePost' }">Create Post</router-link>
+        <div class="navigation__profile" @click="toggleProfileMenu" ref="profile">
           <span>{{ store.state.profileInitials }}</span>
-          <div v-show="profileMenu" class="profile-menu">
-            <div class="info">
-              <p class="initials">{{ store.state.profileInitials }}</p>
-              <div class="right">
-                <p>{{ store.state.profileFirstName }} {{ store.state.profileLastName }}</p>
-                <p>{{ store.state.profileUserName }}</p>
-                <p>{{ store.state.profileEmail }}</p>
-              </div>
+        </div>
+        <div v-show="profileMenu" class="navigation__profile-menu">
+          <div class="navigation__profile-info-wrapper">
+            <div class="navigation__profile-initials">
+              <span>{{ store.state.profileInitials }}</span>
             </div>
-            <div class="options">
-              <div class="option">
-                <router-link class="option" :to="{name: 'Profile'}">
-                  <SvgIcon name="user-alt-light"/>
-                  <p>Profile</p>
-                </router-link>
-              </div>
-              <div class="option">
-                <router-link class="option" :to="{name: 'Admin'}">
-                  <SvgIcon name="user-crown-light"/>
-                  <p>Admin</p>
-                </router-link>
-              </div>
-              <div @click="signOut" class="option">
-                <SvgIcon name="sign-out-alt-regular"/>
-                <p>Sign Out</p>
-              </div>
+            <div class="navigation__profile-info">
+              <p class="navigation__text navigation__text_m">{{ store.state.profileFirstName }}
+                {{ store.state.profileLastName }}</p>
+              <p class="navigation__text">{{ store.state.profileUserName }}</p>
+              <p class="navigation__text">{{ store.state.profileEmail }}</p>
+            </div>
+          </div>
+          <div class="navigation__options">
+            <router-link class="navigation__option" :to="{name: 'Profile'}">
+              <SvgIcon class="navigation__icon" name="user-alt-light"/>
+              <p class="navigation__text">Profile</p>
+            </router-link>
+            <router-link class="navigation__option" :to="{name: 'Admin'}">
+              <SvgIcon class="navigation__icon" name="user-crown-light"/>
+              <p class="navigation__text">Admin</p>
+            </router-link>
+            <div @click="signOut" class="navigation__option">
+              <SvgIcon class="navigation__icon" name="sign-out-alt-regular"/>
+              <p class="navigation__text">Sign Out</p>
             </div>
           </div>
         </div>
@@ -128,207 +127,109 @@ onMounted(() => {
     align-items: center;
     justify-content: space-between;
     padding: 40px 80px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
   }
 
   &__title {
     font-family: 'Lobster Two', cursive;
-    font-size: 24px;
+    font-size: 36px;
     font-weight: 400;
     line-height: 30px;
   }
+
+  &__content {
+    display: flex;
+  }
+
+  &__links {
+    display: flex;
+    gap: 60px;
+  }
+
+  &__profile-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &__profile {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: #fff;
+    background-color: #303030;
+    margin-left: 20px;
+
+    span {
+      pointer-events: none;
+    }
+
+  }
+
+  &__profile-menu {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 250px;
+    background-color: #303030;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  &__profile-info-wrapper {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #fff;
+  }
+
+
+  &__profile-initials {
+    position: initial;
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    color: #303030;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+
+  &__profile-info {
+    flex: 1;
+    margin-left: 24px;
+  }
+
+  &__text {
+    color: #fff;
+    font-size: 14px;
+
+    &_m {
+      font-size: 16px;
+    }
+  }
+
+  &__icon {
+    fill: #fff;
+    color: #fff;
+    margin-right: 12px;
+  }
+
+  &__options {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    gap: 12px;
+  }
+
+  &__option {
+    display: flex;
+    align-items: center;
+  }
 }
-
-
-//header {
-//  background-color: #fff;
-//  padding: 0 25px;
-//  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-//  z-index: 99;
-//
-//  .link {
-//    font-weight: 500;
-//    padding: 0 8px;
-//    transition: 0.3s color ease;
-//
-//    &:hover {
-//      color: #1eb8b8;
-//    }
-//  }
-//
-//  nav {
-//    padding: 25px 0;
-//
-//    .branding {
-//      display: flex;
-//      align-items: center;
-//
-//      .header {
-//        font-weight: 600;
-//        font-size: 24px;
-//        color: #000;
-//        text-decoration: none;
-//      }
-//    }
-//
-//    .nav-links {
-//      position: relative;
-//      display: flex;
-//      flex: 1;
-//      align-items: center;
-//      justify-content: flex-end;
-//
-//      ul {
-//        margin-right: 32px;
-//
-//        .link {
-//          margin-right: 32px;
-//        }
-//
-//        .link:last-child {
-//          margin-right: 0;
-//        }
-//      }
-//
-//      .profile {
-//        position: relative;
-//        cursor: pointer;
-//        display: flex;
-//        align-items: center;
-//        justify-content: center;
-//        width: 40px;
-//        height: 40px;
-//        border-radius: 50%;
-//        color: #fff;
-//        background-color: #303030;
-//
-//        span {
-//          pointer-events: none;
-//        }
-//
-//        .profile-menu {
-//          position: absolute;
-//          top: 60px;
-//          right: 0;
-//          width: 250px;
-//          background-color: #303030;
-//          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-//
-//          .info {
-//            display: flex;
-//            align-items: center;
-//            padding: 15px;
-//            border-bottom: 1px solid #fff;
-//
-//            .initials {
-//              position: initial;
-//              width: 40px;
-//              height: 40px;
-//              background-color: #fff;
-//              color: #303030;
-//              display: flex;
-//              align-items: center;
-//              justify-content: center;
-//              border-radius: 50%;
-//            }
-//
-//            .right {
-//              flex: 1;
-//              margin-left: 24px;
-//
-//              p:nth-child(1) {
-//                font-size: 14px;
-//              }
-//
-//              p:nth-child(2),
-//              p:nth-child(3) {
-//                font-size: 12px;
-//              }
-//            }
-//          }
-//
-//          .options {
-//            padding: 15px;
-//
-//            .option {
-//              text-decoration: none;
-//              color: #fff;
-//              display: flex;
-//              align-items: center;
-//              margin-bottom: 12px;
-//
-//              .icon {
-//                width: 18px;
-//                height: auto;
-//              }
-//
-//              p {
-//                font-size: 14px;
-//                margin-left: 12px;
-//              }
-//
-//              &:last-child {
-//                margin-bottom: 0;
-//              }
-//            }
-//          }
-//        }
-//      }
-//    }
-//
-//    .mobile-user-menu {
-//      margin-right: 40px;
-//    }
-//  }
-//
-//  .menu-icon {
-//    cursor: pointer;
-//    position: absolute;
-//    top: 32px;
-//    right: 25px;
-//    height: 25px;
-//    width: auto;
-//  }
-//
-//  .mobile-nav {
-//    padding: 20px;
-//    width: 70%;
-//    max-width: 250px;
-//    display: flex;
-//    flex-direction: column;
-//    position: fixed;
-//    height: 100%;
-//    background-color: #303030;
-//    top: 0;
-//    left: 0;
-//
-//    .link {
-//      padding: 15px 0;
-//      color: #fff;
-//    }
-//  }
-//
-//  .mobile-nav-enter-active,
-//  .mobile-nav-leave-active {
-//    transition: all 1s ease;
-//  }
-//
-//  .mobile-nav-enter {
-//    transform: translateX(-250px);
-//  }
-//
-//  .mobile-nav-enter-to {
-//    transform: translateX(0);
-//  }
-//
-//  .mobile-nav-leave-to {
-//    transform: translateX(-250px);
-//  }
-//}
-
-//@media screen and (max-width: 768px) {
-//  header nav .nav-links {
-//    justify-content: center;
-//  }
-//}
 </style>

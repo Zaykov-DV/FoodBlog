@@ -1,77 +1,100 @@
 <template>
-  <div class="home">
-    <BlogPost v-if="!user" :post="welcomeScreen"/>
-    <BlogPost :post="post" v-for="(post, index) in blogPostsFeed" :key="index"/>
-    <div class="blog-card-wrap">
-      <div class="container">
-        <h3 class="home__subtitle">View More Recent Blogs</h3>
-        <div class="blog-cards">
-          <BlogCard :post="post" v-for="(post, index) in blogPostsCards" :key="index"/>
+  <main class="home-page">
+    <div class="home-page__container">
+      <!--    пока не юзается   -->
+      <!--    <div v-if="!user" class="updates">-->
+      <!--      <WelcomeScreen />-->
+      <!--    </div>-->
+      <section class="home-page__section">
+        <BlogPost :post="post" v-for="(post, index) in blogPostsFeed" :key="index"/>
+      </section>
+      <section class="home-page__section">
+        <BlogCategories/>
+      </section>
+      <section class="home-page__section">
+        <h2 class="home-page__recent-title">
+          Try this delicious recipe <br> to make your day
+        </h2>
+        <div class="home-page__recent-blogs blog-cards">
+          <BlogRecent :post="post" v-for="(post, index) in blogPostsCards" :key="index"/>
         </div>
-      </div>
+      </section>
     </div>
-    <div v-if="!user" class="updates">
-      <div class="container">
-        <h2>Never miss a post. Register your free account today</h2>
-        <router-link class="router-button" to="#">
-          Register for FoodBlogs
-          <SvgIcon name="arrow-right-light" class="icon"/>
-        </router-link>
-      </div>
-    </div>
-  </div>
+  </main>
 </template>
 
 <script setup>
 
 import BlogPost from "../components/BlogPost";
-import BlogCard from "../components/BlogCard";
-import {ref, computed} from 'vue'
+import {computed} from 'vue'
 import {useStore} from 'vuex'
-import SvgIcon from "../components/UI/SvgIcon";
+import BlogCategories from "../components/BlogCategories";
+import BlogRecent from "../components/BlogRecent";
+// import WelcomeScreen from "../components/WelcomeScreen";
+
 const store = useStore()
 
-const welcomeScreen = ref({
-  title: "Welcome!",
-  blogPost: "Weekly blog articles with recipes. Register today to never miss a post!",
-  welcomeScreen: true,
-  photo: "welcome",
-})
-
 const blogPostsFeed = computed(() => {
-  return store.getters.blogPostsFeed;
+  return store.getters.getBlogPostsFeed;
 });
 
 const blogPostsCards = computed(() => {
-  return store.getters.blogPostsCards;
+  return store.getters.getBlogPostsCards;
 });
 
-const user = computed(() => {
-  return store.state.user
-});
+// определяем если пользователь залогинен
+// const user = computed(() => {
+//   return store.state.user
+// });
 
 </script>
 
 <style lang="scss" scoped>
 
-.home {
-  &__subtitle {
-    margin-bottom: 20px;
+.home-page {
+
+  &__container {
+    padding: 0 80px;
+  }
+
+  &__section {
+    margin-bottom: 160px;
+  }
+
+  &__recent-title {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 58px;
+    letter-spacing: -0.04em;
+    color: #000000;
+    margin-bottom: 80px;
+  }
+
+  &__recent-blogs {
+    display: grid;
+    gap: 32px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
   }
 }
 
-.updates {
-  .container {
-    padding: 100px 25px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+@media (max-width: 1281px) {
+  .home-page__recent-blogs {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 
-    @media (min-width: 800px) {
-      padding: 125px 25px;
-      flex-direction: row;
+@media (max-width: 1025px) {
+  .home-page {
+    &__container {
+      padding: 0 60px;
+    }
+
+    &__section {
+      margin-bottom: 100px;
     }
   }
 }
-
 </style>
