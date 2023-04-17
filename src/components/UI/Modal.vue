@@ -11,6 +11,7 @@
         <!-- body -->
         <div class="modal__body">
           <p> {{ modalMessage }} </p>
+          <slot />
           <button @click="closeModal">Закрыть</button>
         </div>
       </div>

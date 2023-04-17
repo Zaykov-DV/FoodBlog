@@ -52,7 +52,7 @@ import "firebase/storage";
 import db from "../firebase/firebaseInit";
 import {QuillEditor} from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
-import BlotFormatter from "quill-blot-formatter";
+import BlotFormatter from 'quill-blot-formatter/dist/BlotFormatter';
 
 import {ref, computed, onMounted} from 'vue'
 import {useStore} from 'vuex'

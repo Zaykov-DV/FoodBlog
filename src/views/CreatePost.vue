@@ -1,48 +1,57 @@
 <template>
   <div class="create-post">
-    <BlogCoverPreview v-show="store.state.blogPhotoPreview"/>
-    <Loading v-show="loading"/>
-    <div class="container">
-      <div :class="{ invisible: !error }" class="err-message">
-        <p><span>Error:</span>{{ errorMsg }}</p>
-      </div>
-      <div class="blog-info">
-        <input type="text" placeholder="Enter Blog Title" v-model="blogTitle"/>
-        <div class="upload-file">
-          <label for="blog-photo">Upload Cover Photo</label>
-          <input type="file" ref="blogPhoto" id="blog-photo" @change="fileChange" accept=".png, .jpg, ,jpeg"/>
-          <button @click="openPreview" class="preview"
-                  :class="{ 'button-inactive': !store.state.blogPhotoFileURL }">
-            Preview Photo
-          </button>
-          <span>File Chosen: {{ store.state.blogPhotoName }}</span>
+    <div class="create-post__container">
+      <BlogCoverPreview v-show="store.state.blogPhotoPreview"/>
+      <Loading v-show="loading"/>
+      <div class="create-post__content">
+        <div v-if="error" class="create-post__error">
+          <p>Error: {{ errorMsg }}</p>
+        </div>
+        <div class="create-post__form">
+          <div class="create-post__form-header">
+            <input class="create-post__input" type="text" placeholder="Введите заголовок" v-model="blogTitle"/>
+            <div class="create-post__uploader-wrapper">
+              <label class="create-post__uploader-label" for="blog-photo">Upload Cover Photo</label>
+              <input class="create-post__uploader-input" type="file" ref="blogPhoto" id="blog-photo"
+                     @change="fileChange" accept=".png, .jpg, ,jpeg"/>
+              <button @click="openPreview" class="create-post__btn-preview"
+                      :class="{ 'button-inactive': !store.state.blogPhotoFileURL }">
+                Preview Photo
+              </button>
+              <span>File Chosen: {{ store.state.blogPhotoName }}</span>
+            </div>
+          </div>
+          <div class="create-post__description">
+            <textarea class="create-post__textarea" name="descr" placeholder="Введите описание"
+                      v-model="blogDescr"></textarea>
+          </div>
+          <div class="create-post__editor">
+            <QuillEditor v-model:content="blogHTML" contentType="html" :modules="editorSettings"
+                         placeholder="Write your post here..." toolbar="full"
+                         theme="snow"/>
+          </div>
+          <div class="create-post__select-wrapper">
+            <span>Выберите категорию</span>
+            <select class="create-post__select" v-model="selectedCategory">
+              <option disabled value="0">Все категории</option>
+              <option v-for="category in store.state.categories"
+                      :key="category.id"
+                      :value="category.id"
+                      :selected="category.category">
+                {{ category.category }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="create-post__actions">
+          <button @click="handlePreview">Post Preview</button>
+          <button @click="uploadBlog">Publish Blog</button>
         </div>
       </div>
-      <div class="editor">
-        <QuillEditor v-model:content="blogHTML" contentType="html" :modules="editorSettings" toolbar="full"
-                     theme="snow"/>
-      </div>
-
-      <div class="blog-actions">
-        <button @click="uploadBlog">Publish Blog</button>
-        <router-link class="router-button" :to="{ name: 'BlogPreview' }">Post Preview</router-link>
-
-        <select v-model="selectedCategory">
-          <option disabled value="0">Все категории</option>
-          <option v-for="category in store.state.categories"
-                  :key="category.id"
-                  :value="category.id"
-                  :selected="category.category"
-          >{{ category.category }}
-          </option>
-        </select>
-
-        <span>Выбрано {{ selectedCategory }} </span>
-
-        <span class="error">выберите категорию!</span>
-
-      </div>
     </div>
+    <Modal v-if="modalActive" v-on:close-modal="closeModal">
+      <BlogPreview/>
+    </Modal>
   </div>
 </template>
 
@@ -51,23 +60,28 @@
 import BlogCoverPreview from "../components/BlogCoverPreview";
 import Loading from "../components/UI/Loading";
 import firebase from "firebase/compat/app";
-import "firebase/storage";
+import "firebase/compat/storage";
 import db from "../firebase/firebaseInit";
 import {QuillEditor} from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import BlotFormatter from "quill-blot-formatter";
 
-import {ref, computed} from 'vue'
-import { useStore } from 'vuex'
+import {ref, computed, onMounted} from 'vue'
+import {useStore} from 'vuex'
 import {useRouter} from 'vue-router'
+import Modal from "../components/UI/Modal";
+import BlogPreview from "./BlogPreview";
+
 const store = useStore()
 const router = useRouter()
-
+const modalActive = ref(false)
+const closeModal = () => {
+  modalActive.value = !modalActive.value;
+}
 const file = ref(null)
 const error = ref(null)
 const errorMsg = ref(null)
 const loading = ref(null)
-const selectedCategory = ref(0)
 const editorSettings = ref({
   name: 'blotFormatter',
   module: BlotFormatter,
@@ -76,6 +90,9 @@ const editorSettings = ref({
 
 const blogPhoto = ref(null)
 
+const handlePreview = () => {
+  modalActive.value = !modalActive.value
+}
 // methods
 const fileChange = () => {
   file.value = blogPhoto.value.files[0];
@@ -94,6 +111,7 @@ const clearPost = () => {
 
 const uploadBlog = () => {
   if (blogTitle.value.length !== 0 && blogHTML.value.length !== 0 && selectedCategory.value !== 0) {
+    console.log(file.value)
     if (file.value) {
       loading.value = true;
       const storageRef = firebase.storage().ref();
@@ -101,7 +119,7 @@ const uploadBlog = () => {
       docRef.put(file.value).on(
           "state_changed",
           (snapshot) => {
-            console.log(snapshot);
+            console.log('snapshot ' + snapshot);
           },
           (err) => {
             console.log(err);
@@ -118,6 +136,7 @@ const uploadBlog = () => {
               blogCoverPhoto: downloadURL,
               blogCoverPhotoName: blogCoverPhotoName.value,
               blogTitle: blogTitle.value,
+              blogDescr: blogDescr.value,
               profileId: profileId.value,
               date: timestamp,
               categoryID: selectedCategory.value
@@ -147,13 +166,23 @@ const uploadBlog = () => {
 
 // computed
 
-const profileId = computed(() =>{
+const profileId = computed(() => {
   return store.state.profileId
 })
 
-const blogCoverPhotoName = computed(() =>{
+const blogCoverPhotoName = computed(() => {
   return store.state.blogPhotoName
 })
+
+const selectedCategory = computed(
+    {
+      get() {
+        return store.state.selectedCategory;
+      },
+      set(payload) {
+        store.commit("updateBlogCategory", payload);
+      }
+    })
 
 const blogTitle = computed(
     {
@@ -162,6 +191,17 @@ const blogTitle = computed(
       },
       set(payload) {
         store.commit("updateBlogTitle", payload);
+      },
+    }
+)
+
+const blogDescr = computed(
+    {
+      get() {
+        return store.state.blogDescr;
+      },
+      set(payload) {
+        store.commit("updateBlogDescr", payload);
       },
     }
 )
@@ -176,35 +216,45 @@ const blogHTML = computed(
       },
     }
 )
+
+
+onMounted(() => {
+  clearPost()
+})
 </script>
 
 <style lang="scss">
 
-$glass: rgba(255, 255, 255, 0.2);
-$glass-icon: rgba(255, 255, 255, 0.3);
-$gradient: linear-gradient(35deg, red, purple);
-$option: #320a28;
-
-/* <select> styles */
-
-
 .create-post {
-  position: relative;
-  height: 100%;
 
-  button {
-    margin-top: 0;
+  &__container {
+    padding: 40px 80px 80px;
   }
 
-  .router-button {
-    text-decoration: none;
-    color: #fff;
+  &__form {
+    display: flex;
+    flex-direction: column;
   }
 
-  label,
-  button,
-  .router-button {
-    transition: 0.5s ease-in-out all;
+  &__form-header {
+    display: flex;
+    align-items: center;
+  }
+
+  &__input {
+    min-width: 300px;
+    transition: all .5s ease-in-out;
+    padding: 10px 4px;
+    border: none;
+    border-bottom: 1px solid #303030;
+  }
+
+  &__uploader-wrapper {
+    margin-left: 20px;
+  }
+
+  &__uploader-label {
+    transition: all .5s ease-in-out;
     align-self: center;
     font-size: 14px;
     cursor: pointer;
@@ -213,115 +263,57 @@ $option: #320a28;
     color: #fff;
     background-color: #303030;
     text-decoration: none;
-
-    &:hover {
-      background-color: rgba(48, 48, 48, 0.7);
-    }
   }
 
-  .container {
-    position: relative;
-    height: 100%;
-    padding: 10px 25px 60px;
+  &__uploader-input {
+    display: none;
   }
 
-  // error styling
-  .invisible {
-    opacity: 0 !important;
+  &__btn-preview {
+    margin: 0 20px;
   }
 
-  .err-message {
+  &__textarea {
     width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    color: #fff;
-    margin-bottom: 10px;
-    background-color: #303030;
-    opacity: 1;
-    transition: 0.5s ease all;
-
-    p {
-      font-size: 14px;
-    }
-
-    span {
-      font-weight: 600;
-    }
+    height: 150px;
+    line-height: 150%;
+    resize: vertical;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 10px 15px;
   }
 
-  .blog-info {
-    display: flex;
-    margin-bottom: 32px;
-
-    input:nth-child(1) {
-      min-width: 300px;
-    }
-
-    input {
-      transition: 0.5s ease-in-out all;
-      padding: 10px 4px;
-      border: none;
-      border-bottom: 1px solid #303030;
-
-      &:focus {
-        outline: none;
-        box-shadow: 0 1px 0 0 #303030;
-      }
-    }
-
-    .upload-file {
-      flex: 1;
-      margin-left: 16px;
-      position: relative;
-      display: flex;
-
-      input {
-        display: none;
-      }
-
-      .preview {
-        margin-left: 16px;
-        text-transform: initial;
-      }
-
-      span {
-        font-size: 12px;
-        margin-left: 16px;
-        align-self: center;
-      }
-    }
+  &__description {
+    margin: 20px 0;
   }
 
-  .editor {
-    height: 60vh;
+  &__editor {
+    height: 40vh;
     display: flex;
     flex-direction: column;
-
-    .quillWrapper {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-
-    .ql-container {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      overflow: scroll;
-    }
-
-    .ql-editor {
-      padding: 20px 16px 30px;
-    }
+    margin-bottom: 20px;
   }
 
-  .blog-actions {
-    margin-top: 32px;
+  &__select-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 40px;
+    width: 20%;
+  }
 
-    button {
-      margin-right: 16px;
+  &__select {
+
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    // @TODO поправить роутер-линки
+    a {
+      margin: 0;
     }
   }
 }
+
 </style>

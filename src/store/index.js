@@ -9,8 +9,9 @@ const store = createStore({
         blogPosts: [],
         filterBlogPosts: [],
         postLoaded: null,
-        blogHTML: 'Write your blog title here...',
+        blogHTML: '',
         blogTitle: '',
+        blogDescr: '',
         blogPhotoName: '',
         blogPhotoFileURL: null,
         blogPhotoPreview: null,
@@ -65,9 +66,14 @@ const store = createStore({
         updateBlogTitle(state, payload) {
             state.blogTitle = payload
         },
+        updateBlogDescr(state, payload) {
+            state.blogDescr = payload
+        },
+        updateBlogCategory(state, payload) {
+            state.selectedCategory = payload
+        },
         fileNameChange(state, payload) {
             state.blogPhotoName = payload;
-            console.log(this.blogPhotoName)
         },
         createFileURL(state, payload) {
             state.blogPhotoFileURL = payload
@@ -92,6 +98,8 @@ const store = createStore({
         },
         setBlogState(state, payload) {
             state.blogTitle = payload.blogTitle;
+            state.blogDescr = payload.blogDescr;
+            state.selectedCategory = payload.selectedCategory;
             state.blogHTML = payload.blogHTML;
             state.blogPhotoFileURL = payload.blogCoverPhoto;
             state.blogPhotoName = payload.blogCoverPhotoName;
@@ -100,10 +108,11 @@ const store = createStore({
         // очистить стейт
         clearBlogState(state) {
             state.blogTitle = '';
-            state.blogHTML = 'Write your blog title here...';
+            state.blogDescr = '';
+            state.selectedCategory = 0;
+            state.blogHTML = '';
             state.blogPhotoFileURL = null;
             state.blogPhotoName = '';
-            state.selectedCategory = null
         },
         updateUser(state, payload) {
             state.user = payload
@@ -147,6 +156,7 @@ const store = createStore({
                         blogHTML: doc.data().blogHTML,
                         blogCoverPhoto: doc.data().blogCoverPhoto,
                         blogTitle: doc.data().blogTitle,
+                        blogDescr: doc.data().blogDescr,
                         blogDate: doc.data().date,
                         blogCoverPhotoName: doc.data().blogCoverPhotoName,
                         categoryID: doc.data().categoryID
