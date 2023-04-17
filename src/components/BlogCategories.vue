@@ -136,10 +136,11 @@ const blogCategories = computed(() => {
   .blog-categories__items {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(1, 1fr);
+    margin: 0 auto;
   }
 }
 
-@media (max-width: 1439px) {
+@media (min-width: 1439px) {
   .blog-categories__items {
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(1, 1fr);

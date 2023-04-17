@@ -23,6 +23,7 @@ const store = createStore({
         profileId: null,
         profileInitials: null,
         categories: [
+            { id: 0, category: 'Все категории', image: 'breakfast'},
             { id: 1, category: 'Выпечка', image: 'breakfast' },
             { id: 2, category: 'Горячее', image: 'breakfast' },
             { id: 3, category: 'Тортики', image: 'breakfast' },
@@ -31,7 +32,7 @@ const store = createStore({
             { id: 6, category: 'Десерты', image: 'tort' },
             { id: 7, category: 'Ланч', image: 'lunch' },
             { id: 8, category: 'Шоколад', image: 'chocolate' },
-            { id: 8, category: 'Мясо', image: 'meat' },
+            { id: 9, category: 'Мясо', image: 'meat' },
         ],
         selectedCategory: 0,
     },
@@ -49,11 +50,11 @@ const store = createStore({
         },
         getBlogCategories(state) {
             if (document.documentElement.clientWidth <= 1280) {
-                return state.categories.slice(3, 7)
+                return state.categories.slice(4, 8)
             } else if (document.documentElement.clientWidth > 1280 && document.documentElement.clientWidth < 1440) {
-                return state.categories.slice(3, 8)
+                return state.categories.slice(4, 9)
             } else {
-                return state.categories.slice(3)
+                return state.categories.slice(4)
             }
         }
     },
