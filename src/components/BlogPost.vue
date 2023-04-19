@@ -4,13 +4,11 @@
     <div class="post__container">
       <div class="post__block">
         <h2 class="post__title">{{ post.blogTitle }}</h2>
-        <p class="post__descr">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, adipisci
-          alias autem distinctio nesciunt non perferendis quis quisquam velit voluptates!</p>
+        <p class="post__descr">{{post.blogDescr}}</p>
         <div class="post__labels">
-          <div class="post__label">
+          <div class="post__label" v-if="post.blogCookingTime">
             <SvgIcon name="timer"/>
-            <!-- @TODO добавить время готовки  -->
-            <span>30 minutes</span>
+            <span>{{post.blogCookingTime}} минут</span>
           </div>
           <div class="post__label">
             <SvgIcon name="category"/>

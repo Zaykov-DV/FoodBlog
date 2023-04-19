@@ -17,10 +17,9 @@
           <SvgIcon class="view-blog__icon" name="category"/>
           <span>{{ postCategory }}</span>
         </div>
-        <div class="view-blog__item">
+        <div class="view-blog__item" v-if="currentBlog[0].blogCookingTime">
           <SvgIcon class="view-blog__icon" name="timer"/>
-          <!-- @TODO добавить время готовки  -->
-          <span>30 minutes</span>
+          <span>{{currentBlog[0].blogCookingTime}} минут</span>
         </div>
       </div>
       <p class="view-blog__descr">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias amet animi dolor dolore dolores facere fugit harum illo incidunt libero maxime natus, nemo, nihil quis sapiente sunt temporibus ullam vel velit voluptatem? Consequuntur iure quod sequi voluptate voluptates? Ex, molestiae.</p>

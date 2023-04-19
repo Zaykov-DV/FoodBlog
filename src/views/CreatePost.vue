@@ -1,7 +1,9 @@
 <template>
   <div class="create-post">
     <div class="create-post__container">
-      <BlogCoverPreview v-show="store.state.blogPhotoPreview"/>
+      <Modal v-show="store.state.blogPhotoPreview" modalSize="xl" v-on:close-modal="closeModal">
+        <img :src="store.state.blogPhotoFileURL" :alt="store.state.blogPhotoFileURL" />
+      </Modal>
       <Loading v-show="loading"/>
       <div class="create-post__content">
         <div v-if="error" class="create-post__error">
@@ -15,6 +17,7 @@
               <input class="create-post__uploader-input" type="file" ref="blogPhoto" id="blog-photo"
                      @change="fileChange" accept=".png, .jpg, ,jpeg"/>
               <button @click="openPreview" class="create-post__btn-preview"
+                      :disabled="!store.state.blogPhotoFileURL"
                       :class="{ 'button-inactive': !store.state.blogPhotoFileURL }">
                 Preview Photo
               </button>
@@ -30,34 +33,39 @@
                          placeholder="Write your post here..." toolbar="full"
                          theme="snow"/>
           </div>
-          <div class="create-post__select-wrapper">
-            <span>Выберите категорию</span>
-            <select class="create-post__select" v-model="selectedCategory">
-              <option disabled value="0">Все категории</option>
-              <option v-for="category in store.state.categories"
-                      :key="category.id"
-                      :value="category.id"
-                      :selected="category.category">
-                {{ category.category }}
-              </option>
-            </select>
+          <div>
+            <div class="create-post__select-wrapper">
+              <span>Выберите категорию</span>
+              <select class="create-post__select" v-model="selectedCategory">
+                <option disabled value="0">Все категории</option>
+                <option v-for="category in store.state.categories"
+                        :key="category.id"
+                        :value="category.id"
+                        :selected="category.category">
+                  {{ category.category }}
+                </option>
+              </select>
+            </div>
+
+            <div>
+              <input class="create-post__input" type="number" placeholder="Введите время готовки" v-model="blogCookingTime"/>
+            </div>
           </div>
         </div>
         <div class="create-post__actions">
-          <button @click="handlePreview">Post Preview</button>
-          <button @click="uploadBlog">Publish Blog</button>
+          <button @click="handlePreview" :class="{ 'button-inactive': !check2 }"  :disabled="!check2">Post Preview</button>
+          <button @click="uploadBlog" :class="{ 'button-inactive': !check2 }" :disabled="!check2">Publish Blog</button>
         </div>
       </div>
     </div>
-    <Modal v-if="modalActive" v-on:close-modal="closeModal">
-      <BlogPreview/>
-    </Modal>
+<!--    <Modal v-if="modalActive" v-on:close-modal="closeModal">-->
+<!--      <BlogPreview/>-->
+<!--    </Modal>-->
   </div>
 </template>
 
 <script setup>
 
-import BlogCoverPreview from "../components/BlogCoverPreview";
 import Loading from "../components/UI/Loading";
 import firebase from "firebase/compat/app";
 import "firebase/compat/storage";
@@ -70,7 +78,7 @@ import {ref, computed, onMounted} from 'vue'
 import {useStore} from 'vuex'
 import {useRouter} from 'vue-router'
 import Modal from "../components/UI/Modal";
-import BlogPreview from "./BlogPreview";
+// import BlogPreview from "./BlogPreview";
 
 const store = useStore()
 const router = useRouter()
@@ -109,8 +117,12 @@ const clearPost = () => {
   store.commit('clearBlogState');
 }
 
+const check2 = computed(() => {
+  return blogTitle.value.length !== 0 && blogHTML.value.length !== 0 && selectedCategory.value !== 0 && file.value !== null && blogCookingTime.value
+})
+
 const uploadBlog = () => {
-  if (blogTitle.value.length !== 0 && blogHTML.value.length !== 0 && selectedCategory.value !== 0) {
+  if (check2.value) {
     console.log(file.value)
     if (file.value) {
       loading.value = true;
@@ -137,6 +149,7 @@ const uploadBlog = () => {
               blogCoverPhotoName: blogCoverPhotoName.value,
               blogTitle: blogTitle.value,
               blogDescr: blogDescr.value,
+              blogCookingTime: blogCookingTime.value,
               profileId: profileId.value,
               date: timestamp,
               categoryID: selectedCategory.value
@@ -217,6 +230,16 @@ const blogHTML = computed(
     }
 )
 
+const blogCookingTime = computed(
+    {
+      get() {
+        return store.state.blogCookingTime;
+      },
+      set(payload) {
+        store.commit("updateBlogCookingTime", payload);
+      },
+    }
+)
 
 onMounted(() => {
   clearPost()

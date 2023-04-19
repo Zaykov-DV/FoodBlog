@@ -69,6 +69,9 @@ const store = createStore({
         updateBlogDescr(state, payload) {
             state.blogDescr = payload
         },
+        updateBlogCookingTime(state, payload) {
+            state.blogCookingTime = payload
+        },
         updateBlogCategory(state, payload) {
             state.selectedCategory = payload
         },
@@ -99,6 +102,7 @@ const store = createStore({
         setBlogState(state, payload) {
             state.blogTitle = payload.blogTitle;
             state.blogDescr = payload.blogDescr;
+            state.blogCookingTime = payload.blogCookingTime;
             state.selectedCategory = payload.selectedCategory;
             state.blogHTML = payload.blogHTML;
             state.blogPhotoFileURL = payload.blogCoverPhoto;
@@ -109,6 +113,7 @@ const store = createStore({
         clearBlogState(state) {
             state.blogTitle = '';
             state.blogDescr = '';
+            state.blogCookingTime = 0;
             state.selectedCategory = 0;
             state.blogHTML = '';
             state.blogPhotoFileURL = null;
@@ -157,6 +162,7 @@ const store = createStore({
                         blogCoverPhoto: doc.data().blogCoverPhoto,
                         blogTitle: doc.data().blogTitle,
                         blogDescr: doc.data().blogDescr,
+                        blogCookingTime: doc.data().blogCookingTime,
                         blogDate: doc.data().date,
                         blogCoverPhotoName: doc.data().blogCoverPhotoName,
                         categoryID: doc.data().categoryID

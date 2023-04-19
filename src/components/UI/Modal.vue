@@ -1,13 +1,12 @@
 <template>
   <transition name="modal">
-    <div class="modal__wrapper" @click="$emit('close-modal')">
+    <div :class="`modal__wrapper modal__wrapper_${modalSize}`" @click="emit('close-modal')">
       <div class="modal__content" @click.stop="">
         <!-- header -->
         <div class="modal__header">
-          <h4 class="modal__title"> Ошибка! </h4>
-          <span class="modal__button-close" @click="$emit('close-modal')">×</span>
+          <h4 class="modal__title"> {{ modalTitle }} </h4>
+          <span class="modal__button-close" @click="emit('close-modal')">×</span>
         </div>
-
         <!-- body -->
         <div class="modal__body">
           <p> {{ modalMessage }} </p>
@@ -22,7 +21,21 @@
 <script setup>
 import {defineProps, defineEmits, onMounted} from "vue";
 
-defineProps(["modalMessage"])
+defineProps({
+  modalSize: {
+    type: String,
+    default: 'm'
+  },
+  modalTitle: {
+    type: String,
+    default: ''
+  },
+  modalMessage: {
+    type: String,
+    default: ''
+  }}
+)
+
 const emit = defineEmits(['close-modal'])
 
 const closeModal = () => {

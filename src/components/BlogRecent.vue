@@ -4,9 +4,9 @@
       <div class="blog-recent__item-image" :style="{ backgroundImage: `url('` + post.blogCoverPhoto + `')` }"></div>
       <h4 class="blog-recent__item-title">{{ post.blogTitle }}</h4>
       <div class="blog-recent__labels">
-        <div class="blog-recent__label">
+        <div class="blog-recent__label" v-if="post.blogCookingTime">
           <SvgIcon class="blog-recent__label-icon" name="timer"/>
-          <span class="blog-recent__label-text">30 minutes</span>
+          <span class="blog-recent__label-text">{{post.blogCookingTime}} минут</span>
         </div>
         <div class="blog-recent__label">
           <SvgIcon class="blog-recent__label-icon" name="category"/>
