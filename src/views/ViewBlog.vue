@@ -7,8 +7,8 @@
           <div class="view-blog__author">
             <div class="view-blog__author-avatar"></div>
             <div class="view-blog__author-info">
-              <h4 class="view-blog__author-name">Best Home Chief</h4>
-              <p class="view-blog__date">Posted on:
+              <h4 class="view-blog__author-name">Лучший шеф-повар</h4>
+              <p class="view-blog__date">Опубликовано:
                 {{ new Date(currentBlog[0].blogDate).toLocaleString("ru-RU", { year: 'numeric', month: 'long', day: 'numeric'}) }}</p>
             </div>
           </div>
@@ -42,7 +42,7 @@ const currentBlog = ref(null);
 
 const blogCategory = () => {
   for (let category of store.state.categories) {
-    if (currentBlog.value[0].categoryID === category.id)
+    if (currentBlog.value[0].selectedCategory === category.id)
       return category.category
   }
 }
@@ -52,6 +52,8 @@ onMounted(async () => {
     return post.blogID === route.params.blogid;
   });
 })
+
+
 </script>
 
 <style lang="scss">

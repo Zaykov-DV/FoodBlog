@@ -12,7 +12,7 @@
           </div>
           <div class="post__label">
             <SvgIcon name="category"/>
-            <span>{{ postCategory }}</span>
+            <span>{{ blogCategory() }}</span>
           </div>
         </div>
         <div class="post__footer">
@@ -37,25 +37,20 @@
 </template>
 
 <script setup>
-import {ref, defineProps, onMounted} from "vue";
+import {defineProps} from "vue";
 import {useStore} from "vuex";
 import SvgIcon from "./UI/SvgIcon";
 
 const store = useStore()
 const props = defineProps(['post'])
 
-const postCategory = ref('')
 
 const blogCategory = () => {
   for (let category of store.state.categories) {
-    if (props.post.categoryID === category.id)
-      return postCategory.value = category.category
+    if (props.post.selectedCategory === category.id)
+      return category.category
   }
 }
-
-onMounted(() => {
-  blogCategory()
-})
 
 </script>
 

@@ -35,7 +35,7 @@ const store = createStore({
             { id: 8, category: 'Шоколад', image: 'chocolate' },
             { id: 9, category: 'Мясо', image: 'meat' },
         ],
-        selectedCategory: 0,
+        selectedCategory: null,
     },
     getters: {
         getBlogPostsFeed(state) {
@@ -107,7 +107,6 @@ const store = createStore({
             state.blogHTML = payload.blogHTML;
             state.blogPhotoFileURL = payload.blogCoverPhoto;
             state.blogPhotoName = payload.blogCoverPhotoName;
-            state.selectedCategory = payload.selectedCategory
         },
         // очистить стейт
         clearBlogState(state) {
@@ -165,7 +164,7 @@ const store = createStore({
                         blogCookingTime: doc.data().blogCookingTime,
                         blogDate: doc.data().date,
                         blogCoverPhotoName: doc.data().blogCoverPhotoName,
-                        categoryID: doc.data().categoryID
+                        selectedCategory: doc.data().categoryID
                     };
                     state.blogPosts.push(data);
                 }

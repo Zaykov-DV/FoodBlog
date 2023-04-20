@@ -151,6 +151,7 @@ onMounted(() => {
     position: relative;
     display: flex;
     align-items: center;
+    z-index: 2;
   }
 
   &__profile {

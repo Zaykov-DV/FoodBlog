@@ -1,11 +1,11 @@
 <template class="blogs">
   <div class="blogs__container">
     <div v-if="profileUser" class="blogs__edit">
-      <span>Редактировать пост</span>
+      <span class="blogs__edit-label">редактирование постов</span>
       <input type="checkbox" v-model="editPost">
     </div>
     <div class="blogs__filter">
-        <h4 class="blogs__filter-title">Filter Recipes</h4>
+        <h4 class="blogs__filter-title">Фильтр рецептов</h4>
         <div v-for="category in store.state.categories" :key="category.id">
           <div class="blogs__filter-text" :class="{ 'is-active' : categoryActive === category.id}" @click="filterProducts(category.id)">{{category.category}}</div>
         </div>
@@ -111,6 +111,18 @@ onBeforeUnmount(() => {
     position: absolute;
     right: 80px;
     top: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  &__edit-label {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #000000;
+    margin-right: 15px;
   }
 
   &__filter {

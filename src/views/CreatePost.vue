@@ -2,26 +2,23 @@
   <div class="create-post">
     <div class="create-post__container">
       <Modal v-if="store.state.blogPhotoPreview" modalSize="l'" v-on:close-modal="closeBlogPhotoPreviewModal">
-        <img :src="store.state.blogPhotoFileURL" :alt="store.state.blogPhotoFileURL" />
+        <img :src="store.state.blogPhotoFileURL" :alt="store.state.blogPhotoFileURL"/>
       </Modal>
-      <Loading v-show="loading"/>
+      <Loading v-if="loading"/>
       <div class="create-post__content">
-        <div v-if="error" class="create-post__error">
-          <p>Error: {{ errorMsg }}</p>
-        </div>
         <div class="create-post__form">
           <div class="create-post__form-header">
             <input class="create-post__input" type="text" placeholder="Введите заголовок" v-model="blogTitle"/>
             <div class="create-post__uploader-wrapper">
-              <label class="create-post__uploader-label" for="blog-photo">Upload Cover Photo</label>
+              <label class="create-post__uploader-label" for="blog-photo">Загрузить обложку</label>
               <input class="create-post__uploader-input" type="file" ref="blogPhoto" id="blog-photo"
                      @change="fileChange" accept=".png, .jpg, ,jpeg"/>
               <button @click="openPreview" class="create-post__btn-preview"
                       :disabled="!store.state.blogPhotoFileURL"
                       :class="{ 'button-inactive': !store.state.blogPhotoFileURL }">
-                Preview Photo
+                Посмотреть обложку
               </button>
-              <span>File Chosen: {{ store.state.blogPhotoName }}</span>
+              <span>Выбранный файл: {{ store.state.blogPhotoName }}</span>
             </div>
           </div>
           <div class="create-post__description">
@@ -29,8 +26,8 @@
                       v-model="blogDescr"></textarea>
           </div>
           <div class="create-post__editor">
-            <QuillEditor v-model:content="blogHTML" contentType="html" :modules="editorSettings"
-                         placeholder="Write your post here..." toolbar="full"
+            <QuillEditor v-model:content="blogHTML" contentType="html" :modules="editorSettings" ref="editor"
+                         placeholder="Напишите рецепт..." toolbar="full"
                          theme="snow"/>
           </div>
           <div>
@@ -48,17 +45,21 @@
             </div>
 
             <div>
-              <input class="create-post__input" type="number" placeholder="Введите время готовки" v-model="blogCookingTime"/>
+              <input class="create-post__input" type="number" placeholder="Введите время готовки"
+                     v-model="blogCookingTime"/>
             </div>
           </div>
         </div>
         <div class="create-post__actions">
-          <button @click="handlePreview" :class="{ 'button-inactive': !checkTerms }"  :disabled="!checkTerms">Post Preview</button>
-          <button @click="uploadBlog" :class="{ 'button-inactive': !checkTerms }" :disabled="!checkTerms">Publish Blog</button>
+          <button @click="handlePreview" :class="{ 'button-inactive': !checkTerms }" :disabled="!checkTerms">Посмотреть
+            превью
+          </button>
+          <button @click="uploadBlog" :class="{ 'button-inactive': !checkTerms }" :disabled="!checkTerms">Опубликовать
+          </button>
         </div>
       </div>
     </div>
-    <Modal v-if="modalActive" v-on:close-modal="handlePreview" :modal-title="'Превью поста'" :modal-size="'xl'" >
+    <Modal v-if="modalActive" v-on:close-modal="handlePreview" :modal-title="'Превью поста'" :modal-size="'xl'">
       <BlogPreview/>
     </Modal>
   </div>
@@ -83,6 +84,7 @@ import BlogPreview from "./BlogPreview";
 const store = useStore()
 const router = useRouter()
 
+const editor = ref('')
 
 const modalActive = ref(false)
 
@@ -92,7 +94,6 @@ const closeBlogPhotoPreviewModal = () => {
 
 const file = ref(null)
 const error = ref(null)
-const errorMsg = ref(null)
 const loading = ref(null)
 const editorSettings = ref({
   name: 'blotFormatter',
@@ -168,14 +169,12 @@ const uploadBlog = () => {
       return;
     }
     error.value = true;
-    errorMsg.value = "Please ensure you uploaded a cover photo!";
     setTimeout(() => {
       error.value = false;
     }, 5000);
     return;
   }
   error.value = true;
-  errorMsg.value = "Please ensure fields has been filled!";
   setTimeout(() => {
     error.value = false;
   }, 5000);
@@ -200,7 +199,8 @@ const selectedCategory = computed(
       set(payload) {
         store.commit("updateBlogCategory", payload);
       }
-    })
+    }
+)
 
 const blogTitle = computed(
     {
@@ -248,6 +248,7 @@ const blogCookingTime = computed(
 
 onMounted(() => {
   clearPost()
+  editor.value.setHTML('')
 })
 </script>
 

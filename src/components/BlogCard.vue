@@ -5,7 +5,7 @@
       <div class="blog-card__content">
         <div class="blog-card__info">
           <h4 class="blog-card__title">{{post.blogTitle}}</h4>
-          <p class="blog-card__descr">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda, debitis dignissimos in necessitatibus officia perspiciatis.</p>
+          <p class="blog-card__descr">{{post.blogDescr}}</p>
         </div>
         <div class="blog-card__footer">
             <div class="blog-card__author">

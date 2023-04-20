@@ -13,7 +13,7 @@
       </section>
       <section class="home-page__section">
         <h2 class="home-page__recent-title">
-          Try this delicious recipe <br> to make your day
+          Попробуй приготовить по этим рецептам <br> и день станет лучше!
         </h2>
         <div class="home-page__recent-blogs blog-cards">
           <BlogRecent :post="post" v-for="(post, index) in blogPostsCards" :key="index"/>

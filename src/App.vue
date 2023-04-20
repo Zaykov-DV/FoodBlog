@@ -1,7 +1,9 @@
 <template>
   <div class="app" v-if="store.state.postLoaded">
     <Navigation v-if="!navigation.value"/>
-    <router-view/>
+    <main>
+      <router-view/>
+    </main>
     <Footer v-if="!navigation.value"/>
   </div>
 </template>
@@ -16,7 +18,6 @@ import { useRoute } from "vue-router";
 import { useStore } from 'vuex'
 
 import {getAuth} from 'firebase/auth'
-
 
 const route = useRoute()
 const store = useStore()
@@ -44,3 +45,18 @@ onMounted(async () => {
 })
 
 </script>
+
+<style>
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+main {
+  flex: 1;
+}
+</style>
