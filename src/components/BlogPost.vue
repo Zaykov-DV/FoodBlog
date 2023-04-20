@@ -20,7 +20,7 @@
             <div class="post__author-avatar"></div>
             <div class="post__author-info">
               <h4 class="post__author-name">Best Home Chief</h4>
-              <p>{{ new Date(post.blogDate).toLocaleString("en-us", {dateStyle: "long"}) }}</p>
+              <p>{{ new Date(post.blogDate).toLocaleString("ru-RU", { year: 'numeric', month: 'long', day: 'numeric'}) }}</p>
             </div>
           </div>
           <router-link class="post__link" :to="{name: 'ViewBlog', params: { blogid: post.blogID }}">

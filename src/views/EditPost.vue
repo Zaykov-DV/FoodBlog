@@ -45,7 +45,7 @@
 
 <script setup>
 
-import BlogCoverPreview from "../components/BlogCoverPreview";
+// import BlogCoverPreview from "../components/BlogCoverPreview";
 import Loading from "../components/UI/Loading";
 import firebase from "firebase/compat/app";
 import "firebase/storage";

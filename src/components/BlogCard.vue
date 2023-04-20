@@ -12,7 +12,7 @@
               <div class="blog-card__author-avatar"></div>
               <h4 class="blog-card__author-name">Best Home Chief</h4>
             </div>
-            <h6 class="blog-card__date">{{ new Date(post.blogDate).toLocaleString('en-GB', { year: 'numeric', month: 'long', day: 'numeric'}) }}</h6>
+            <h6 class="blog-card__date">{{ new Date(post.blogDate).toLocaleString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric'}) }}</h6>
           <div class="blog-card__edit-post" v-if="editPost">
             <div @click.prevent="editBlog" class="blog-card__icon">
               <SvgIcon name="edit-regular"/>

@@ -9,20 +9,20 @@
             <div class="view-blog__author-info">
               <h4 class="view-blog__author-name">Best Home Chief</h4>
               <p class="view-blog__date">Posted on:
-                {{ new Date(currentBlog[0].blogDate).toLocaleString("en-us", {dateStyle: "long"}) }}</p>
+                {{ new Date(currentBlog[0].blogDate).toLocaleString("ru-RU", { year: 'numeric', month: 'long', day: 'numeric'}) }}</p>
             </div>
           </div>
         </div>
         <div class="view-blog__item">
           <SvgIcon class="view-blog__icon" name="category"/>
-          <span>{{ postCategory }}</span>
+          <span>{{ blogCategory() }}</span>
         </div>
         <div class="view-blog__item" v-if="currentBlog[0].blogCookingTime">
           <SvgIcon class="view-blog__icon" name="timer"/>
           <span>{{currentBlog[0].blogCookingTime}} минут</span>
         </div>
       </div>
-      <p class="view-blog__descr">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias amet animi dolor dolore dolores facere fugit harum illo incidunt libero maxime natus, nemo, nihil quis sapiente sunt temporibus ullam vel velit voluptatem? Consequuntur iure quod sequi voluptate voluptates? Ex, molestiae.</p>
+      <p class="view-blog__descr">{{currentBlog[0].blogDescr}}</p>
       <div class="view-blog__content" v-html="currentBlog[0].blogHTML"></div>
     </div>
   </div>
@@ -39,13 +39,11 @@ const store = useStore()
 const route = useRoute()
 
 const currentBlog = ref(null);
-const postCategory = ref('')
-// const props = defineProps(['post'])
 
 const blogCategory = () => {
   for (let category of store.state.categories) {
     if (currentBlog.value[0].categoryID === category.id)
-      return postCategory.value = category.category
+      return category.category
   }
 }
 
@@ -53,7 +51,6 @@ onMounted(async () => {
   currentBlog.value = await store.state.blogPosts.filter((post) => {
     return post.blogID === route.params.blogid;
   });
-  blogCategory()
 })
 </script>
 

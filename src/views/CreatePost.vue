@@ -1,7 +1,7 @@
 <template>
   <div class="create-post">
     <div class="create-post__container">
-      <Modal v-show="store.state.blogPhotoPreview" modalSize="xl" v-on:close-modal="closeModal">
+      <Modal v-if="store.state.blogPhotoPreview" modalSize="l'" v-on:close-modal="closeBlogPhotoPreviewModal">
         <img :src="store.state.blogPhotoFileURL" :alt="store.state.blogPhotoFileURL" />
       </Modal>
       <Loading v-show="loading"/>
@@ -53,14 +53,14 @@
           </div>
         </div>
         <div class="create-post__actions">
-          <button @click="handlePreview" :class="{ 'button-inactive': !check2 }"  :disabled="!check2">Post Preview</button>
-          <button @click="uploadBlog" :class="{ 'button-inactive': !check2 }" :disabled="!check2">Publish Blog</button>
+          <button @click="handlePreview" :class="{ 'button-inactive': !checkTerms }"  :disabled="!checkTerms">Post Preview</button>
+          <button @click="uploadBlog" :class="{ 'button-inactive': !checkTerms }" :disabled="!checkTerms">Publish Blog</button>
         </div>
       </div>
     </div>
-<!--    <Modal v-if="modalActive" v-on:close-modal="closeModal">-->
-<!--      <BlogPreview/>-->
-<!--    </Modal>-->
+    <Modal v-if="modalActive" v-on:close-modal="handlePreview" :modal-title="'Превью поста'" :modal-size="'xl'" >
+      <BlogPreview/>
+    </Modal>
   </div>
 </template>
 
@@ -78,14 +78,18 @@ import {ref, computed, onMounted} from 'vue'
 import {useStore} from 'vuex'
 import {useRouter} from 'vue-router'
 import Modal from "../components/UI/Modal";
-// import BlogPreview from "./BlogPreview";
+import BlogPreview from "./BlogPreview";
 
 const store = useStore()
 const router = useRouter()
+
+
 const modalActive = ref(false)
-const closeModal = () => {
-  modalActive.value = !modalActive.value;
+
+const closeBlogPhotoPreviewModal = () => {
+  store.commit('openPhotoPreview')
 }
+
 const file = ref(null)
 const error = ref(null)
 const errorMsg = ref(null)
@@ -101,6 +105,7 @@ const blogPhoto = ref(null)
 const handlePreview = () => {
   modalActive.value = !modalActive.value
 }
+
 // methods
 const fileChange = () => {
   file.value = blogPhoto.value.files[0];
@@ -117,12 +122,12 @@ const clearPost = () => {
   store.commit('clearBlogState');
 }
 
-const check2 = computed(() => {
+const checkTerms = computed(() => {
   return blogTitle.value.length !== 0 && blogHTML.value.length !== 0 && selectedCategory.value !== 0 && file.value !== null && blogCookingTime.value
 })
 
 const uploadBlog = () => {
-  if (check2.value) {
+  if (checkTerms.value) {
     console.log(file.value)
     if (file.value) {
       loading.value = true;

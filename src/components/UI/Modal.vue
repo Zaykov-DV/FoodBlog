@@ -1,17 +1,21 @@
 <template>
   <transition name="modal">
-    <div :class="`modal__wrapper modal__wrapper_${modalSize}`" @click="emit('close-modal')">
-      <div class="modal__content" @click.stop="">
+    <div class="modal__wrapper" @click="emit('close-modal')">
+      <div :class="`modal__content modal__content_${modalSize}`" @click.stop="">
         <!-- header -->
         <div class="modal__header">
           <h4 class="modal__title"> {{ modalTitle }} </h4>
           <span class="modal__button-close" @click="emit('close-modal')">×</span>
         </div>
         <!-- body -->
-        <div class="modal__body">
+        <div v-if="modalMessage" class="modal__body">
           <p> {{ modalMessage }} </p>
-          <slot />
-          <button @click="closeModal">Закрыть</button>
+        </div>
+        <!-- slot -->
+        <slot />
+
+        <div class="modal__footer" v-if="modalFooter">
+            <button @click="closeModal">Закрыть</button>
         </div>
       </div>
     </div>
@@ -30,11 +34,14 @@ defineProps({
     type: String,
     default: ''
   },
+  modalFooter: {
+    type: Boolean,
+    default: false
+  },
   modalMessage: {
     type: String,
     default: ''
-  }}
-)
+  }})
 
 const emit = defineEmits(['close-modal'])
 
@@ -77,16 +84,17 @@ onMounted(() => {
 
   &__content {
     position: relative;
-    max-width: 600px;
-    padding: 20px 18px;
+    padding: 40px;
     background-color: #fff;
     border: 1px solid #dcdfe6;
     transition: all .2s ease;
     border-radius: 8px;
     z-index: 999;
     overflow: hidden;
-    @media screen and (min-width: 900px) {
-      min-width: 500px;
+    max-width: 600px;
+
+    &_xl {
+      min-width: 80vw;
     }
   }
 
@@ -105,8 +113,8 @@ onMounted(() => {
   &__button-close {
     font-size: 34px;
     position: absolute;
-    right: 8px;
-    top: 0;
+    right: 15px;
+    top: 15px;
     cursor: pointer;
   }
 }
