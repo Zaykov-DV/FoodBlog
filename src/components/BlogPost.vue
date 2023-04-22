@@ -17,9 +17,13 @@
         </div>
         <div class="post__footer">
           <div class="post__author">
-            <div class="post__author-avatar"></div>
+            <div class="post__author-avatar">
+              <div class="post__author-avatar-img" v-if="!post.blogAuthor"></div>
+              <h5 v-else>{{ authorInitials() }}</h5>
+            </div>
             <div class="post__author-info">
-              <h4 class="post__author-name">Best Home Chief</h4>
+              <h4 class="post__author-name" v-if="!post.blogAuthor">Best Home Chief</h4>
+              <h4 class="post__author-name" v-else>{{ post.blogAuthor }}</h4>
               <p>{{ new Date(post.blogDate).toLocaleString("ru-RU", { year: 'numeric', month: 'long', day: 'numeric'}) }}</p>
             </div>
           </div>
@@ -52,6 +56,10 @@ const blogCategory = () => {
   }
 }
 
+const authorInitials = () => {
+  return props.post.blogAuthor.split(/\s+/).map((name) => name.substring(0,1).toUpperCase()).join('')
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -65,6 +73,7 @@ const blogCategory = () => {
     border-radius: 30px;
     align-items: center;
     min-height: 640px;
+    max-height: 640px;
   }
 
   &__title {
@@ -76,6 +85,11 @@ const blogCategory = () => {
     letter-spacing: -0.04em;
     color: #000000;
     margin-bottom: 24px;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   &__descr {
@@ -86,6 +100,11 @@ const blogCategory = () => {
     line-height: 28px;
     color: rgba(0, 0, 0, 0.6);
     margin-bottom: 24px;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   &__block {
@@ -136,11 +155,22 @@ const blogCategory = () => {
   }
 
   &__author-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     min-width: 50px;
     height: 50px;
     border-radius: 50%;
-    background: url("../assets/images/sticker.png") no-repeat center/cover;
     margin-right: 15px;
+    overflow: hidden;
+    background-color: #000000;
+    color: #ffffff;
+  }
+
+  &__author-avatar-img {
+    width: 50px;
+    height: 50px;
+    background: url("../assets/images/sticker.png") no-repeat center/cover;
   }
 
   &__author-info {

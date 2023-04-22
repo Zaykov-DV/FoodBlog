@@ -1,23 +1,25 @@
 <template>
   <header class="navigation">
     <nav class="navigation__container">
-      <h1 class="navigation__title">FoodBlog</h1>
+      <router-link class="navigation__title-link" :to="{ name: 'Home' }">
+        <h1 class="navigation__title">FoodBlog</h1>
+      </router-link>
       <ul class="navigation__links" v-show="!mobile">
-        <router-link class="navigation__link" :to="{ name: 'Home' }">Home</router-link>
-        <router-link class="navigation__link" :to="{ name: 'Blogs' }">Recipes</router-link>
-        <router-link class="navigation__link" :to="{ name: 'BloomCalc' }">Bloom Calculator</router-link>
-        <router-link class="navigation__link" :to="{ name: 'Quiz' }">Quiz</router-link>
-        <router-link v-if="!user" class="navigation__link" :to="{ name: 'Login' }">Login/Register</router-link>
+        <router-link class="navigation__link" :to="{ name: 'Home' }">Домашная</router-link>
+        <router-link class="navigation__link" :to="{ name: 'Blogs' }">Рецепты</router-link>
+        <router-link class="navigation__link" :to="{ name: 'BloomCalc' }">Полезности</router-link>
+        <router-link class="navigation__link" :to="{ name: 'Quiz' }">Квиз</router-link>
+        <router-link v-if="!user" class="navigation__link" :to="{ name: 'Login' }">Логин/Регистрация</router-link>
       </ul>
       <div v-if="user" class="navigation__profile-wrapper">
-        <router-link v-if="user" class="navigation__link" :to="{ name: 'CreatePost' }">Create Post</router-link>
+        <router-link v-if="user" class="navigation__link" :to="{ name: 'CreatePost' }">Добавить пост</router-link>
         <div class="navigation__profile" @click="toggleProfileMenu" ref="profile">
-          <span>{{ store.state.profileInitials }}</span>
+          <span>{{store.state.profileInitials}}</span>
         </div>
         <div v-show="profileMenu" class="navigation__profile-menu">
           <div class="navigation__profile-info-wrapper">
             <div class="navigation__profile-initials">
-              <span>{{ store.state.profileInitials }}</span>
+              <span>{{store.state.profileInitials}}</span>
             </div>
             <div class="navigation__profile-info">
               <p class="navigation__text navigation__text_m">{{ store.state.profileFirstName }}
@@ -29,15 +31,15 @@
           <div class="navigation__options">
             <router-link class="navigation__option" :to="{name: 'Profile'}">
               <SvgIcon class="navigation__icon" name="user-alt-light"/>
-              <p class="navigation__text">Profile</p>
+              <p class="navigation__text">Профиль</p>
             </router-link>
             <router-link class="navigation__option" :to="{name: 'Admin'}">
               <SvgIcon class="navigation__icon" name="user-crown-light"/>
-              <p class="navigation__text">Admin</p>
+              <p class="navigation__text">Админ</p>
             </router-link>
             <div @click="signOut" class="navigation__option">
               <SvgIcon class="navigation__icon" name="sign-out-alt-regular"/>
-              <p class="navigation__text">Sign Out</p>
+              <p class="navigation__text">Выйти</p>
             </div>
           </div>
         </div>
@@ -115,6 +117,7 @@ const user = computed(() => {
 onMounted(() => {
   window.addEventListener('resize', checkScreen)
   checkScreen()
+  console.log(store.state)
 })
 
 </script>
@@ -129,6 +132,10 @@ onMounted(() => {
     padding: 40px 80px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     margin-bottom: 40px;
+  }
+
+  &__title-link {
+    border-bottom: none;
   }
 
   &__title {

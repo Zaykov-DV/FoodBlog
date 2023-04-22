@@ -72,6 +72,10 @@ const editPost = computed(() => {
     margin-right: 40px;
   }
 
+  &__info {
+    max-width: 500px;
+  }
+
   &__title {
     font-family: 'Inter', sans-serif;
     font-style: normal;
@@ -81,6 +85,10 @@ const editPost = computed(() => {
     letter-spacing: -0.04em;
     color: #000000;
     margin-bottom: 16px;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   &__descr {
@@ -91,6 +99,7 @@ const editPost = computed(() => {
     line-height: 28px;
     color: rgba(0, 0, 0, 0.6);
     margin-bottom: 32px;
+
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;

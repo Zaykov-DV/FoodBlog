@@ -140,9 +140,17 @@ const blogCategories = computed(() => {
   }
 }
 
-@media (min-width: 1439px) {
+@media (min-width: 1281px) and (max-width: 1438px) {
   .blog-categories__items {
     grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 1439px) {
+  .blog-categories__items {
+    grid-template-columns: repeat(6, 1fr);
     grid-template-rows: repeat(1, 1fr);
   }
 }

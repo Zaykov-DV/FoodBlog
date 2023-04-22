@@ -36,6 +36,7 @@ const store = createStore({
             { id: 9, category: 'Мясо', image: 'meat' },
         ],
         selectedCategory: null,
+        author: null
     },
     getters: {
         getBlogPostsFeed(state) {
@@ -93,7 +94,7 @@ const store = createStore({
         },
         // фильтр по категории
         filterCategory(state, payload) {
-            state.filterBlogPosts = state.blogPosts.filter(post => post.categoryID === payload)
+            state.filterBlogPosts = state.blogPosts.filter(post => post.selectedCategory === payload)
         },
         // сбросить фильтры по категории
         showAllCategories(state) {
@@ -164,7 +165,8 @@ const store = createStore({
                         blogCookingTime: doc.data().blogCookingTime,
                         blogDate: doc.data().date,
                         blogCoverPhotoName: doc.data().blogCoverPhotoName,
-                        selectedCategory: doc.data().categoryID
+                        selectedCategory: doc.data().categoryID,
+                        blogAuthor: doc.data().blogAuthor
                     };
                     state.blogPosts.push(data);
                 }

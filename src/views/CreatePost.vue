@@ -158,7 +158,8 @@ const uploadBlog = () => {
               blogCookingTime: blogCookingTime.value,
               profileId: profileId.value,
               date: timestamp,
-              categoryID: selectedCategory.value
+              categoryID: selectedCategory.value,
+              blogAuthor: authorName()
             });
             await store.dispatch("getPost");
             loading.value = false;
@@ -182,6 +183,8 @@ const uploadBlog = () => {
 
 
 // computed
+
+
 
 const profileId = computed(() => {
   return store.state.profileId
@@ -245,6 +248,10 @@ const blogCookingTime = computed(
       },
     }
 )
+
+const authorName = () => {
+  return store.state.profileFirstName + ' ' + store.state.profileLastName
+}
 
 onMounted(() => {
   clearPost()

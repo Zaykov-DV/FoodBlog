@@ -58,10 +58,6 @@ const onPageChange = (page) => {
   currentPage.value = page;
 }
 
-// const blogPosts = computed(() => {
-//   return store.state.blogPosts
-// })
-
 const filterBlogs = computed(() => {
   return store.state.filterBlogPosts.slice((currentPage.value - 1) * itemsPerPage.value, currentPage.value * itemsPerPage.value )
 })

@@ -41,6 +41,7 @@ const blogCategory = () => {
   &__item {
     display: flex;
     flex-direction: column;
+    max-width: 290px;
   }
 
   &__item-image {
@@ -61,6 +62,10 @@ const blogCategory = () => {
     line-height: 26px;
     letter-spacing: -0.04em;
     color: #000000;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   &__labels {

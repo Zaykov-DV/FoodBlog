@@ -75,6 +75,9 @@ onMounted(async () => {
     color: #000000;
     text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     margin-bottom: 40px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   &__info {
