@@ -44,26 +44,28 @@
           </div>
         </div>
       </div>
+      <SvgIcon @click="toggleMobileNav" name="bars-regular" class="navigation__menu-icon" v-show="mobile"/>
     </nav>
 
-    <SvgIcon @click="toggleMobileNav" name="bars-regular" class="menu-icon" v-show="mobile"/>
-
     <transition name="mobile-nav">
-      <ul class="mobile-nav" v-show="mobileNav">
+      <ul class="navigation__mobile-nav" v-show="mobileNav">
         <li @click="toggleMobileNav" class="link">
-          <router-link :to="{ name: 'Home' }">Home</router-link>
+          <router-link :to="{ name: 'Home' }">Домашная</router-link>
         </li>
         <li @click="toggleMobileNav" class="link">
-          <router-link :to="{ name: 'Blogs' }">Recipes</router-link>
+          <router-link class="navigation__link" :to="{ name: 'Blogs' }">Рецепты</router-link>
         </li>
         <li @click="toggleMobileNav" class="link">
-          <router-link :to="{ name: 'BloomCalc' }">Bloom Calculator</router-link>
+          <router-link class="navigation__link" :to="{ name: 'BloomCalc' }">Полезности</router-link>
+        </li>
+        <li @click="toggleMobileNav" class="link">
+          <router-link class="navigation__link" :to="{ name: 'Quiz' }">Квиз</router-link>
         </li>
         <li v-if="user" @click="toggleMobileNav" class="link">
-          <router-link :to="{ name: 'CreatePost' }">Create Post</router-link>
+          <router-link v-if="user" class="navigation__link" :to="{ name: 'CreatePost' }">Добавить пост</router-link>
         </li>
         <li v-if="!user" @click="toggleMobileNav" class="link">
-          <router-link :to="{ name: 'Login' }">Login/Register</router-link>
+          <router-link v-if="!user" class="navigation__link" :to="{ name: 'Login' }">Логин/Регистрация</router-link>
         </li>
       </ul>
     </transition>
@@ -75,7 +77,6 @@ import SvgIcon from './UI/SvgIcon'
 
 import {getAuth} from "firebase/auth";
 
-'firebase/auth'
 import {onMounted, ref, computed} from "vue";
 
 import {useStore} from 'vuex'
@@ -91,7 +92,7 @@ const profile = ref(null)
 
 const checkScreen = () => {
   windowWidth.value = window.innerWidth;
-  if (windowWidth.value <= 755) return mobile.value = true;
+  if (windowWidth.value < 1024) return mobile.value = true;
   mobile.value = false;
   mobileNav.value = false;
 }
@@ -239,5 +240,44 @@ onMounted(() => {
     display: flex;
     align-items: center;
   }
+
+  &__mobile-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    padding: 20px;
+    width: 70%;
+    max-width: 250px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: #303030;
+
+    .link {
+      padding: 15px 0;
+      color: #fff;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .navigation__container {
+    padding: 20px;
+  }
+}
+
+.mobile-nav-enter-active,
+.mobile-nav-leave-active {
+  transition: all 1s ease;
+}
+.mobile-nav-enter {
+  transform: translateX(-250px);
+}
+.mobile-nav-enter-to {
+  transform: translateX(0);
+}
+.mobile-nav-leave-to {
+  transform: translateX(-250px);
 }
 </style>

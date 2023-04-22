@@ -51,10 +51,12 @@ const store = createStore({
             }
         },
         getBlogCategories(state) {
-            if (document.documentElement.clientWidth <= 1280) {
+            if (document.documentElement.clientWidth <= 1280 && document.documentElement.clientWidth > 768) {
                 return state.categories.slice(4, 8)
             } else if (document.documentElement.clientWidth > 1280 && document.documentElement.clientWidth < 1440) {
                 return state.categories.slice(4, 9)
+            } else if (document.documentElement.clientWidth <= 768) {
+                return state.categories.slice(4, 10)
             } else {
                 return state.categories.slice(4)
             }

@@ -97,4 +97,36 @@ const blogPostsCards = computed(() => {
     }
   }
 }
+
+@media (max-width: 768px) {
+  .home-page {
+    &__container {
+      padding: 0 40px;
+    }
+
+    &__section {
+      margin-bottom: 50px;
+    }
+
+    &__recent-blogs {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+@media (max-width: 540px) {
+  .home-page__container {
+    padding: 0 20px;
+  }
+
+  .home-page__recent-title {
+    font-size: 32px;
+    line-height: 38px;
+    margin-bottom: 40px;
+  }
+
+  .home-page__recent-blogs {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
 </style>

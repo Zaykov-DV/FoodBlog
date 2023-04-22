@@ -159,4 +159,42 @@ const user = computed(() => {
     }
   }
 }
+
+@media (max-width: 768px) {
+  .footer {
+
+    &__container {
+      padding: 0 40px 40px;
+    }
+  }
+}
+
+@media (max-width: 540px) {
+  .footer {
+
+    &__container {
+      padding: 0 20px 40px;
+    }
+
+    &__block {
+      padding-bottom: 30px;
+      margin-bottom: 20px;
+    }
+
+    &__links {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    &__copyright {
+      display: flex;
+      flex-direction: column-reverse;
+    }
+
+    &__info {
+      margin-top: 20px;
+    }
+  }
+}
 </style>

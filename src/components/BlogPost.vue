@@ -4,7 +4,7 @@
     <div class="post__container">
       <div class="post__block">
         <h2 class="post__title">{{ post.blogTitle }}</h2>
-        <p class="post__descr">{{post.blogDescr}}</p>
+        <p class="post__descr" v-if="post.blogDescr">{{post.blogDescr}}</p>
         <div class="post__labels">
           <div class="post__label" v-if="post.blogCookingTime">
             <SvgIcon name="timer"/>
@@ -29,7 +29,7 @@
           </div>
           <router-link class="post__link" :to="{name: 'ViewBlog', params: { blogid: post.blogID }}">
             View The Post
-            <SvgIcon name="arrow-right-light" class="arrow"/>
+            <SvgIcon name="arrow-right-light" class="post__link-icon"/>
           </router-link>
         </div>
       </div>
@@ -199,11 +199,20 @@ const authorInitials = () => {
   }
 
   &__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 20px 35px;
     background-color: #000000;
     color: #fff;
     fill: #fff;
     border-radius: 16px;
+  }
+
+  &__link-icon {
+    margin-left: 10px;
+    width: 18px;
+    height: 18px;
   }
 
   &__image {
@@ -242,6 +251,47 @@ const authorInitials = () => {
     &__author {
       margin-bottom: 20px;
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .post {
+    &__container {
+      display: flex;
+      flex-direction: column;
+      max-height: 100%;
+    }
+
+    &__block:first-child {
+      padding: 30px;
+    }
+
+    &__block:last-child {
+      height: 260px;
+      width: 100%;
+    }
+
+    &__title {
+      font-size: 30px;
+      line-height: 32px;
+      text-align: left;
+    }
+
+    .post__image {
+      border-top-right-radius: 0;
+      border-bottom-left-radius: 30px;
+      min-height: 280px;
+    }
+  }
+}
+
+@media (max-width: 540px) {
+  .post__block {
+    min-height: 100%;
+  }
+
+  .post__container {
+    max-height: 40px;
   }
 }
 </style>
