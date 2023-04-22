@@ -5,10 +5,27 @@
       <input type="checkbox" v-model="editPost">
     </div>
     <div class="blogs__filter">
+      <div v-if="!mobile">
         <h4 class="blogs__filter-title">Фильтр рецептов</h4>
         <div v-for="category in store.state.categories" :key="category.id">
-          <div class="blogs__filter-text" :class="{ 'is-active' : categoryActive === category.id}" @click="filterProducts(category.id)">{{category.category}}</div>
+          <p class="blogs__filter-text" :class="{ 'is-active' : categoryActive === category.id}"
+             @click="filterProducts(category.id)">{{ category.category }}</p>
         </div>
+      </div>
+      <div class="blogs__filter-wrapper" v-if="mobile">
+        <h4 class="blogs__filter-title">Фильтр рецептов</h4>
+        <SvgIcon @click="toggleMobileNav" name="arrow-down-circle"/>
+      </div>
+
+      <Transition name="slide-fade" mode="out-in">
+        <div v-show="mobileNav === true">
+          <div v-for="category in store.state.categories" :key="category.id">
+            <p class="blogs__filter-text" :class="{ 'is-active' : categoryActive === category.id}"
+               @click="filterProducts(category.id)">{{ category.category }}</p>
+          </div>
+        </div>
+      </Transition>
+
     </div>
     <div class="blogs__cards">
       <BlogCard :post="post" v-for="(post, index) in filterBlogs" :key="index"/>
@@ -32,8 +49,9 @@
 <script setup>
 import BlogCard from "../components/BlogCard";
 import Pagination from "../components/UI/Pagination";
-import {computed, ref, onBeforeUnmount} from 'vue'
+import {computed, ref, onBeforeUnmount, onMounted} from 'vue'
 import {useStore} from 'vuex'
+import SvgIcon from "../components/UI/SvgIcon";
 
 const store = useStore()
 
@@ -59,7 +77,7 @@ const onPageChange = (page) => {
 }
 
 const filterBlogs = computed(() => {
-  return store.state.filterBlogPosts.slice((currentPage.value - 1) * itemsPerPage.value, currentPage.value * itemsPerPage.value )
+  return store.state.filterBlogPosts.slice((currentPage.value - 1) * itemsPerPage.value, currentPage.value * itemsPerPage.value)
 })
 
 const countTotalPages = computed(() => {
@@ -79,6 +97,25 @@ const editPost = computed({
 
 const profileUser = computed(() => {
   return store.state.user;
+})
+
+
+const mobile = ref(null)
+const mobileNav = ref(null)
+const windowWidth = ref(null)
+const checkScreen = () => {
+  windowWidth.value = window.innerWidth;
+  if (windowWidth.value < 1024) return mobile.value = true;
+  mobile.value = false;
+  mobileNav.value = false;
+}
+const toggleMobileNav = () => {
+  mobileNav.value = !mobileNav.value
+}
+
+onMounted(() => {
+  window.addEventListener('resize', checkScreen)
+  checkScreen()
 })
 
 onBeforeUnmount(() => {
@@ -126,6 +163,12 @@ onBeforeUnmount(() => {
     padding-right: 80px;
   }
 
+  &__filter-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   &__filter-title {
     font-family: 'Inter', sans-serif;
     font-style: normal;
@@ -170,5 +213,44 @@ onBeforeUnmount(() => {
     justify-content: center;
     margin-top: 65px;
   }
+}
+
+@media (max-width: 768px) {
+  .blogs {
+    &__container {
+      padding: 20px 20px 40px;
+      flex-direction: column;
+    }
+    &__filter {
+      min-width: 100%;
+      padding-right: 0;
+      margin-bottom: 20px;
+    }
+
+    &__filter-wrapper {
+      padding-bottom: 20px;
+    }
+
+    &__filter-title {
+      font-size: 24px;
+      line-height: 28px;
+      margin-bottom: 0;
+    }
+  }
+}
+
+// animation
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
 }
 </style>

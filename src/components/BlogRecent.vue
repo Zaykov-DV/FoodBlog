@@ -103,7 +103,6 @@ const blogCategory = () => {
       width: 275px;
     }
   }
-
 }
 
 </style>

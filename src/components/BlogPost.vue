@@ -286,12 +286,14 @@ const authorInitials = () => {
 }
 
 @media (max-width: 540px) {
-  .post__block {
-    min-height: 100%;
-  }
+  .post {
+    &__block {
+      min-height: 100%;
+    }
 
-  .post__container {
-    max-height: 40px;
+    &__container {
+      max-height: 40px;
+    }
   }
 }
 </style>

@@ -47,7 +47,7 @@
       <SvgIcon @click="toggleMobileNav" name="bars-regular" class="navigation__menu-icon" v-show="mobile"/>
     </nav>
 
-    <transition name="mobile-nav">
+    <transition name="mobile-nav" mode="out-in">
       <ul class="navigation__mobile-nav" v-show="mobileNav">
         <li @click="toggleMobileNav" class="link">
           <router-link :to="{ name: 'Home' }">Домашная</router-link>
@@ -118,7 +118,6 @@ const user = computed(() => {
 onMounted(() => {
   window.addEventListener('resize', checkScreen)
   checkScreen()
-  console.log(store.state)
 })
 
 </script>
@@ -267,6 +266,7 @@ onMounted(() => {
   }
 }
 
+// animation
 .mobile-nav-enter-active,
 .mobile-nav-leave-active {
   transition: all 1s ease;

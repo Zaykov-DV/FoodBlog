@@ -176,69 +176,21 @@ const editPost = computed(() => {
   }
 }
 
-.blog-card1 {
-  position: relative;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  border-radius: 8px;
-  background: #fff;
-  min-height: 420px;
-  transition: 0.5s ease all;
 
+@media (max-width: 767px) {
 
-
-  .icons {
-    display: flex;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 9;
-
-
-  }
-
-  img {
-    display: block;
-    border-radius: 8px 8px 0 0;
-    z-index: 1;
-    width: 100%;
-    min-height: 200px;
-    object-fit: cover;
-  }
-
-  .info {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    z-index: 3;
-    padding: 32px 16px;
-    color: #000;
-
-    h4 {
-      padding-bottom: 8px;
+  .blog-card {
+    &__container {
+      flex-direction: column;
+      align-items: flex-start;
+      max-width: calc(100vw - 40px);
     }
-
-    h6 {
-      padding-bottom: 16px;
+    &__image {
+      min-width: 100%;
+      margin-right: 0;
     }
-
-    .link {
-      display: inline-flex;
-      align-items: center;
-      margin-top: auto;
-      font-weight: 500;
-      padding: 20px 0 4px;
-      font-size: 12px;
-      transition: 0.5s ease all;
-
-      &:hover {
-        color: rgba(48, 48, 48, 0.8);
-      }
-    }
-
-    .arrow {
-      width: 10px;
+    &__title {
+      white-space: normal;
     }
   }
 }

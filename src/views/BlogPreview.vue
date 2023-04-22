@@ -59,6 +59,7 @@ const blogCategory = () => {
 </script>
 
 <style lang="scss">
+
 .preview-blog {
 
   &__container {

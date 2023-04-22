@@ -50,14 +50,14 @@ import Modal from "@/components/UI/Modal";
 
 import {ref} from 'vue'
 
-const recipeBloom = ref(0)
-const recipeWeight = ref(0)
-const currentBloom = ref(0)
-const currentWeight = ref(0)
+const recipeBloom = ref(null)
+const recipeWeight = ref(null)
+const currentBloom = ref(null)
+const currentWeight = ref(null)
 const modalActive = ref(false)
 const modalMessage = ref('Заполните поля')
-const recipeDiameter = ref(0)
-const ownDiameter = ref(0)
+const recipeDiameter = ref(null)
+const ownDiameter = ref(null)
 const koefIngredients = ref(0)
 
 
@@ -138,6 +138,12 @@ const calcIngredients = () => {
     &__container {
       flex-direction: column;
     }
+  }
+}
+
+@media (max-width: 540px) {
+  .calc__container {
+    padding: 20px 20px 40px;
   }
 }
 </style>

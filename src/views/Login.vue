@@ -86,6 +86,7 @@ const signIn = () => {
   &__title {
     text-align: center;
     font-size: 32px;
+    line-height: 40px;
     color: #303030;
     margin-bottom: 40px;
     @media (min-width: 900px) {
@@ -140,6 +141,21 @@ const signIn = () => {
 
   &__text {
     margin-bottom: 10px;
+  }
+}
+
+
+@media (max-width: 540px) {
+  .auth {
+    &__wrapper {
+      padding: 20px 20px 40px;
+      margin: 0;
+      flex-direction: column;
+    }
+
+    &__form {
+      margin-bottom: 20px;
+    }
   }
 }
 </style>

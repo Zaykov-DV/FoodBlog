@@ -115,18 +115,20 @@ const blogPostsCards = computed(() => {
 }
 
 @media (max-width: 540px) {
-  .home-page__container {
-    padding: 0 20px;
-  }
+  .home-page {
+    &__container {
+      padding: 0 20px;
+    }
 
-  .home-page__recent-title {
-    font-size: 32px;
-    line-height: 38px;
-    margin-bottom: 40px;
-  }
+    &__recent-title {
+      font-size: 32px;
+      line-height: 38px;
+      margin-bottom: 40px;
+    }
 
-  .home-page__recent-blogs {
-    grid-template-columns: repeat(1, 1fr);
+    &__recent-blogs {
+      grid-template-columns: repeat(1, 1fr);
+    }
   }
 }
 </style>

@@ -144,4 +144,41 @@ onMounted(async () => {
     margin-bottom: 60px;
   }
 }
+
+
+
+@media (max-width: 767px) {
+  .view-blog {
+    &__container {
+      padding: 40px;
+    }
+  }
+}
+
+@media (max-width: 540px) {
+  .view-blog {
+    &__container {
+      padding: 20px 20px 40px;
+    }
+
+    &__title {
+      white-space: normal;
+      text-align: left;
+      font-size: 28px;
+      line-height: 32px;
+    }
+
+    &__info {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+      margin-bottom: 0;
+    }
+
+    &__item {
+      padding: 0;
+      border: none;
+    }
+  }
+}
 </style>

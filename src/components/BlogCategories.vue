@@ -157,45 +157,45 @@ const blogCategories = computed(() => {
 }
 
 @media (max-width: 768px) {
-  .blog-categories__items {
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-  }
+  .blog-categories {
+    &__items {
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+    }
 
-  .blog-categories__title {
-    font-size: 40px;
-    text-align: left;
+    &__title {
+      font-size: 40px;
+      text-align: left;
+    }
   }
 }
 
 @media (max-width: 540px) {
+  .blog-categories {
+    &__header {
+      margin-bottom: 40px;
+    }
 
-  .blog-categories__header {
-    margin-bottom: 40px;
-  }
+    &__title {
+      font-size: 24px;
+    }
 
-  .blog-categories__title {
-    font-size: 24px;
-  }
+    &__items {
+      row-gap: 40px;
+      column-gap: 20px;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+    }
 
-  .blog-categories__items {
-    row-gap: 40px;
-    column-gap: 20px;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-  }
+    &__item {
+      max-width: 100%;
+      min-width: 100%;
+    }
 
-  .blog-categories__item {
-    max-width: 100%;
-    min-width: 100%;
-  }
-
-  .blog-categories__item-img {
-    width: 80px;
-    height: 80px;
+    &__item-img {
+      width: 80px;
+      height: 80px;
+    }
   }
 }
-
-
-
 </style>

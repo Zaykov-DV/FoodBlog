@@ -323,7 +323,7 @@ onMounted(() => {
   }
 
   &__editor {
-    height: 40vh;
+    min-height: 40vh;
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;

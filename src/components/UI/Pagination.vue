@@ -199,4 +199,23 @@ const onClickLastPage = () => {
     height: 24px;
   }
 }
+
+@media (max-width: 540px) {
+  .pagination__btn {
+    padding: 4px 16px;
+    min-width: 100%;
+    max-width: 40px;
+    height: 35px;
+  }
+}
+
+@media (max-width: 375px) {
+  .pagination__btn {
+    padding: 4px 16px;
+    min-width: 100%;
+    max-width: 40px;
+    height: 28px;
+  }
+}
+
 </style>

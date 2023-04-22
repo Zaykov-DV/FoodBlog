@@ -1,5 +1,5 @@
 <template>
-  <transition name="modal">
+  <div class="modal">
     <div class="modal__wrapper" @click="emit('close-modal')">
       <div :class="`modal__content modal__content_${modalSize}`" @click.stop="">
         <!-- header -->
@@ -19,7 +19,7 @@
         </div>
       </div>
     </div>
-  </transition>
+  </div>
 </template>
 
 <script setup>
@@ -118,5 +118,4 @@ onMounted(() => {
     cursor: pointer;
   }
 }
-
 </style>
