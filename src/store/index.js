@@ -36,7 +36,8 @@ const store = createStore({
             { id: 9, category: 'Мясо', image: 'meat' },
         ],
         selectedCategory: null,
-        author: null
+        author: null,
+        navigateToCategory: 0
     },
     getters: {
         getBlogPostsFeed(state) {

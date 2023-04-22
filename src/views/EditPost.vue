@@ -186,58 +186,48 @@ const blogCoverPhotoName = computed(() => {
   return store.state.blogPhotoName
 })
 
-const blogTitle = computed(
-    {
-      get() {
-        return store.state.blogTitle;
-      },
-      set(payload) {
-        store.commit("updateBlogTitle", payload);
-      },
-    }
-)
+const blogTitle = computed({
+  get() {
+    return store.state.blogTitle;
+  },
+  set(payload) {
+    store.commit("updateBlogTitle", payload);
+  },
+})
 
-const blogDescr = computed(
-    {
-      get() {
-        return store.state.blogDescr;
-      },
-      set(payload) {
-        store.commit("updateBlogDescr", payload);
-      },
-    }
-)
+const blogDescr = computed({
+  get() {
+    return store.state.blogDescr;
+  },
+  set(payload) {
+    store.commit("updateBlogDescr", payload);
+  },
+})
 
-const blogHTML = computed(
-    {
-      get() {
-        return store.state.blogHTML;
-      },
-      set(payload) {
-        store.commit("newBlogPost", payload);
-      },
-    }
-)
+const blogHTML = computed({
+  get() {
+    return store.state.blogHTML;
+  },
+  set(payload) {
+    store.commit("newBlogPost", payload);
+  },
+})
 
-const selectedCategory = computed(
-    {
-      get() {
-        return store.state.selectedCategory;
-      },
-      set(payload) {
-        store.commit("updateBlogCategory", payload);
-      }
-    }
-)
+const selectedCategory = computed({
+  get() {
+    return store.state.selectedCategory;
+  },
+  set(payload) {
+    store.commit("updateBlogCategory", payload);
+  }
+})
 
-const blogCookingTime = computed(
-    {
-      get() {
-        return store.state.blogCookingTime;
-      },
-      set(payload) {
-        store.commit("updateBlogCookingTime", payload);
-      },
-    }
-)
+const blogCookingTime = computed({
+  get() {
+    return store.state.blogCookingTime;
+  },
+  set(payload) {
+    store.commit("updateBlogCookingTime", payload);
+  },
+})
 </script>

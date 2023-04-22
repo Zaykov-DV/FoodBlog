@@ -57,7 +57,6 @@ const store = useStore()
 
 const categoryActive = ref(0)
 
-
 const filterProducts = (category) => {
   currentPage.value = 1;
   if (category === 0 || undefined) {
@@ -69,19 +68,8 @@ const filterProducts = (category) => {
   }
 }
 
-const currentPage = ref(1)
-const itemsPerPage = ref(5)
-
-const onPageChange = (page) => {
-  currentPage.value = page;
-}
-
 const filterBlogs = computed(() => {
   return store.state.filterBlogPosts.slice((currentPage.value - 1) * itemsPerPage.value, currentPage.value * itemsPerPage.value)
-})
-
-const countTotalPages = computed(() => {
-  return Math.ceil(store.state.filterBlogPosts.length / itemsPerPage.value)
 })
 
 
@@ -94,12 +82,21 @@ const editPost = computed({
   }
 })
 
-
 const profileUser = computed(() => {
   return store.state.user;
 })
 
+// navigation
+const currentPage = ref(1)
+const itemsPerPage = ref(5)
+const onPageChange = (page) => {
+  currentPage.value = page;
+}
+const countTotalPages = computed(() => {
+  return Math.ceil(store.state.filterBlogPosts.length / itemsPerPage.value)
+})
 
+// mobile
 const mobile = ref(null)
 const mobileNav = ref(null)
 const windowWidth = ref(null)
@@ -113,9 +110,12 @@ const toggleMobileNav = () => {
   mobileNav.value = !mobileNav.value
 }
 
+
 onMounted(() => {
   window.addEventListener('resize', checkScreen)
   checkScreen()
+
+  filterProducts(store.state.navigateToCategory)
 })
 
 onBeforeUnmount(() => {

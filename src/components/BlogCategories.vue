@@ -2,11 +2,11 @@
   <div class="blog-categories">
     <div class="blog-categories__container">
       <div class="blog-categories__header">
-        <h2 class="blog-categories__title">Categories</h2>
-        <router-link class="blog-categories__btn" :to="{ name: 'Blogs' }">View all categories</router-link>
+        <h2 class="blog-categories__title">Категории</h2>
+        <router-link class="blog-categories__btn" :to="{ name: 'Blogs' }">Все категории</router-link>
       </div>
       <div class="blog-categories__items">
-        <div v-for="blogCategory in blogCategories" :key="blogCategory.id"
+        <div @click="handleClick(blogCategory.id)" v-for="blogCategory in blogCategories" :key="blogCategory.id"
              class="blog-categories__item"
              :class="`blog-categories__item_${blogCategory.image}`">
           <img class="blog-categories__item-img"
@@ -22,12 +22,20 @@
 
 import {computed} from "vue";
 import {useStore} from "vuex";
+import {useRouter} from "vue-router";
 
 const store = useStore()
 
 const blogCategories = computed(() => {
   return store.getters.getBlogCategories;
 });
+
+const router = useRouter()
+
+const handleClick = (id) => {
+  router.push('Blogs')
+  store.state.navigateToCategory = id
+}
 
 </script>
 

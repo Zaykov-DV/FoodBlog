@@ -85,13 +85,8 @@ const store = useStore()
 const router = useRouter()
 
 const editor = ref('')
-
+const blogPhoto = ref(null)
 const modalActive = ref(false)
-
-const closeBlogPhotoPreviewModal = () => {
-  store.commit('openPhotoPreview')
-}
-
 const file = ref(null)
 const error = ref(null)
 const loading = ref(null)
@@ -101,13 +96,15 @@ const editorSettings = ref({
   options: {/* options */}
 })
 
-const blogPhoto = ref(null)
+
+const closeBlogPhotoPreviewModal = () => {
+  store.commit('openPhotoPreview')
+}
 
 const handlePreview = () => {
   modalActive.value = !modalActive.value
 }
 
-// methods
 const fileChange = () => {
   file.value = blogPhoto.value.files[0];
   const fileName = file.value.name;
