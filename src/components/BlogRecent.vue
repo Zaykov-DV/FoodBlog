@@ -105,4 +105,17 @@ const blogCategory = () => {
   }
 }
 
+@media (max-width: 540px) {
+  .blog-recent {
+
+    &__item {
+      max-width: 100%;
+    }
+
+    &__item-image {
+      width: 100%;
+    }
+  }
+}
+
 </style>

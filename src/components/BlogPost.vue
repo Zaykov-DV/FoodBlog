@@ -1,5 +1,4 @@
 <template>
-  <!-- @TODO слайдер -->
   <div class="post">
     <div class="post__container">
       <div class="post__block">
@@ -65,6 +64,7 @@ const authorInitials = () => {
 <style lang="scss" scoped>
 
 .post {
+  width: 100%;
 
   &__container {
     display: grid;
@@ -72,8 +72,8 @@ const authorInitials = () => {
     background: #E7FAFE;
     border-radius: 30px;
     align-items: center;
-    min-height: 640px;
-    max-height: 640px;
+    min-height: 600px;
+    max-height: 600px;
   }
 
   &__title {
@@ -112,6 +112,10 @@ const authorInitials = () => {
     &:first-child {
       grid-column: 1/2;
       padding: 50px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
     }
 
     &:last-child {
@@ -263,12 +267,17 @@ const authorInitials = () => {
     }
 
     &__block:first-child {
-      padding: 30px;
+      padding: 25px;
+      width: 100%;
     }
 
     &__block:last-child {
       height: 260px;
       width: 100%;
+    }
+
+    &__labels {
+      flex-wrap: wrap;
     }
 
     &__title {
@@ -277,7 +286,7 @@ const authorInitials = () => {
       text-align: left;
     }
 
-    .post__image {
+    &__image {
       border-top-right-radius: 0;
       border-bottom-left-radius: 30px;
       min-height: 280px;
@@ -292,7 +301,6 @@ const authorInitials = () => {
     }
 
     &__container {
-      max-height: 40px;
     }
   }
 }

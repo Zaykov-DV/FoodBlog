@@ -42,7 +42,7 @@ const store = createStore({
     getters: {
         getBlogPostsFeed(state) {
             // @TODO слайдер
-            return state.blogPosts.slice(0, 1);
+            return state.blogPosts.slice(0, 9);
         },
         getBlogPostsCards(state) {
             if (document.documentElement.clientWidth > 1280) {

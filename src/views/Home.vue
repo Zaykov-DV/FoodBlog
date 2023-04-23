@@ -6,7 +6,11 @@
       <!--      <WelcomeScreen />-->
       <!--    </div>-->
       <section class="home-page__section">
-        <BlogPost :post="post" v-for="(post, index) in blogPostsFeed" :key="index"/>
+        <carousel :items-to-show="1" :items-to-scroll="1">
+          <slide v-for="(post, index) in blogPostsFeed" :key="index">
+            <BlogPost :post="post" />
+          </slide>
+        </carousel>
       </section>
       <section class="home-page__section">
         <BlogCategories/>
@@ -31,6 +35,8 @@ import {useStore} from 'vuex'
 import BlogCategories from "../components/BlogCategories";
 import BlogRecent from "../components/BlogRecent";
 // import WelcomeScreen from "../components/WelcomeScreen";
+import 'vue3-carousel/dist/carousel.css'
+import { Carousel, Slide } from 'vue3-carousel'
 
 const store = useStore()
 
@@ -130,5 +136,9 @@ const blogPostsCards = computed(() => {
       grid-template-columns: repeat(1, 1fr);
     }
   }
+}
+
+.carousel__slide {
+  padding: 20px;
 }
 </style>

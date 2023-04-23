@@ -12,7 +12,7 @@
         <router-link v-if="!user" class="navigation__link" :to="{ name: 'Login' }">Логин/Регистрация</router-link>
       </ul>
       <div v-if="user" class="navigation__profile-wrapper">
-        <router-link v-if="user" class="navigation__link" :to="{ name: 'CreatePost' }">Добавить пост</router-link>
+        <router-link v-if="user && !mobile" class="navigation__link" :to="{ name: 'CreatePost' }">Добавить пост</router-link>
         <div class="navigation__profile" @click="toggleProfileMenu" ref="profile">
           <span>{{store.state.profileInitials}}</span>
         </div>
@@ -263,6 +263,12 @@ onMounted(() => {
 @media (max-width: 768px) {
   .navigation__container {
     padding: 20px;
+  }
+}
+
+@media (max-width: 540px) {
+  .navigation__container {
+    margin-bottom: 0;
   }
 }
 
