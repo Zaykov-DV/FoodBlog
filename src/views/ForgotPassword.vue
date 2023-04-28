@@ -1,37 +1,37 @@
 <template>
-  <div class="reset-password">
-    <Modal v-if="modalActive" :modal-message="modalMessage" v-on:close-modal="closeModal"/>
-    <Loading v-if="loading" />
-    <div class="form-wrap">
-      <form class="reset">
-        <p class="login-register">
-          Back to
-          <router-link class="router-link" :to="{ name: 'Login' }">Login</router-link>
-        </p>
-        <h2>Reset Password</h2>
-        <p class="login-register">
-          Enter your email to reset password
-        </p>
-        <div class="inputs">
-          <div class="input">
-            <input type="text" placeholder="Email" v-model="email">
-            <SvgIcon name="envelope-regular" class="icon"/>
+  <div class="auth">
+    <div class="auth__wrapper">
+      <Modal v-if="modalActive" :modal-message="modalMessage" v-on:close-modal="closeModal"/>
+      <Loading v-if="loading"/>
+        <form class="auth__form">
+          <p class="auth__forgot-password">
+            Назад к
+            <router-link class="auth__link" :to="{ name: 'Login' }">логину</router-link>
+          </p>
+          <h2 class="auth__title">Сбросить пароль</h2>
+          <p class="auth__text">
+            Введите свой email, чтобы сбросить пароль
+          </p>
+          <div class="auth__inputs">
+            <div class="auth__input-wrapper">
+              <input class="auth__input" type="text" placeholder="Email" v-model="email">
+              <SvgIcon class="auth__icon" name="envelope-regular"/>
+            </div>
           </div>
+          <button @click.prevent="resetPassword">Сбросить</button>
+        </form>
+        <div class="auth__background">
+          <img src="../assets/images/chief.png" alt="chief">
         </div>
-        <button @click.prevent="resetPassword">Reset</button>
-        <div class="angle"></div>
-      </form>
-      <div class="background"></div>
+      </div>
     </div>
-  </div>
 </template>
 
 <script setup>
 import Modal from "../components/UI/Modal";
-import Loading from "../components/Loading";
+import Loading from "../components/UI/Loading";
 
-
-import { getAuth } from 'firebase/auth'
+import {getAuth, sendPasswordResetEmail} from 'firebase/auth'
 
 import {ref} from 'vue'
 import SvgIcon from "../components/UI/SvgIcon";
@@ -49,7 +49,7 @@ const closeModal = () => {
 const resetPassword = async () => {
   loading.value = true
   const auth = await getAuth()
-  await auth.sendPasswordResetEmail(auth, email.value)
+  await sendPasswordResetEmail(auth, email.value)
       .then(() => {
         modalMessage.value = 'If your account exists, you will receive a email';
         loading.value = false;
@@ -62,22 +62,3 @@ const resetPassword = async () => {
       })
 }
 </script>
-
-<style lang="scss" scoped>
-.reset-password {
-  position: relative;
-
-  .form-wrap {
-    .reset {
-      h2 {
-        margin-bottom: 8px;
-      }
-
-      p {
-        text-align: center;
-        margin-bottom: 32px;
-      }
-    }
-  }
-}
-</style>

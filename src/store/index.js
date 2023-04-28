@@ -9,8 +9,9 @@ const store = createStore({
         blogPosts: [],
         filterBlogPosts: [],
         postLoaded: null,
-        blogHTML: 'Write your blog title here...',
+        blogHTML: '',
         blogTitle: '',
+        blogDescr: '',
         blogPhotoName: '',
         blogPhotoFileURL: null,
         blogPhotoPreview: null,
@@ -23,19 +24,44 @@ const store = createStore({
         profileId: null,
         profileInitials: null,
         categories: [
-            { id: 1, category: 'Выпечка' },
-            { id: 2, category: 'Горячее' },
-            { id: 3, category: 'Тортики' }
+            { id: 0, category: 'Все категории', image: 'breakfast'},
+            { id: 1, category: 'Выпечка', image: 'breakfast' },
+            { id: 2, category: 'Горячее', image: 'breakfast' },
+            { id: 3, category: 'Тортики', image: 'breakfast' },
+            { id: 4, category: 'Завтрак', image: 'breakfast' },
+            { id: 5, category: 'Салаты', image: 'salad' },
+            { id: 6, category: 'Десерты', image: 'tort' },
+            { id: 7, category: 'Ланч', image: 'lunch' },
+            { id: 8, category: 'Шоколад', image: 'chocolate' },
+            { id: 9, category: 'Мясо', image: 'meat' },
         ],
-        selectedCategory: 0,
+        selectedCategory: null,
+        author: null,
+        navigateToCategory: 0
     },
     getters: {
-        blogPostsFeed(state) {
-            return state.blogPosts.slice(0, 2);
+        getBlogPostsFeed(state) {
+            // @TODO слайдер
+            return state.blogPosts.slice(0, 9);
         },
-        blogPostsCards(state) {
-            return state.blogPosts.slice(2, 6);
+        getBlogPostsCards(state) {
+            if (document.documentElement.clientWidth > 1280) {
+                return state.blogPosts.slice(0, 8)
+            } else {
+                return state.blogPosts.slice(0, 6)
+            }
         },
+        getBlogCategories(state) {
+            if (document.documentElement.clientWidth <= 1280 && document.documentElement.clientWidth > 768) {
+                return state.categories.slice(4, 8)
+            } else if (document.documentElement.clientWidth > 1280 && document.documentElement.clientWidth < 1440) {
+                return state.categories.slice(4, 9)
+            } else if (document.documentElement.clientWidth <= 768) {
+                return state.categories.slice(4, 10)
+            } else {
+                return state.categories.slice(4)
+            }
+        }
     },
     mutations: {
         newBlogPost(state, payload) {
@@ -44,9 +70,17 @@ const store = createStore({
         updateBlogTitle(state, payload) {
             state.blogTitle = payload
         },
+        updateBlogDescr(state, payload) {
+            state.blogDescr = payload
+        },
+        updateBlogCookingTime(state, payload) {
+            state.blogCookingTime = payload
+        },
+        updateBlogCategory(state, payload) {
+            state.selectedCategory = payload
+        },
         fileNameChange(state, payload) {
             state.blogPhotoName = payload;
-            console.log(this.blogPhotoName)
         },
         createFileURL(state, payload) {
             state.blogPhotoFileURL = payload
@@ -63,7 +97,7 @@ const store = createStore({
         },
         // фильтр по категории
         filterCategory(state, payload) {
-            state.filterBlogPosts = state.blogPosts.filter(post => post.categoryID === payload)
+            state.filterBlogPosts = state.blogPosts.filter(post => post.selectedCategory === payload)
         },
         // сбросить фильтры по категории
         showAllCategories(state) {
@@ -71,18 +105,22 @@ const store = createStore({
         },
         setBlogState(state, payload) {
             state.blogTitle = payload.blogTitle;
+            state.blogDescr = payload.blogDescr;
+            state.blogCookingTime = payload.blogCookingTime;
+            state.selectedCategory = payload.selectedCategory;
             state.blogHTML = payload.blogHTML;
             state.blogPhotoFileURL = payload.blogCoverPhoto;
             state.blogPhotoName = payload.blogCoverPhotoName;
-            state.selectedCategory = payload.selectedCategory
         },
         // очистить стейт
         clearBlogState(state) {
             state.blogTitle = '';
-            state.blogHTML = 'Write your blog title here...';
+            state.blogDescr = '';
+            state.blogCookingTime = 0;
+            state.selectedCategory = 0;
+            state.blogHTML = '';
             state.blogPhotoFileURL = null;
             state.blogPhotoName = '';
-            state.selectedCategory = null
         },
         updateUser(state, payload) {
             state.user = payload
@@ -126,9 +164,12 @@ const store = createStore({
                         blogHTML: doc.data().blogHTML,
                         blogCoverPhoto: doc.data().blogCoverPhoto,
                         blogTitle: doc.data().blogTitle,
+                        blogDescr: doc.data().blogDescr,
+                        blogCookingTime: doc.data().blogCookingTime,
                         blogDate: doc.data().date,
                         blogCoverPhotoName: doc.data().blogCoverPhotoName,
-                        categoryID: doc.data().categoryID
+                        selectedCategory: doc.data().categoryID,
+                        blogAuthor: doc.data().blogAuthor
                     };
                     state.blogPosts.push(data);
                 }

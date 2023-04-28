@@ -1,13 +1,13 @@
 <template>
-  <main class="app">
-    <section class="quiz" v-if="!quizCompleted">
-      <div class="quiz-info">
-        <p class="question">{{ getCurrentQuestion.question }}</p>
-        <p class="score">Score {{score}} / {{questions.length}}</p>
+  <section class="quiz">
+    <div class="quiz__wrapper" v-if="!quizCompleted">
+      <div class="quiz__info">
+        <p class="quiz__question">{{ getCurrentQuestion.question }}</p>
+        <p class="quiz__score">Очки: {{ score }} / {{ questions.length }}</p>
       </div>
 
-      <div class="options">
-        <label :class="`option ${
+      <div class="quiz__options">
+        <label :class="`quiz__option quiz__option_${
 						getCurrentQuestion.selected == index
 							? index === getCurrentQuestion.answer
 								? 'correct'
@@ -20,22 +20,24 @@
 							: ''
 					}`"
                v-for="(option, index) in getCurrentQuestion.options" :key="index">
-          <input @change="setAnswer"
+          <input class="quiz__input" @change="setAnswer"
                  type="radio" :name="getCurrentQuestion.index"
                  :value="index" v-model="getCurrentQuestion.selected" :disabled="getCurrentQuestion.selected">
-          <span>{{option}}</span>
+          <span>{{ option }}</span>
         </label>
       </div>
 
-      <button @click="nextQuestion" :disabled="getCurrentQuestion.selected === null">
-        {{getCurrentQuestion.index === questions.length - 1 ? 'Finish' : getCurrentQuestion.selected === null ? 'Select an option' : 'Next question'}}
+      <button class="quiz__button" @click="nextQuestion" :disabled="getCurrentQuestion.selected === null">
+        {{
+          getCurrentQuestion.index === questions.length - 1 ? 'Закончить квиз' : getCurrentQuestion.selected === null ? 'Выбрать' : 'Следующий вопрос'
+        }}
       </button>
-    </section>
-    <section v-else>
-      <h2>You have finished the quiz</h2>
-      <p>Your score is {{score}} / {{questions.length}}</p>
-    </section>
-  </main>
+    </div>
+    <div v-else>
+      <h2>Вы закончили квиз</h2>
+      <p>Вас счет {{ score }} / {{ questions.length }}</p>
+    </div>
+  </section>
 </template>
 
 <script setup>
@@ -164,89 +166,93 @@ const nextQuestion = () => {
 
 </script>
 
-<style scoped>
-.app {
+<style lang="scss" scoped>
+.quiz {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 2rem;
   height: 100vh;
-}
-.quiz {
-  padding: 1rem;
-  width: 100%;
-  max-width: 640px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-.quiz-info {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-}
-.quiz-info .question {
-  color: #8F8F8F;
-  font-size: 1.25rem;
-  max-width: 450px;
-}
-.quiz-info.score {
-  color: #FFF;
-  font-size: 1.25rem;
-}
-.options {
-  margin-bottom: 1rem;
-}
-.option {
-  padding: 1rem;
-  display: block;
-  background-color: #cbc9c9;
-  margin-bottom: 0.5rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-}
-.option:hover {
-  background-color: #ffccf0;
-}
-.option.correct {
-  background-color: #2cce7d;
-}
-.option.wrong {
-  background-color: #ff5a5f;
-}
-.option:last-of-type {
-  margin-bottom: 0;
-}
-.option.disabled {
-  opacity: 0.5;
-}
-.option input {
-  display: none;
-}
-button {
-  appearance: none;
-  outline: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  background-color: #2cce7d;
-  color: #2d213f;
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 1.2rem;
-  border-radius: 0.5rem;
-}
-button:disabled {
-  opacity: 0.5;
-}
-h2 {
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  text-align: center;
-}
-p {
-  color: #8F8F8F;
-  font-size: 1.5rem;
-  text-align: center;
+
+  &__wrapper {
+    padding: 1rem;
+    width: 100%;
+    max-width: 640px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+
+  &__info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  &__question {
+    color: #8F8F8F;
+    font-size: 1.25rem;
+    max-width: 450px;
+  }
+
+  &__score {
+    color: #FFF;
+    font-size: 1.25rem;
+  }
+
+  &__options {
+    margin-bottom: 1rem;
+  }
+
+  &__option {
+    padding: 1rem;
+    display: block;
+    background-color: #cbc9c9;
+    margin-bottom: 0.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #ffccf0;
+    }
+
+    &_correct {
+      background-color: #2cce7d;
+    }
+
+    &_wrong {
+      background-color: #ff5a5f;
+    }
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+
+    &.disabled {
+      opacity: 0.5;
+    }
+  }
+
+  &__input {
+    display: none;
+  }
+
+  &__button {
+    appearance: none;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    background-color: #2cce7d;
+    color: #2d213f;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    border-radius: 0.5rem;
+
+    &:disabled {
+      opacity: 0.5;
+    }
+  }
 }
 </style>

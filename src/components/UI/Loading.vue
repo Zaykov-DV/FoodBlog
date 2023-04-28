@@ -7,6 +7,9 @@
 <style lang="scss">
 .loading {
   top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 10;
   height: 100%;
   width: 100%;

@@ -1,9 +1,31 @@
 .link {
-  cursor: pointer;
-  text-decoration: none;
-  text-transform: uppercase;
-  color: black;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  color: #333333;
+  transition: all 0.3s ease-in-out;
+  border-bottom: none;
+  
+  &:hover {
+    color: #000000;
+    border-bottom: 2px solid #000000;
+  }
 }
+
+.main-link {
+  border-bottom: none;
+  
+  .router-link-active {
+    border-bottom: none;
+  }
+}
+
+.router-link-active {
+  border-bottom: 2px solid #000000;
+}
+
 .link-light {
   color: #fff;
 }

@@ -3,6 +3,7 @@
     <div class="calc__container">
       <div class="calc__wrapper">
         <Modal v-if="modalActive" :modal-message="modalMessage" v-on:close-modal="closeModal"/>
+        <h4 class="calc__title">Калькулятор расчета желатина</h4>
         <form class="calc__form">
           <label for="#recipeBloom" class="calc__label">
             Сила желатина в рецепте
@@ -25,6 +26,7 @@
       </div>
 
       <div class="calc__wrapper">
+        <h4 class="calc__title">Пересчет на другую форму</h4>
         <form class="calc__form">
           <label for="#recipeDiameter" class="calc__label">
             Диаметр формы в рецепте:
@@ -38,9 +40,7 @@
         <p v-if="koefIngredients !== null">Коэффициент для рассчета ингридиентов <strong>{{ koefIngredients }}</strong>
         </p>
         <button @click="calcIngredients()">Рассчитать</button>
-
       </div>
-
     </div>
   </div>
 </template>
@@ -50,14 +50,14 @@ import Modal from "@/components/UI/Modal";
 
 import {ref} from 'vue'
 
-const recipeBloom = ref(0)
-const recipeWeight = ref(0)
-const currentBloom = ref(0)
-const currentWeight = ref(0)
+const recipeBloom = ref(null)
+const recipeWeight = ref(null)
+const currentBloom = ref(null)
+const currentWeight = ref(null)
 const modalActive = ref(false)
 const modalMessage = ref('Заполните поля')
-const recipeDiameter = ref(0)
-const ownDiameter = ref(0)
+const recipeDiameter = ref(null)
+const ownDiameter = ref(null)
 const koefIngredients = ref(0)
 
 
@@ -92,20 +92,35 @@ const calcIngredients = () => {
 .calc {
 
   &__container {
-    max-width: 1440px;
-    padding: 10%;
+    padding-bottom: 80px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
   }
 
   &__wrapper {
     min-width: 400px;
+    background: #E7F9FD;
+    border-radius: 60px;
+    padding: 40px;
+    box-shadow: 0 4px 6px -1px rgba(231, 249, 253, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
 
   &__label {
     display: flex;
     margin-bottom: 2px;
+  }
+
+  &__title {
+    margin-bottom: 20px;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -0.04em;
+    color: #000000;
+
   }
 }
 
@@ -123,6 +138,12 @@ const calcIngredients = () => {
     &__container {
       flex-direction: column;
     }
+  }
+}
+
+@media (max-width: 540px) {
+  .calc__container {
+    padding: 20px 20px 40px;
   }
 }
 </style>

@@ -1,151 +1,385 @@
 <template>
-  <div class="blog-wrapper " :class="{'no-user' : !user}" >
-    <div class="blog-content">
-      <div class="post">
-        <h2 v-if="post.welcomeScreen">{{ post.title }}</h2>
-        <h2 v-else>{{ post.blogTitle }}</h2>
-
-        <p v-if="post.welcomeScreen">{{ post.blogPost }}</p>
-
-        <router-link v-if="post.welcomeScreen" class="link link-light" :to="{ name: 'Login' }">
-          Login / Register
-          <SvgIcon name="arrow-right-light" class="arrow arrow-light" />
-        </router-link>
-
-        <router-link v-else class="link" :to="{name: 'ViewBlog', params: { blogid: post.blogID }}">
-          View The Post
-          <SvgIcon name="arrow-right-light" class="arrow" />
-        </router-link>
+  <div class="post">
+    <div class="post__container">
+      <div class="post__block">
+        <h2 class="post__title">{{ post.blogTitle }}</h2>
+        <p class="post__descr" v-if="post.blogDescr">{{post.blogDescr}}</p>
+        <div class="post__labels">
+          <div class="post__label" v-if="post.blogCookingTime">
+            <SvgIcon class="post__label-icon" name="timer"/>
+            <span>{{post.blogCookingTime}} минут</span>
+          </div>
+          <div class="post__label">
+            <SvgIcon class="post__label-icon" name="category"/>
+            <span>{{ blogCategory() }}</span>
+          </div>
+        </div>
+        <div class="post__footer">
+          <div class="post__author">
+            <div class="post__author-avatar">
+              <div class="post__author-avatar-img" v-if="!post.blogAuthor"></div>
+              <h5 v-else>{{ authorInitials() }}</h5>
+            </div>
+            <div class="post__author-info">
+              <h4 class="post__author-name" v-if="!post.blogAuthor">Best Home Chief</h4>
+              <h4 class="post__author-name" v-else>{{ post.blogAuthor }}</h4>
+              <p class="post__date">{{ new Date(post.blogDate).toLocaleString("ru-RU", { year: 'numeric', month: 'long', day: 'numeric'}) }}</p>
+            </div>
+          </div>
+          <router-link class="post__link" :to="{name: 'ViewBlog', params: { blogid: post.blogID }}">
+            View The Post
+            <SvgIcon name="arrow-right-light" class="post__link-icon"/>
+          </router-link>
+        </div>
       </div>
-    </div>
-    <div class="blog-photo">
-      <img v-if="post.welcomeScreen" :src="require(`../assets/blogPhotos/${post.photo}.jpg`)" alt="welcome-img">
-      <img v-else :src="post.blogCoverPhoto" :alt="post.blogCoverPhoto">
+      <div class="post__block">
+        <div class="post__image" :style="{ backgroundImage: `url('` + post.blogCoverPhoto + `')` }"></div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import {defineProps, computed} from "vue";
-import { useStore } from "vuex";
+import {defineProps} from "vue";
+import {useStore} from "vuex";
 import SvgIcon from "./UI/SvgIcon";
 
 const store = useStore()
-defineProps(['post'])
+const props = defineProps(['post'])
 
-const user = computed(() => {
-  return store.state.user
-});
+
+const blogCategory = () => {
+  for (let category of store.state.categories) {
+    if (props.post.selectedCategory === category.id)
+      return category.category
+  }
+}
+
+const authorInitials = () => {
+  return props.post.blogAuthor.split(/\s+/).map((name) => name.substring(0,1).toUpperCase()).join('')
+}
 
 </script>
 
 <style lang="scss" scoped>
 
-.blog-wrapper {
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+.post {
+  width: 100%;
 
-  &:nth-child(even) {
-    .blog-content {
-      order: 2
+  &__container {
+    display: grid;
+    grid-template-columns: repeat(1, 50%);
+    background: #E7FAFE;
+    border-radius: 30px;
+    align-items: center;
+    min-height: 600px;
+    max-height: 600px;
+  }
+
+  &__title {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 64px;
+    line-height: 77px;
+    letter-spacing: -0.04em;
+    color: #000000;
+    margin-bottom: 24px;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__descr {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    color: rgba(0, 0, 0, 0.6);
+    margin-bottom: 24px;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__block {
+
+    &:first-child {
+      grid-column: 1/2;
+      padding: 50px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
     }
-    .blog-photo {
-      order: 1;
+
+    &:last-child {
+      grid-column: 2/2;
+      height: 100%;
     }
   }
 
-  @media (min-width: 700px) {
-    min-height: 650px;
-    max-height: 650px;
-    flex-direction: row;
+  &__labels {
+    display: flex;
+    align-items: center;
+    gap: 16px;
   }
 
-  .blog-content {
+  &__label {
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 30px;
+    min-width: 140px;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    letter-spacing: -0.02em;
+    color: rgba(0, 0, 0, 0.6);
+    gap: 10px;
+
+    span {
+      white-space: nowrap;
+    }
+  }
+
+  &__footer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 100px;
+  }
+
+  &__author {
+    display: flex;
+  }
+
+  &__author-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+    overflow: hidden;
+    background-color: #000000;
+    color: #ffffff;
+  }
+
+  &__author-avatar-img {
+    width: 50px;
+    height: 50px;
+    background: url("../assets/images/sticker.png") no-repeat center/cover;
+  }
+
+  &__author-info {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+  }
+
+  &__author-name {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+    letter-spacing: -0.02em;
+    color: #000000;
+  }
+
+  &__date {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    letter-spacing: -0.02em;
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  &__link {
+    display: flex;
     align-items: center;
-    flex: 4;
-    order: 2;
-    @media (min-width: 700px) {
-      order: 1;
-    }
-
-    @media (min-width: 800px) {
-      flex: 3;
-    }
-
-    .post {
-      max-width: 375px;
-      padding: 72px 24px;
-
-      @media (min-width: 700px) {
-        padding: 0 24px;
-      }
-
-      h2 {
-        margin-bottom: 24px;
-      }
-
-      .content-preview {
-        font-size: 14px;
-        max-height: 24px;
-        max-width: 250px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      .link {
-        display: inline-flex;
-        align-items: center;
-        margin-top: 32px;
-        padding-bottom: 4px;
-        border-bottom: 1px solid transparent;
-        transition: .5s ease all;
-
-        &:hover {
-          border-bottom-color: #303030;
-        }
-      }
-
-      .link-light {
-        &:hover {
-          border-bottom-color: #fff;
-        }
-      }
-    }
+    justify-content: center;
+    padding: 20px 35px;
+    background-color: #000000;
+    color: #fff;
+    fill: #fff;
+    border-radius: 16px;
   }
 
-  .blog-photo {
-    order: 1;
-    flex: 3;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-
-    @media (min-width: 700px) {
-      order: 2;
-    }
-
-    @media (min-width: 800px) {
-      flex: 4;
-    }
-
-    img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+  &__link-icon {
+    margin-left: 10px;
+    width: 18px;
+    height: 18px;
   }
 
+  &__image {
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+  }
 }
 
-.no-user {
-  &:first-child {
-    .blog-content {
-      background: #000;
-      color: #fff;
+@media (max-width: 1280px) {
+  .post {
+    &__title {
+      font-size: 40px;
+      line-height: 42px;
+    }
+
+    &__blog {
+      padding: 40px;
+      height: 100%;
+      align-items: flex-start;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    &__footer {
+      flex-direction: column;
+      align-items: flex-start;
+      margin-top: 40px;
+    }
+
+    &__author {
+      margin-bottom: 20px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .post {
+    &__container {
+      display: flex;
+      flex-direction: column;
+      max-height: 100%;
+    }
+
+    &__block:first-child {
+      padding: 25px;
+      width: 100%;
+    }
+
+    &__block:last-child {
+      height: 280px;
+      width: 100%;
+    }
+
+    &__title {
+      font-size: 30px;
+      line-height: 32px;
+      text-align: left;
+    }
+
+    &__image {
+      border-top-right-radius: 0;
+      border-bottom-left-radius: 30px;
+      min-height: 280px;
+    }
+  }
+}
+
+@media (max-width: 540px) {
+  .post {
+
+    &__container {
+      min-height: auto;
+    }
+
+    &__block {
+      min-height: 100%;
+    }
+
+    &__label {
+      padding: 8px 12px;
+      font-size: 10px;
+      min-width: auto;
+      gap: 5px;
+    }
+
+    &__label-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    &__link {
+      padding: 11px 18px;
+      font-size: 12px;
+      line-height: 0;
+    }
+
+    &__link-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    &__descr {
+      line-height: 20px;
+      -webkit-line-clamp: 2;
+      margin-bottom: 10px;
+    }
+
+    &__block:first-child {
+      padding: 20px;
+      height: 282px;
+    }
+
+    &__block:last-child {
+      height: 200px;
+      width: 100%;
+    }
+
+    &__image {
+      min-height: 200px;
+    }
+
+    &__title {
+      font-size: 24px;
+      line-height: 24px;
+      margin-bottom: 10px;
+    }
+
+    &__footer {
+      margin-top: 15px;
+    }
+
+    &__author {
+      margin-bottom: 15px;
+    }
+
+    &__author-avatar {
+      min-width: 35px;
+      width: 35px;
+      height: 35px;
+    }
+
+    &__author-avatar-img {
+      width: 35px;
+      height: 35px;
+    }
+
+    &__author-name {
+      font-size: 14px;
+    }
+
+    &__date {
+      font-size: 14px;
     }
   }
 }
