@@ -246,7 +246,7 @@ onMounted(() => {
     left: 0;
     z-index: 1;
     padding: 20px;
-    width: 70%;
+    width: 50%;
     max-width: 250px;
     display: flex;
     flex-direction: column;

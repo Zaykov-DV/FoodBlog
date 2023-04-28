@@ -196,13 +196,20 @@ const handleClick = (id) => {
     }
 
     &__item {
-      max-width: 100%;
-      min-width: 100%;
+      max-width: unset;
+      min-width: unset;
     }
 
     &__item-img {
       width: 80px;
       height: 80px;
+    }
+
+    &__btn {
+      height: 32px;
+      width: 240px;
+      font-size: 14px;
+      line-height: 0;
     }
   }
 }

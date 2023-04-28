@@ -6,11 +6,11 @@
         <p class="post__descr" v-if="post.blogDescr">{{post.blogDescr}}</p>
         <div class="post__labels">
           <div class="post__label" v-if="post.blogCookingTime">
-            <SvgIcon name="timer"/>
+            <SvgIcon class="post__label-icon" name="timer"/>
             <span>{{post.blogCookingTime}} минут</span>
           </div>
           <div class="post__label">
-            <SvgIcon name="category"/>
+            <SvgIcon class="post__label-icon" name="category"/>
             <span>{{ blogCategory() }}</span>
           </div>
         </div>
@@ -23,7 +23,7 @@
             <div class="post__author-info">
               <h4 class="post__author-name" v-if="!post.blogAuthor">Best Home Chief</h4>
               <h4 class="post__author-name" v-else>{{ post.blogAuthor }}</h4>
-              <p>{{ new Date(post.blogDate).toLocaleString("ru-RU", { year: 'numeric', month: 'long', day: 'numeric'}) }}</p>
+              <p class="post__date">{{ new Date(post.blogDate).toLocaleString("ru-RU", { year: 'numeric', month: 'long', day: 'numeric'}) }}</p>
             </div>
           </div>
           <router-link class="post__link" :to="{name: 'ViewBlog', params: { blogid: post.blogID }}">
@@ -145,9 +145,14 @@ const authorInitials = () => {
     letter-spacing: -0.02em;
     color: rgba(0, 0, 0, 0.6);
     gap: 10px;
+
+    span {
+      white-space: nowrap;
+    }
   }
 
   &__footer {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -272,12 +277,8 @@ const authorInitials = () => {
     }
 
     &__block:last-child {
-      height: 260px;
+      height: 280px;
       width: 100%;
-    }
-
-    &__labels {
-      flex-wrap: wrap;
     }
 
     &__title {
@@ -296,11 +297,89 @@ const authorInitials = () => {
 
 @media (max-width: 540px) {
   .post {
+
+    &__container {
+      min-height: auto;
+    }
+
     &__block {
       min-height: 100%;
     }
 
-    &__container {
+    &__label {
+      padding: 8px 12px;
+      font-size: 10px;
+      min-width: auto;
+      gap: 5px;
+    }
+
+    &__label-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    &__link {
+      padding: 11px 18px;
+      font-size: 12px;
+      line-height: 0;
+    }
+
+    &__link-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    &__descr {
+      line-height: 20px;
+      -webkit-line-clamp: 2;
+      margin-bottom: 10px;
+    }
+
+    &__block:first-child {
+      padding: 20px;
+      height: 282px;
+    }
+
+    &__block:last-child {
+      height: 200px;
+      width: 100%;
+    }
+
+    &__image {
+      min-height: 200px;
+    }
+
+    &__title {
+      font-size: 24px;
+      line-height: 24px;
+      margin-bottom: 10px;
+    }
+
+    &__footer {
+      margin-top: 15px;
+    }
+
+    &__author {
+      margin-bottom: 15px;
+    }
+
+    &__author-avatar {
+      min-width: 35px;
+      width: 35px;
+      height: 35px;
+    }
+
+    &__author-avatar-img {
+      width: 35px;
+      height: 35px;
+    }
+
+    &__author-name {
+      font-size: 14px;
+    }
+
+    &__date {
+      font-size: 14px;
     }
   }
 }
