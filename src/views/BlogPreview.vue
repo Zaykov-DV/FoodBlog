@@ -29,29 +29,29 @@
 
 <script setup>
 import {computed} from "vue";
-import { useStore } from "vuex";
 
-const store = useStore()
+import { useBlogsStore } from '@/stores/blogs-store'
+const blogsStore = useBlogsStore()
 
 const blogTitle = computed(() => {
-  return store.state.blogTitle;
+  return blogsStore.blogTitle;
 })
 
 const blogDescr = computed(() => {
-  return store.state.blogDescr;
+  return blogsStore.blogDescr;
 })
 
 const blogHTML= computed(() => {
-  return store.state.blogHTML;
+  return blogsStore.blogHTML;
 })
 
 const blogCookingTime= computed(() => {
-  return store.state.blogCookingTime;
+  return blogsStore.blogCookingTime;
 })
 
 const blogCategory = () => {
-  for (let category of store.state.categories) {
-    if (store.state.selectedCategory === category.id)
+  for (let category of blogsStore.categories) {
+    if (blogsStore.selectedCategory === category.id)
       return category.category
   }
 }

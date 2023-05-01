@@ -1,8 +1,8 @@
 <template>
   <div class="create-post">
     <div class="create-post__container">
-      <Modal v-if="store.state.blogPhotoPreview" modalSize="l'" v-on:close-modal="closeBlogPhotoPreviewModal">
-        <img :src="store.state.blogPhotoFileURL" :alt="store.state.blogPhotoFileURL"/>
+      <Modal v-if="blogsStore.blogPhotoPreview" modalSize="l'" v-on:close-modal="closeBlogPhotoPreviewModal">
+        <img :src="blogsStore.blogPhotoFileURL" :alt="blogsStore.blogPhotoFileURL"/>
       </Modal>
       <Loading v-if="loading"/>
       <div class="create-post__content">
@@ -14,11 +14,11 @@
               <input class="create-post__uploader-input" type="file" ref="blogPhoto" id="blog-photo"
                      @change="fileChange" accept=".png, .jpg, ,jpeg"/>
               <button @click="openPreview" class="create-post__btn-preview"
-                      :disabled="!store.state.blogPhotoFileURL"
-                      :class="{ 'button-inactive': !store.state.blogPhotoFileURL }">
+                      :disabled="!blogsStore.blogPhotoFileURL"
+                      :class="{ 'button-inactive': !blogsStore.blogPhotoFileURL }">
                 Посмотреть обложку
               </button>
-              <span>Выбранный файл: {{ store.state.blogPhotoName }}</span>
+              <span>Выбранный файл: {{ blogsStore.blogPhotoName }}</span>
             </div>
           </div>
           <div class="create-post__description">
@@ -35,7 +35,7 @@
               <span>Выберите категорию</span>
               <select class="create-post__select" v-model="selectedCategory">
                 <option disabled value="0">Все категории</option>
-                <option v-for="category in store.state.categories"
+                <option v-for="category in blogsStore.categories"
                         :key="category.id"
                         :value="category.id"
                         :selected="category.category">
@@ -76,12 +76,10 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import BlotFormatter from "quill-blot-formatter";
 
 import {ref, computed, onMounted} from 'vue'
-import {useStore} from 'vuex'
 import {useRouter} from 'vue-router'
 import Modal from "../components/UI/Modal";
 import BlogPreview from "./BlogPreview";
 
-const store = useStore()
 const router = useRouter()
 
 const editor = ref('')
@@ -96,9 +94,11 @@ const editorSettings = ref({
   options: {/* options */}
 })
 
+import { useBlogsStore } from '@/stores/blogs-store'
+const blogsStore = useBlogsStore()
 
 const closeBlogPhotoPreviewModal = () => {
-  store.commit('openPhotoPreview')
+  blogsStore.openPhotoPreview()
 }
 
 const handlePreview = () => {
@@ -108,16 +108,16 @@ const handlePreview = () => {
 const fileChange = () => {
   file.value = blogPhoto.value.files[0];
   const fileName = file.value.name;
-  store.commit("fileNameChange", fileName);
-  store.commit("createFileURL", URL.createObjectURL(file.value));
+  blogsStore.fileNameChange(fileName)
+  blogsStore.createFileURL(URL.createObjectURL(file.value))
 }
 
 const openPreview = () => {
-  store.commit('openPhotoPreview');
+  blogsStore.openPhotoPreview()
 }
 
 const clearPost = () => {
-  store.commit('clearBlogState');
+  blogsStore.clearBlogState()
 }
 
 const checkTerms = computed(() => {
@@ -130,7 +130,7 @@ const uploadBlog = () => {
     if (file.value) {
       loading.value = true;
       const storageRef = firebase.storage().ref();
-      const docRef = storageRef.child(`documents/BlogCoverPhotos/${store.state.blogPhotoName}`);
+      const docRef = storageRef.child(`documents/BlogCoverPhotos/${blogsStore.blogPhotoName}`);
       docRef.put(file.value).on(
           "state_changed",
           (snapshot) => {
@@ -158,7 +158,7 @@ const uploadBlog = () => {
               categoryID: selectedCategory.value,
               blogAuthor: authorName()
             });
-            await store.dispatch("getPost");
+            await blogsStore.getPost;
             loading.value = false;
             await router.push({name: "ViewBlog", params: {blogid: dataBase.id}});
             clearPost()
@@ -179,25 +179,24 @@ const uploadBlog = () => {
 }
 
 
-// computed
-
-
+import { useAuthUserStore } from '@/stores/auth-user'
+const authUserStore = useAuthUserStore()
 
 const profileId = computed(() => {
-  return store.state.profileId
+  return authUserStore.profileId
 })
 
 const blogCoverPhotoName = computed(() => {
-  return store.state.blogPhotoName
+  return blogsStore.blogPhotoName
 })
 
 const selectedCategory = computed(
     {
       get() {
-        return store.state.selectedCategory;
+        return blogsStore.selectedCategory;
       },
       set(payload) {
-        store.commit("updateBlogCategory", payload);
+        blogsStore.updateBlogCategory(payload)
       }
     }
 )
@@ -205,10 +204,10 @@ const selectedCategory = computed(
 const blogTitle = computed(
     {
       get() {
-        return store.state.blogTitle;
+        return blogsStore.blogTitle;
       },
       set(payload) {
-        store.commit("updateBlogTitle", payload);
+        blogsStore.updateBlogTitle(payload)
       },
     }
 )
@@ -216,10 +215,10 @@ const blogTitle = computed(
 const blogDescr = computed(
     {
       get() {
-        return store.state.blogDescr;
+        return blogsStore.blogDescr;
       },
       set(payload) {
-        store.commit("updateBlogDescr", payload);
+        blogsStore.updateBlogDescr(payload)
       },
     }
 )
@@ -227,10 +226,10 @@ const blogDescr = computed(
 const blogHTML = computed(
     {
       get() {
-        return store.state.blogHTML;
+        return blogsStore.blogHTML;
       },
       set(payload) {
-        store.commit("newBlogPost", payload);
+        blogsStore.newBlogPost(payload)
       },
     }
 )
@@ -238,16 +237,16 @@ const blogHTML = computed(
 const blogCookingTime = computed(
     {
       get() {
-        return store.state.blogCookingTime;
+        return blogsStore.blogCookingTime;
       },
       set(payload) {
-        store.commit("updateBlogCookingTime", payload);
+        blogsStore.updateBlogCookingTime(payload)
       },
     }
 )
 
 const authorName = () => {
-  return store.state.profileFirstName + ' ' + store.state.profileLastName
+  return authUserStore.profileFirstName + ' ' + authUserStore.profileLastName
 }
 
 onMounted(() => {
@@ -349,4 +348,7 @@ onMounted(() => {
   }
 }
 
+.ql-container {
+  flex: 1;
+}
 </style>

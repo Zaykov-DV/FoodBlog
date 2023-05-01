@@ -8,9 +8,9 @@
       <div class="blog-categories__items">
         <div @click="handleClick(blogCategory.id)" v-for="blogCategory in blogCategories" :key="blogCategory.id"
              class="blog-categories__item"
-             :class="`blog-categories__item_${blogCategory.image}`">
+             :class="`blog-categories__item_${blogCategory.id}`">
           <img class="blog-categories__item-img"
-               :src="require(`../assets/images/categories/${blogCategory.image}.png`)" :alt="blogCategory.image">
+               :src="require(`../assets/images/categories/${blogCategory.image}.svg`)" :alt="blogCategory.image">
           <h4 class="blog-categories__item-title">{{ blogCategory.category }}</h4>
         </div>
       </div>
@@ -21,20 +21,20 @@
 <script setup>
 
 import {computed} from "vue";
-import {useStore} from "vuex";
 import {useRouter} from "vue-router";
 
-const store = useStore()
+import { useBlogsStore } from '@/stores/blogs-store'
+const blogsStore = useBlogsStore()
 
 const blogCategories = computed(() => {
-  return store.getters.getBlogCategories;
+  return blogsStore.getBlogCategories;
 });
 
 const router = useRouter()
 
 const handleClick = (id) => {
   router.push('Blogs')
-  store.state.navigateToCategory = id
+  blogsStore.navigateToCategory = id
 }
 
 </script>
@@ -97,27 +97,27 @@ const handleClick = (id) => {
     border-radius: 30px;
     padding-bottom: 30px;
 
-    &_breakfast {
+    &_1, &_7 {
       background: linear-gradient(180deg, rgba(112, 130, 70, 0) 0%, rgba(112, 130, 70, 0.1) 100%);
     }
 
-    &_salad {
+    &_2, &_8 {
       background: linear-gradient(180deg, rgba(108, 198, 63, 0) 0%, rgba(108, 198, 63, 0.1) 100%);
     }
 
-    &_meat {
+    &_3, &_9 {
       background: linear-gradient(180deg, rgba(204, 38, 27, 0) 0%, rgba(204, 38, 27, 0.1) 100%);
     }
 
-    &_tort {
+    &_4, &_10 {
       background: linear-gradient(180deg, rgba(240, 158, 0, 0) 0%, rgba(240, 158, 0, 0.1) 100%);
     }
 
-    &_lunch {
-      background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.05) 100%);
+    &_5, &_11 {
+      background: linear-gradient(180deg, rgba(0, 31, 255, 0) 0%, rgba(0, 31, 255, 0.05) 100%);
     }
 
-    &_chocolate {
+    &_6, &_12 {
       background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.05) 100%);
     }
   }

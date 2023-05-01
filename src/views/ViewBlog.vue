@@ -31,24 +31,24 @@
 <script setup>
 
 import { onMounted, ref} from "vue";
-import {useStore} from 'vuex'
 import {useRoute} from 'vue-router'
 import SvgIcon from "../components/UI/SvgIcon";
+import { useBlogsStore } from '@/stores/blogs-store'
 
-const store = useStore()
+const blogsStore = useBlogsStore()
 const route = useRoute()
 
 const currentBlog = ref(null);
 
 const blogCategory = () => {
-  for (let category of store.state.categories) {
+  for (let category of blogsStore.categories) {
     if (currentBlog.value[0].selectedCategory === category.id)
       return category.category
   }
 }
 
 onMounted(async () => {
-  currentBlog.value = await store.state.blogPosts.filter((post) => {
+  currentBlog.value = await blogsStore.blogPosts.filter((post) => {
     return post.blogID === route.params.blogid;
   });
 })

@@ -4,7 +4,7 @@
     <div class="profile__container">
       <h2 class="profile__title">Настройки аккаунта</h2>
       <div class="profile__info">
-        <div class="profile__initials">{{ store.state.profileInitials }}</div>
+        <div class="profile__initials">{{ authUserStore.profileInitials }}</div>
         <div class="profile__admin-badge">
           <SvgIcon name="user-crown-light"/>
           <span>админ</span>
@@ -35,16 +35,16 @@
 import Modal from "../components/UI/Modal";
 
 import {ref, computed} from 'vue'
-import {useStore} from 'vuex'
 import SvgIcon from "../components/UI/SvgIcon";
-
-const store = useStore()
 
 const modalMessage = ref("Changes were saved!")
 const modalActive = ref(null)
 
+import { useAuthUserStore } from '@/stores/auth-user'
+const authUserStore = useAuthUserStore()
+
 const updateProfile = () => {
-  store.dispatch("updateUserSettings");
+  authUserStore.updateUserSettings()
   modalActive.value = !modalActive.value
 }
 const closeModal = () => {
@@ -53,33 +53,33 @@ const closeModal = () => {
 
 const firstName = computed({
   get() {
-    return store.state.profileFirstName;
+    return authUserStore.profileFirstName;
   },
   set(payload) {
-    store.commit("changeFirstName", payload);
+    authUserStore.changeFirstName(payload)
   }
 })
 
 const lastName = computed({
   get() {
-    return store.state.profileLastName;
+    return authUserStore.profileLastName;
   },
   set(payload) {
-    store.commit("changeLastName", payload);
+    authUserStore.changeLastName(payload)
   },
 })
 
 const userName = computed({
   get() {
-    return store.state.profileUserName;
+    return authUserStore.profileUserName;
   },
   set(payload) {
-    store.commit("changeUserName", payload);
+    authUserStore.changeUserName(payload)
   }
 })
 
 const email = computed(() => {
-  return store.state.profileEmail;
+  return authUserStore.profileEmail;
 });
 
 </script>

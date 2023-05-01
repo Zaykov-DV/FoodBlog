@@ -1,8 +1,8 @@
 <template>
   <div class="create-post">
     <div class="create-post__container">
-      <Modal v-if="store.state.blogPhotoPreview" modalSize="l'" v-on:close-modal="closeBlogPhotoPreviewModal">
-        <img :src="store.state.blogPhotoFileURL" :alt="store.state.blogPhotoFileURL"/>
+      <Modal v-if="blogsStore.blogPhotoPreview" modalSize="l'" v-on:close-modal="closeBlogPhotoPreviewModal">
+        <img :src="blogsStore.blogPhotoFileURL" :alt="blogsStore.blogPhotoFileURL"/>
       </Modal>
       <Loading v-if="loading"/>
       <div class="create-post__content">
@@ -14,11 +14,11 @@
               <input class="create-post__uploader-input" type="file" ref="blogPhoto" id="blog-photo"
                      @change="fileChange" accept=".png, .jpg, ,jpeg"/>
               <button @click="openPreview" class="create-post__btn-preview"
-                      :disabled="!store.state.blogPhotoFileURL"
-                      :class="{ 'button-inactive': !store.state.blogPhotoFileURL }">
+                      :disabled="!blogsStore.blogPhotoFileURL"
+                      :class="{ 'button-inactive': !blogsStore.blogPhotoFileURL }">
                 Посмотреть обложку
               </button>
-              <span>Выбранный файл: {{ store.state.blogPhotoName }}</span>
+              <span>Выбранный файл: {{ blogsStore.blogPhotoName }}</span>
             </div>
           </div>
           <div class="create-post__description">
@@ -35,7 +35,7 @@
               <span>Выберите категорию</span>
               <select class="create-post__select" v-model="selectedCategory">
                 <option disabled value="0">Все категории</option>
-                <option v-for="category in store.state.categories"
+                <option v-for="category in blogsStore.categories"
                         :key="category.id"
                         :value="category.id"
                         :selected="selectedCategory">
@@ -46,13 +46,13 @@
 
             <div>
               <input class="create-post__input" type="number" placeholder="Введите время готовки"
-                     v-model="blogCookingTime"/>
+                     v-model="blogsStore.blogCookingTime"/>
             </div>
           </div>
         </div>
         <div class="create-post__actions">
-          <button @click="updateBlog">Сохранить изменения</button>
-          <Modal v-if="modalActive" v-on:close-modal="handlePreview" :modal-title="'Превью поста'" :modal-size="'xl'">
+          <button @click="updateBlog" :class="{ 'button-inactive': !checkTerms }" :disabled="!checkTerms">Сохранить изменения</button>
+          <Modal v-if="modalActive" v-on:close-modal="handlePreview" :modal-title="'Превью поста'" :modal-size="'xl'" :class="{ 'button-inactive': !checkTerms }" :disabled="!checkTerms">
             <BlogPreview/>
           </Modal>
           <button @click="handlePreview">Посмотреть изменения</button>
@@ -77,12 +77,12 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import BlotFormatter from 'quill-blot-formatter/dist/BlotFormatter';
 
 import {ref, computed, onMounted} from 'vue'
-import {useStore} from 'vuex'
 import {useRouter, useRoute} from 'vue-router'
 import Modal from "../components/UI/Modal";
 import BlogPreview from "./BlogPreview";
+import { useBlogsStore } from '@/stores/blogs-store'
 
-const store = useStore()
+const blogsStore = useBlogsStore()
 const router = useRouter()
 const route = useRoute()
 
@@ -99,40 +99,47 @@ const editorSettings = ref({
 
 const blogPhoto = ref(null)
 const modalActive = ref(false)
+
+
 const handlePreview = () => {
   modalActive.value = !modalActive.value
 }
+
 onMounted(async () => {
   routeID.value = route.params.blogid;
-  currentBlog.value = await store.state.blogPosts.filter((post) => {
+  currentBlog.value = await blogsStore.blogPosts.filter((post) => {
     return post.blogID === routeID.value;
   });
-  store.commit("setBlogState", currentBlog.value[0]);
+  blogsStore.setBlogState(currentBlog.value[0])
 })
 
 // methods
 const fileChange = () => {
   file.value = blogPhoto.value.files[0];
   const fileName = file.value.name;
-  store.commit("fileNameChange", fileName);
-  store.commit("createFileURL", URL.createObjectURL(file.value));
+  blogsStore.fileNameChange(fileName)
+  blogsStore.createFileURL(URL.createObjectURL(file.value))
 }
 
 const openPreview = () => {
-  store.commit('openPhotoPreview');
+  blogsStore.openPhotoPreview()
 }
 
 const closeBlogPhotoPreviewModal = () => {
-  store.commit('openPhotoPreview')
+  blogsStore.openPhotoPreview()
 }
+
+const checkTerms = computed(() => {
+  return blogTitle.value.length !== 0 && blogHTML.value.length !== 0 && selectedCategory.value !== 0 && blogCookingTime.value
+})
 
 const updateBlog = async () => {
   const dataBase = await db.collection("blogPosts").doc(routeID.value);
-  if (blogTitle.value.length !== 0 && blogHTML.value.length !== 0 && selectedCategory.value !== 0) {
+  if (checkTerms.value) {
     if (file.value) {
       loading.value = true;
       const storageRef = firebase.storage().ref();
-      const docRef = storageRef.child(`documents/BlogCoverPhotos/${store.state.blogPhotoName}`);
+      const docRef = storageRef.child(`documents/BlogCoverPhotos/${blogsStore.blogPhotoName}`);
       docRef.put(file.value).on(
           "state_changed",
           (snapshot) => {
@@ -154,9 +161,11 @@ const updateBlog = async () => {
               blogCookingTime: blogCookingTime.value,
               categoryID: selectedCategory.value
             });
-            await store.dispatch("updatePost", routeID.value);
-            loading.value = false;
-            await router.push({name: "ViewBlog", params: {blogid: dataBase.id}});
+            await blogsStore.updatePost(routeID.value)
+                .then(() => {
+                  loading.value = false;
+                  router.push({name: "ViewBlog", params: {blogid: dataBase.id}});
+                })
           }
       );
       return;
@@ -170,9 +179,12 @@ const updateBlog = async () => {
       blogCookingTime: blogCookingTime.value,
       categoryID: selectedCategory.value
     });
-    await store.dispatch("updatePost", routeID.value);
-    loading.value = false;
-    await router.push({name: "ViewBlog", params: {blogid: dataBase.id}});
+    await blogsStore.updatePost(routeID.value)
+        .then(() => {
+      loading.value = false;
+      router.push({name: "ViewBlog", params: {blogid: dataBase.id}});
+    })
+
     return;
   }
   error.value = true;
@@ -183,51 +195,51 @@ const updateBlog = async () => {
 
 
 const blogCoverPhotoName = computed(() => {
-  return store.state.blogPhotoName
+  return blogsStore.blogPhotoName
 })
 
 const blogTitle = computed({
   get() {
-    return store.state.blogTitle;
+    return blogsStore.blogTitle;
   },
   set(payload) {
-    store.commit("updateBlogTitle", payload);
+    blogsStore.updateBlogTitle(payload);
   },
 })
 
 const blogDescr = computed({
   get() {
-    return store.state.blogDescr;
+    return blogsStore.blogDescr;
   },
   set(payload) {
-    store.commit("updateBlogDescr", payload);
+    blogsStore.updateBlogDescr(payload);
   },
 })
 
 const blogHTML = computed({
   get() {
-    return store.state.blogHTML;
+    return blogsStore.blogHTML;
   },
   set(payload) {
-    store.commit("newBlogPost", payload);
+    blogsStore.newBlogPost(payload);
   },
 })
 
 const selectedCategory = computed({
   get() {
-    return store.state.selectedCategory;
+    return blogsStore.selectedCategory;
   },
   set(payload) {
-    store.commit("updateBlogCategory", payload);
+    blogsStore.updateBlogCategory(payload);
   }
 })
 
 const blogCookingTime = computed({
   get() {
-    return store.state.blogCookingTime;
+    return blogsStore.blogCookingTime;
   },
   set(payload) {
-    store.commit("updateBlogCookingTime", payload);
+    blogsStore.updateBlogCookingTime(payload);
   },
 })
 </script>

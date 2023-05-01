@@ -31,23 +31,25 @@
 import SvgIcon from "./UI/SvgIcon";
 
 import {defineProps, computed} from "vue";
-import { useStore } from "vuex";
+
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const store = useStore()
+
+import { useBlogsStore } from '@/stores/blogs-store'
+const blogsStore = useBlogsStore()
 
 const props = defineProps(['post'])
 
 const deletePost = () => {
-  store.dispatch('deletePost', props.post.blogID)
+  blogsStore.deletePost(props.post.blogID)
 }
 const editBlog = () => {
   router.push({name: 'EditPost', params: { blogid: props.post.blogID }})
 }
 
 const editPost = computed(() => {
-  return store.state.editPost
+  return blogsStore.editPost
 });
 
 </script>

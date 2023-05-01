@@ -29,5 +29,16 @@ module.exports = {
         .rule('svg-sprite')
         .use('svgo-loader')
         .loader('svgo-loader')
+  },
+  configureWebpack: {
+    module: {
+      rules: [
+        {
+          test: /\.mjs$/,
+          include: /node_modules/,
+          type: 'javascript/auto'
+        }
+      ]
+    }
   }
 }

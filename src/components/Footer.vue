@@ -44,13 +44,13 @@
 
 <script setup>
 import {computed} from "vue";
-import {useStore} from "vuex";
 import SvgIcon from "./UI/SvgIcon";
 
-const store = useStore()
+import { useAuthUserStore } from '@/stores/auth-user'
+const authUserStore = useAuthUserStore()
 
 const user = computed(() => {
-  return store.state.user;
+  return authUserStore.user;
 });
 
 // const admin = computed(() => {

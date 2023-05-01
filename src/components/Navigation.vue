@@ -14,18 +14,18 @@
       <div v-if="user" class="navigation__profile-wrapper">
         <router-link v-if="user && !mobile" class="navigation__link" :to="{ name: 'CreatePost' }">Добавить пост</router-link>
         <div class="navigation__profile" @click="toggleProfileMenu" ref="profile">
-          <span>{{store.state.profileInitials}}</span>
+          <span>{{authUserStore.profileInitials}}</span>
         </div>
         <div v-show="profileMenu" class="navigation__profile-menu">
           <div class="navigation__profile-info-wrapper">
             <div class="navigation__profile-initials">
-              <span>{{store.state.profileInitials}}</span>
+              <span>{{authUserStore.profileInitials}}</span>
             </div>
             <div class="navigation__profile-info">
-              <p class="navigation__text navigation__text_m">{{ store.state.profileFirstName }}
-                {{ store.state.profileLastName }}</p>
-              <p class="navigation__text">{{ store.state.profileUserName }}</p>
-              <p class="navigation__text">{{ store.state.profileEmail }}</p>
+              <p class="navigation__text navigation__text_m">{{ authUserStore.profileFirstName }}
+                {{ authUserStore.profileLastName }}</p>
+              <p class="navigation__text">{{ authUserStore.profileUserName }}</p>
+              <p class="navigation__text">{{ authUserStore.profileEmail }}</p>
             </div>
           </div>
           <div class="navigation__options">
@@ -79,10 +79,6 @@ import {getAuth} from "firebase/auth";
 
 import {onMounted, ref, computed} from "vue";
 
-import {useStore} from 'vuex'
-
-const store = useStore()
-
 const mobile = ref(null)
 const mobileNav = ref(null)
 const windowWidth = ref(null)
@@ -111,8 +107,11 @@ const signOut = async () => {
   window.location.reload()
 }
 
+import { useAuthUserStore } from '@/stores/auth-user'
+const authUserStore = useAuthUserStore()
+
 const user = computed(() => {
-  return store.state.user
+  return authUserStore.user
 })
 
 onMounted(() => {

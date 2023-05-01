@@ -31,26 +31,26 @@
 
 import BlogPost from "../components/BlogPost";
 import {computed} from 'vue'
-import {useStore} from 'vuex'
 import BlogCategories from "../components/BlogCategories";
 import BlogRecent from "../components/BlogRecent";
 // import WelcomeScreen from "../components/WelcomeScreen";
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide } from 'vue3-carousel'
+import { useBlogsStore } from '@/stores/blogs-store'
 
-const store = useStore()
+const blogsStore = useBlogsStore()
 
 const blogPostsFeed = computed(() => {
-  return store.getters.getBlogPostsFeed;
+  return blogsStore.getBlogPostsFeed;
 });
 
 const blogPostsCards = computed(() => {
-  return store.getters.getBlogPostsCards;
+  return blogsStore.getBlogPostsCards;
 });
 
 // определяем если пользователь залогинен
 // const user = computed(() => {
-//   return store.state.user
+//   return blogsStore.user
 // });
 
 </script>

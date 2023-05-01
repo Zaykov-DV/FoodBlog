@@ -1,5 +1,5 @@
 <template>
-  <div class="app" v-if="store.state.postLoaded">
+  <div class="app" v-if="blogsStore.postLoaded">
     <Navigation />
     <main>
       <router-view/>
@@ -14,19 +14,22 @@ import Footer from "./components/Footer";
 import 'firebase/auth'
 
 import {onMounted} from 'vue'
-import { useStore } from 'vuex'
 
 import {getAuth} from 'firebase/auth'
 
-const store = useStore()
+import { useAuthUserStore } from '@/stores/auth-user'
+const authUserStore = useAuthUserStore()
+
+import { useBlogsStore } from '@/stores/blogs-store'
+const blogsStore = useBlogsStore()
 
 onMounted(async () => {
   const auth = await getAuth()
   auth.onAuthStateChanged((user) => {
-    store.commit('updateUser', user);
-    if (user) store.dispatch('getCurrentUser', user)
+    authUserStore.updateUser(user)
+    if (user) authUserStore.getCurrentUser(user)
   })
-  store.dispatch('getPost')
+  blogsStore.getPost()
 })
 
 </script>
