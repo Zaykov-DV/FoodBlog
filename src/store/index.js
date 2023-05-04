@@ -41,7 +41,6 @@ const store = createStore({
     },
     getters: {
         getBlogPostsFeed(state) {
-            // @TODO слайдер
             return state.blogPosts.slice(0, 9);
         },
         getBlogPostsCards(state) {

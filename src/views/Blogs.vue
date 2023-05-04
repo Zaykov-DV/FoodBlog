@@ -7,7 +7,7 @@
     <div class="blogs__filter">
       <div v-if="!mobile">
         <h4 class="blogs__filter-title">Фильтр рецептов</h4>
-        <div v-for="category in store.state.categories" :key="category.id">
+        <div v-for="category in blogsStore.categories" :key="category.id">
           <p class="blogs__filter-text" :class="{ 'is-active' : categoryActive === category.id}"
              @click="filterProducts(category.id)">{{ category.category }}</p>
         </div>
@@ -19,7 +19,7 @@
 
       <Transition name="slide-fade" mode="out-in">
         <div v-show="mobileNav === true">
-          <div v-for="category in store.state.categories" :key="category.id">
+          <div v-for="category in blogsStore.categories" :key="category.id">
             <p class="blogs__filter-text" :class="{ 'is-active' : categoryActive === category.id}"
                @click="filterProducts(category.id)">{{ category.category }}</p>
           </div>
@@ -50,40 +50,43 @@
 import BlogCard from "../components/BlogCard";
 import Pagination from "../components/UI/Pagination";
 import {computed, ref, onBeforeUnmount, onMounted} from 'vue'
-import {useStore} from 'vuex'
 import SvgIcon from "../components/UI/SvgIcon";
 
-const store = useStore()
+import { useBlogsStore } from '@/stores/blogs-store'
+import { useAuthUserStore } from '@/stores/auth-user'
+
+const authUserStore = useAuthUserStore()
+const blogsStore = useBlogsStore()
 
 const categoryActive = ref(0)
 
 const filterProducts = (category) => {
   currentPage.value = 1;
   if (category === 0 || undefined) {
-    store.commit('showAllCategories')
+    blogsStore.showAllCategories()
     categoryActive.value = 0
   } else {
     categoryActive.value = category
-    store.commit('filterCategory', category)
+    blogsStore.filterCategory(category)
   }
 }
 
 const filterBlogs = computed(() => {
-  return store.state.filterBlogPosts.slice((currentPage.value - 1) * itemsPerPage.value, currentPage.value * itemsPerPage.value)
+  return blogsStore.filterBlogPosts.slice((currentPage.value - 1) * itemsPerPage.value, currentPage.value * itemsPerPage.value)
 })
 
 
 const editPost = computed({
   get() {
-    return store.state.editPost
+    return blogsStore.editPost
   },
   set(payload) {
-    store.commit('toggleEditPost', payload)
+    blogsStore.toggleEditPost(payload)
   }
 })
 
 const profileUser = computed(() => {
-  return store.state.user;
+  return authUserStore.user;
 })
 
 // navigation
@@ -93,7 +96,7 @@ const onPageChange = (page) => {
   currentPage.value = page;
 }
 const countTotalPages = computed(() => {
-  return Math.ceil(store.state.filterBlogPosts.length / itemsPerPage.value)
+  return Math.ceil(blogsStore.filterBlogPosts.length / itemsPerPage.value)
 })
 
 // mobile
@@ -110,16 +113,14 @@ const toggleMobileNav = () => {
   mobileNav.value = !mobileNav.value
 }
 
-
 onMounted(() => {
   window.addEventListener('resize', checkScreen)
   checkScreen()
-
-  filterProducts(store.state.navigateToCategory)
+  filterProducts(blogsStore.navigateToCategory)
 })
 
 onBeforeUnmount(() => {
-  store.commit('toggleEditPost', false)
+  blogsStore.toggleEditPost(false)
 })
 
 </script>

@@ -1,32 +1,38 @@
 <template>
-  <div class="app" v-if="store.state.postLoaded">
+  <div class="app" >
     <Navigation />
-    <main>
+    <main v-if="blogsStore.postLoaded">
       <router-view/>
+    </main>
+    <main v-else>
+      <Loading />
     </main>
     <Footer />
   </div>
+
 </template>
 
 <script setup>
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 import 'firebase/auth'
-
 import {onMounted} from 'vue'
-import { useStore } from 'vuex'
-
 import {getAuth} from 'firebase/auth'
+import { useAuthUserStore } from '@/stores/auth-user'
+import { useBlogsStore } from '@/stores/blogs-store'
+import Loading from "./components/UI/Loading";
 
-const store = useStore()
+const authUserStore = useAuthUserStore()
+
+const blogsStore = useBlogsStore()
 
 onMounted(async () => {
   const auth = await getAuth()
   auth.onAuthStateChanged((user) => {
-    store.commit('updateUser', user);
-    if (user) store.dispatch('getCurrentUser', user)
+    authUserStore.updateUser(user)
+    if (user) authUserStore.getCurrentUser(user)
   })
-  store.dispatch('getPost')
+  await blogsStore.getPost()
 })
 
 </script>

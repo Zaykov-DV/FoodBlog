@@ -19,16 +19,15 @@
 
 <script setup>
 import SvgIcon from "./UI/SvgIcon";
-
 import {defineProps} from "vue";
-import {useStore} from "vuex";
+import { useBlogsStore } from '@/stores/blogs-store'
 
-const store = useStore()
+const blogsStore = useBlogsStore()
 
 const props = defineProps(['post'])
 
 const blogCategory = () => {
-  for (let category of store.state.categories) {
+  for (let category of blogsStore.categories) {
     if (props.post.selectedCategory === category.id)
       return category.category
   }

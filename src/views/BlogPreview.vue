@@ -29,29 +29,30 @@
 
 <script setup>
 import {computed} from "vue";
-import { useStore } from "vuex";
+import { useBlogsStore } from '@/stores/blogs-store'
+import SvgIcon from "../components/UI/SvgIcon";
 
-const store = useStore()
+const blogsStore = useBlogsStore()
 
 const blogTitle = computed(() => {
-  return store.state.blogTitle;
+  return blogsStore.blogTitle;
 })
 
 const blogDescr = computed(() => {
-  return store.state.blogDescr;
+  return blogsStore.blogDescr;
 })
 
 const blogHTML= computed(() => {
-  return store.state.blogHTML;
+  return blogsStore.blogHTML;
 })
 
 const blogCookingTime= computed(() => {
-  return store.state.blogCookingTime;
+  return blogsStore.blogCookingTime;
 })
 
 const blogCategory = () => {
-  for (let category of store.state.categories) {
-    if (store.state.selectedCategory === category.id)
+  for (let category of blogsStore.categories) {
+    if (blogsStore.selectedCategory === category.id)
       return category.category
   }
 }
@@ -78,7 +79,7 @@ const blogCategory = () => {
     line-height: 47px;
     letter-spacing: -0.04em;
     color: #000000;
-    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
     margin-bottom: 40px;
 
     overflow: hidden;

@@ -136,8 +136,6 @@ const currentQuestion = ref(0)
 const score = computed(() => {
   let value = 0
   questions.value.map(q => {
-    console.log(`q.answer ${q.answer}`)
-    console.log(`q.selected ${q.selected}`)
     if (q.selected !== null && q.answer == q.selected) {
       value++
     }

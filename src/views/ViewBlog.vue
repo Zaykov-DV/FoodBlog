@@ -1,6 +1,6 @@
 <template>
-  <div class="view-blog" v-if="currentBlog">
-    <div class="view-blog__container">
+  <div class="view-blog">
+    <div class="view-blog__container" v-if="currentBlog">
       <h2 class="view-blog__title">{{ currentBlog[0].blogTitle }}</h2>
       <div class="view-blog__info">
         <div class="view-blog__item">
@@ -29,30 +29,28 @@
 </template>
 
 <script setup>
-
 import { onMounted, ref} from "vue";
-import {useStore} from 'vuex'
 import {useRoute} from 'vue-router'
 import SvgIcon from "../components/UI/SvgIcon";
+import { useBlogsStore } from '@/stores/blogs-store'
 
-const store = useStore()
+const blogsStore = useBlogsStore()
 const route = useRoute()
 
 const currentBlog = ref(null);
 
 const blogCategory = () => {
-  for (let category of store.state.categories) {
+  for (let category of blogsStore.categories) {
     if (currentBlog.value[0].selectedCategory === category.id)
       return category.category
   }
 }
 
 onMounted(async () => {
-  currentBlog.value = await store.state.blogPosts.filter((post) => {
+  currentBlog.value = await blogsStore.filterBlogPosts.filter((post) => {
     return post.blogID === route.params.blogid;
-  });
+  })
 })
-
 
 </script>
 
@@ -73,7 +71,7 @@ onMounted(async () => {
     line-height: 47px;
     letter-spacing: -0.04em;
     color: #000000;
-    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
     margin-bottom: 40px;
     overflow: hidden;
     white-space: nowrap;
