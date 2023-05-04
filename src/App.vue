@@ -1,11 +1,15 @@
 <template>
-  <div class="app" v-if="blogsStore.postLoaded">
+  <div class="app" >
     <Navigation />
-    <main>
+    <main v-if="blogsStore.postLoaded">
       <router-view/>
+    </main>
+    <main v-else>
+      <Loading />
     </main>
     <Footer />
   </div>
+
 </template>
 
 <script setup>
@@ -16,6 +20,7 @@ import {onMounted} from 'vue'
 import {getAuth} from 'firebase/auth'
 import { useAuthUserStore } from '@/stores/auth-user'
 import { useBlogsStore } from '@/stores/blogs-store'
+import Loading from "./components/UI/Loading";
 
 const authUserStore = useAuthUserStore()
 

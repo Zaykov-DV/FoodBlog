@@ -1,6 +1,6 @@
 <template>
-  <div class="view-blog" v-if="currentBlog">
-    <div class="view-blog__container">
+  <div class="view-blog">
+    <div class="view-blog__container" v-if="currentBlog">
       <h2 class="view-blog__title">{{ currentBlog[0].blogTitle }}</h2>
       <div class="view-blog__info">
         <div class="view-blog__item">
@@ -49,9 +49,8 @@ const blogCategory = () => {
 onMounted(async () => {
   currentBlog.value = await blogsStore.filterBlogPosts.filter((post) => {
     return post.blogID === route.params.blogid;
-  });
+  })
 })
-
 
 </script>
 
