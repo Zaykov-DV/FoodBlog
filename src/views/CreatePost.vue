@@ -158,7 +158,7 @@ const uploadBlog = () => {
               categoryID: selectedCategory.value,
               blogAuthor: authorName()
             });
-            await blogsStore.getPost;
+            await blogsStore.getPost();
             loading.value = false;
             await router.push({name: "ViewBlog", params: {blogid: dataBase.id}});
             clearPost()

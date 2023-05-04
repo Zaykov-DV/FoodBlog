@@ -135,6 +135,8 @@ const checkTerms = computed(() => {
 
 const updateBlog = async () => {
   const dataBase = await db.collection("blogPosts").doc(routeID.value);
+  console.log('old db: ')
+  console.log(db.collection("blogPosts").doc(routeID.value))
   if (checkTerms.value) {
     if (file.value) {
       loading.value = true;
@@ -162,10 +164,8 @@ const updateBlog = async () => {
               categoryID: selectedCategory.value
             });
             await blogsStore.updatePost(routeID.value)
-                .then(() => {
-                  loading.value = false;
-                  router.push({name: "ViewBlog", params: {blogid: dataBase.id}});
-                })
+            loading.value = false;
+            await router.push({name: "ViewBlog", params: {blogid: dataBase.id}});
           }
       );
       return;
@@ -178,12 +178,18 @@ const updateBlog = async () => {
       blogDescr: blogDescr.value,
       blogCookingTime: blogCookingTime.value,
       categoryID: selectedCategory.value
-    });
-    await blogsStore.updatePost(routeID.value)
-        .then(() => {
-      loading.value = false;
-      router.push({name: "ViewBlog", params: {blogid: dataBase.id}});
     })
+        .then(() => {
+          console.log('db updated')
+          console.log(db.collection("blogPosts").doc(routeID.value))
+        })
+        .then(() => {
+          blogsStore.updatePost(routeID.value)
+          console.log('blog store post updated')
+        })
+
+    loading.value = false;
+    await router.push({name: "ViewBlog", params: {blogid: dataBase.id}});
 
     return;
   }

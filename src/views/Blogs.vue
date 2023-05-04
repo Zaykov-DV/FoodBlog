@@ -60,7 +60,7 @@ const categoryActive = ref(0)
 const filterProducts = (category) => {
   currentPage.value = 1;
   if (category === 0 || undefined) {
-    blogsStore.showAllCategories
+    blogsStore.showAllCategories()
     categoryActive.value = 0
   } else {
     categoryActive.value = category

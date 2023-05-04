@@ -48,7 +48,7 @@ const blogCategory = () => {
 }
 
 onMounted(async () => {
-  currentBlog.value = await blogsStore.blogPosts.filter((post) => {
+  currentBlog.value = await blogsStore.filterBlogPosts.filter((post) => {
     return post.blogID === route.params.blogid;
   });
 })

@@ -15,7 +15,7 @@ export const useBlogsStore = defineStore('BlogsStore', {
             blogPhotoFileURL: null,
             blogPhotoPreview: null,
             editPost: null,
-            author: null,
+            blogAuthor: null,
             categories: [
                 { id: 0, category: 'Все категории', image: 'soybeans'},
                 { id: 1, category: 'Выпечка', image: 'bread' },
@@ -134,6 +134,7 @@ export const useBlogsStore = defineStore('BlogsStore', {
                         blogAuthor: doc.data().blogAuthor
                     };
                     this.blogPosts.push(data);
+                    console.log(data)
                 }
             });
             this.postLoaded = true;
@@ -142,7 +143,11 @@ export const useBlogsStore = defineStore('BlogsStore', {
 
         async updatePost(payload) {
             this.filterBlogPost = payload
-            await this.getPost
+            console.log('payload')
+            console.log(payload)
+            await this.getPost()
+            console.log('getPost')
+            console.log(db.collection("blogPosts").doc(payload))
         },
 
         async deletePost(payload) {
