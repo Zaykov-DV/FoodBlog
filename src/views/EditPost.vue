@@ -67,22 +67,21 @@
 
 
 <script setup>
-
+import BlogPreview from "./BlogPreview";
+import Modal from "../components/UI/Modal";
 import Loading from "../components/UI/Loading";
+import BlotFormatter from 'quill-blot-formatter/dist/BlotFormatter';
 import firebase from "firebase/compat/app";
 import "firebase/storage";
 import db from "../firebase/firebaseInit";
 import {QuillEditor} from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
-import BlotFormatter from 'quill-blot-formatter/dist/BlotFormatter';
-
 import {ref, computed, onMounted} from 'vue'
 import {useRouter, useRoute} from 'vue-router'
-import Modal from "../components/UI/Modal";
-import BlogPreview from "./BlogPreview";
 import { useBlogsStore } from '@/stores/blogs-store'
 
 const blogsStore = useBlogsStore()
+
 const router = useRouter()
 const route = useRoute()
 

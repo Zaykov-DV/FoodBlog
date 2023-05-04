@@ -74,10 +74,9 @@
 
 <script setup>
 import SvgIcon from './UI/SvgIcon'
-
 import {getAuth} from "firebase/auth";
-
 import {onMounted, ref, computed} from "vue";
+import { useAuthUserStore } from '@/stores/auth-user'
 
 const mobile = ref(null)
 const mobileNav = ref(null)
@@ -85,6 +84,7 @@ const windowWidth = ref(null)
 const profileMenu = ref(null)
 
 const profile = ref(null)
+const authUserStore = useAuthUserStore()
 
 const checkScreen = () => {
   windowWidth.value = window.innerWidth;
@@ -106,9 +106,6 @@ const signOut = async () => {
   await auth.signOut();
   window.location.reload()
 }
-
-import { useAuthUserStore } from '@/stores/auth-user'
-const authUserStore = useAuthUserStore()
 
 const user = computed(() => {
   return authUserStore.user

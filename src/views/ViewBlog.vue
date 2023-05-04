@@ -29,7 +29,6 @@
 </template>
 
 <script setup>
-
 import { onMounted, ref} from "vue";
 import {useRoute} from 'vue-router'
 import SvgIcon from "../components/UI/SvgIcon";
@@ -73,7 +72,7 @@ onMounted(async () => {
     line-height: 47px;
     letter-spacing: -0.04em;
     color: #000000;
-    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
     margin-bottom: 40px;
     overflow: hidden;
     white-space: nowrap;

@@ -45,8 +45,8 @@
 <script setup>
 import {computed} from "vue";
 import SvgIcon from "./UI/SvgIcon";
-
 import { useAuthUserStore } from '@/stores/auth-user'
+
 const authUserStore = useAuthUserStore()
 
 const user = computed(() => {

@@ -12,15 +12,13 @@
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 import 'firebase/auth'
-
 import {onMounted} from 'vue'
-
 import {getAuth} from 'firebase/auth'
-
 import { useAuthUserStore } from '@/stores/auth-user'
+import { useBlogsStore } from '@/stores/blogs-store'
+
 const authUserStore = useAuthUserStore()
 
-import { useBlogsStore } from '@/stores/blogs-store'
 const blogsStore = useBlogsStore()
 
 onMounted(async () => {

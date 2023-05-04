@@ -42,10 +42,10 @@
 <script setup>
 import {defineProps} from "vue";
 import SvgIcon from "./UI/SvgIcon";
+import { useBlogsStore } from '@/stores/blogs-store'
 
 const props = defineProps(['post'])
 
-import { useBlogsStore } from '@/stores/blogs-store'
 const blogsStore = useBlogsStore()
 
 const blogCategory = () => {

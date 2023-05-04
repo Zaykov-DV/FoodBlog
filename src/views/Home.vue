@@ -28,15 +28,14 @@
 </template>
 
 <script setup>
-
 import BlogPost from "../components/BlogPost";
-import {computed} from 'vue'
 import BlogCategories from "../components/BlogCategories";
 import BlogRecent from "../components/BlogRecent";
 // import WelcomeScreen from "../components/WelcomeScreen";
+import {computed} from 'vue'
+import { useBlogsStore } from '@/stores/blogs-store'
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide } from 'vue3-carousel'
-import { useBlogsStore } from '@/stores/blogs-store'
 
 const blogsStore = useBlogsStore()
 

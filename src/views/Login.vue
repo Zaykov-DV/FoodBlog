@@ -30,7 +30,6 @@
 
 <script setup>
 import {signInWithEmailAndPassword, getAuth} from 'firebase/auth'
-
 import {ref} from 'vue'
 import {useRouter} from 'vue-router'
 import SvgIcon from "../components/UI/SvgIcon";

@@ -53,6 +53,9 @@ import {computed, ref, onBeforeUnmount, onMounted} from 'vue'
 import SvgIcon from "../components/UI/SvgIcon";
 
 import { useBlogsStore } from '@/stores/blogs-store'
+import { useAuthUserStore } from '@/stores/auth-user'
+
+const authUserStore = useAuthUserStore()
 const blogsStore = useBlogsStore()
 
 const categoryActive = ref(0)
@@ -82,9 +85,6 @@ const editPost = computed({
   }
 })
 
-import { useAuthUserStore } from '@/stores/auth-user'
-const authUserStore = useAuthUserStore()
-
 const profileUser = computed(() => {
   return authUserStore.user;
 })
@@ -112,7 +112,6 @@ const checkScreen = () => {
 const toggleMobileNav = () => {
   mobileNav.value = !mobileNav.value
 }
-
 
 onMounted(() => {
   window.addEventListener('resize', checkScreen)

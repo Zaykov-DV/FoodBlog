@@ -74,13 +74,16 @@ import db from "../firebase/firebaseInit";
 import {QuillEditor} from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import BlotFormatter from "quill-blot-formatter";
-
 import {ref, computed, onMounted} from 'vue'
 import {useRouter} from 'vue-router'
 import Modal from "../components/UI/Modal";
 import BlogPreview from "./BlogPreview";
+import { useBlogsStore } from '@/stores/blogs-store'
+import { useAuthUserStore } from '@/stores/auth-user'
 
 const router = useRouter()
+const blogsStore = useBlogsStore()
+const authUserStore = useAuthUserStore()
 
 const editor = ref('')
 const blogPhoto = ref(null)
@@ -94,8 +97,6 @@ const editorSettings = ref({
   options: {/* options */}
 })
 
-import { useBlogsStore } from '@/stores/blogs-store'
-const blogsStore = useBlogsStore()
 
 const closeBlogPhotoPreviewModal = () => {
   blogsStore.openPhotoPreview()
@@ -176,10 +177,6 @@ const uploadBlog = () => {
     error.value = false;
   }, 5000);
 }
-
-
-import { useAuthUserStore } from '@/stores/auth-user'
-const authUserStore = useAuthUserStore()
 
 const profileId = computed(() => {
   return authUserStore.profileId

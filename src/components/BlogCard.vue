@@ -29,14 +29,12 @@
 
 <script setup>
 import SvgIcon from "./UI/SvgIcon";
-
+import { useBlogsStore } from '@/stores/blogs-store'
 import {defineProps, computed} from "vue";
-
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
-import { useBlogsStore } from '@/stores/blogs-store'
 const blogsStore = useBlogsStore()
 
 const props = defineProps(['post'])

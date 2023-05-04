@@ -19,10 +19,9 @@
 
 <script setup>
 import SvgIcon from "./UI/SvgIcon";
-
 import {defineProps} from "vue";
-
 import { useBlogsStore } from '@/stores/blogs-store'
+
 const blogsStore = useBlogsStore()
 
 const props = defineProps(['post'])

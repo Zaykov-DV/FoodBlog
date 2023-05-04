@@ -19,18 +19,17 @@
 </template>
 
 <script setup>
-
 import {computed} from "vue";
 import {useRouter} from "vue-router";
-
 import { useBlogsStore } from '@/stores/blogs-store'
+
+const router = useRouter()
 const blogsStore = useBlogsStore()
 
 const blogCategories = computed(() => {
   return blogsStore.getBlogCategories;
 });
 
-const router = useRouter()
 
 const handleClick = (id) => {
   router.push('Blogs')

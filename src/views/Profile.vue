@@ -33,14 +33,13 @@
 
 <script setup>
 import Modal from "../components/UI/Modal";
-
+import { useAuthUserStore } from '@/stores/auth-user'
 import {ref, computed} from 'vue'
 import SvgIcon from "../components/UI/SvgIcon";
 
 const modalMessage = ref("Changes were saved!")
 const modalActive = ref(null)
 
-import { useAuthUserStore } from '@/stores/auth-user'
 const authUserStore = useAuthUserStore()
 
 const updateProfile = () => {
