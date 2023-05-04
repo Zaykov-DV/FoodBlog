@@ -117,7 +117,6 @@ const toggleMobileNav = () => {
 onMounted(() => {
   window.addEventListener('resize', checkScreen)
   checkScreen()
-  blogsStore.getPost()
   filterProducts(blogsStore.navigateToCategory)
 })
 

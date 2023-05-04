@@ -135,8 +135,6 @@ const checkTerms = computed(() => {
 
 const updateBlog = async () => {
   const dataBase = await db.collection("blogPosts").doc(routeID.value);
-  console.log('old db: ')
-  console.log(db.collection("blogPosts").doc(routeID.value))
   if (checkTerms.value) {
     if (file.value) {
       loading.value = true;
@@ -179,15 +177,8 @@ const updateBlog = async () => {
       blogCookingTime: blogCookingTime.value,
       categoryID: selectedCategory.value
     })
-        .then(() => {
-          console.log('db updated')
-          console.log(db.collection("blogPosts").doc(routeID.value))
-        })
-        .then(() => {
-          blogsStore.updatePost(routeID.value)
-          console.log('blog store post updated')
-        })
 
+    await blogsStore.updatePost(routeID.value)
     loading.value = false;
     await router.push({name: "ViewBlog", params: {blogid: dataBase.id}});
 

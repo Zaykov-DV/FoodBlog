@@ -134,7 +134,6 @@ export const useBlogsStore = defineStore('BlogsStore', {
                         blogAuthor: doc.data().blogAuthor
                     };
                     this.blogPosts.push(data);
-                    console.log(data)
                 }
             });
             this.postLoaded = true;
@@ -142,12 +141,8 @@ export const useBlogsStore = defineStore('BlogsStore', {
         },
 
         async updatePost(payload) {
-            this.filterBlogPost = payload
-            console.log('payload')
-            console.log(payload)
+            this.filterBlogPost(payload)
             await this.getPost()
-            console.log('getPost')
-            console.log(db.collection("blogPosts").doc(payload))
         },
 
         async deletePost(payload) {
@@ -157,3 +152,5 @@ export const useBlogsStore = defineStore('BlogsStore', {
         },
     }
 })
+
+

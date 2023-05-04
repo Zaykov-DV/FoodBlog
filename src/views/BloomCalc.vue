@@ -76,8 +76,6 @@ const calcCurrentWeight = () => {
 
 const calcIngredients = () => {
   let koef = (ownDiameter.value ** 2) / (recipeDiameter.value ** 2)
-  console.log(ownDiameter.value ** 2)
-  console.log(recipeDiameter.value ** 2)
   if (isNaN(koef)) {
     modalActive.value = true
   } else {

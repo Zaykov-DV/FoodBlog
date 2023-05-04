@@ -126,7 +126,6 @@ const checkTerms = computed(() => {
 
 const uploadBlog = () => {
   if (checkTerms.value) {
-    console.log(file.value)
     if (file.value) {
       loading.value = true;
       const storageRef = firebase.storage().ref();
