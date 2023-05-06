@@ -20,7 +20,6 @@ export const useBlogsStore = defineStore('BlogsStore', {
                 { id: 0, category: 'Все категории', image: 'soybeans'},
                 { id: 1, category: 'Выпечка', image: 'bread' },
                 { id: 2, category: 'Завтрак', image: 'bowl' },
-                { id: 3, category: 'Гарниры', image: 'rice' },
                 { id: 4, category: 'Вторые блюда', image: 'chicken' },
                 { id: 5, category: 'Салаты', image: 'avocado' },
                 { id: 6, category: 'Десерты', image: 'cake' },
