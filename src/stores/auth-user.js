@@ -13,6 +13,7 @@ export const useAuthUserStore = defineStore('AuthStore', {
             profileEmail: null,
             profileId: null,
             profileInitials: null,
+            isAdmin: null
         }
     },
     actions: {
@@ -29,6 +30,7 @@ export const useAuthUserStore = defineStore('AuthStore', {
             this.profileFirstName = doc.data().firstName;
             this.profileLastName = doc.data().lastName;
             this.profileUserName = doc.data().userName;
+            this.isAdmin = doc.data().isAdmin;
         },
         setProfileInitials() {
             this.profileInitials = this.profileFirstName.match(/(\b\S)?/g).join("")

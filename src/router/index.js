@@ -1,7 +1,7 @@
 import Home from "../views/Home.vue";
 import Blogs from "../views/Blogs.vue";
 import Login from "../views/Login";
-// import Register from "../views/Register";
+import Register from "../views/Register";
 import ForgotPassword from "../views/ForgotPassword";
 import Profile from "../views/Profile";
 import Admin from "../views/Admin";
@@ -13,6 +13,7 @@ import BloomCalc from "../views/BloomCalc";
 import Quiz from "../views/Quiz";
 import {getAuth, onAuthStateChanged} from 'firebase/auth'
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthUserStore } from '@/stores/auth-user'
 
 const router = createRouter({
   routes: [
@@ -36,18 +37,24 @@ const router = createRouter({
       path: "/login",
       name: "Login",
       component: Login,
+      beforeEnter(to, from, next) {
+        getCurrentUser ? next() : next('/')
+      },
       meta: {
         title: 'Login'
       }
     },
-    // {
-    //   path: "/register",
-    //   name: "Register",
-    //   component: Register,
-    //   meta: {
-    //     title: 'Register'
-    //   }
-    // },
+    {
+      path: "/register",
+      name: "Register",
+      component: Register,
+      beforeEnter(to, from, next) {
+        getCurrentUser ? next() : next('/')
+      },
+      meta: {
+        title: 'Register'
+      }
+    },
     {
       path: "/forgot-password",
       name: "ForgotPassword",
@@ -69,6 +76,9 @@ const router = createRouter({
       path: "/admin",
       name: "Admin",
       component: Admin,
+      beforeEnter(to, from, next) {
+        checkAdmin() ? next() : next('/')
+      },
       meta: {
         title: 'Admin',
         requiresAuth: true,
@@ -134,12 +144,6 @@ const router = createRouter({
   },
 })
 
-
-router.beforeEach((to, from, next) => {
-  document.title = `${to.meta.title} | FoodBlog`
-  next()
-})
-
 const getCurrentUser = () => {
   return new Promise((resolve, reject) => {
     const removeListener = onAuthStateChanged(
@@ -153,7 +157,14 @@ const getCurrentUser = () => {
   })
 }
 
+const checkAdmin = () => {
+  const authUserStore = useAuthUserStore()
+  return authUserStore.isAdmin
+}
+
 router.beforeEach(async function (to, from, next) {
+  document.title = `${to.meta.title} | FoodBlog`
+
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (await getCurrentUser()) {
       next(true);

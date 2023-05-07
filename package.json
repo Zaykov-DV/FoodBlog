@@ -9,6 +9,8 @@
     "deploy": "firebase deploy"
   },
   "dependencies": {
+    "@vuelidate/core": "^2.0.2",
+    "@vuelidate/validators": "^2.0.2",
     "@vueup/vue-quill": "^1.1.1",
     "core-js": "^3.30.0",
     "firebase": "^9.19.1",

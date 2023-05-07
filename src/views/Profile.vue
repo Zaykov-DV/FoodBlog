@@ -5,25 +5,25 @@
       <h2 class="profile__title">Настройки аккаунта</h2>
       <div class="profile__info">
         <div class="profile__initials">{{ authUserStore.profileInitials }}</div>
-        <div class="profile__admin-badge">
+        <div class="profile__admin-badge" v-if="authUserStore.isAdmin">
           <SvgIcon name="user-crown-light"/>
           <span>админ</span>
         </div>
-        <div class="profile__input-wrapper">
-          <label class="profile__label" for="firstName">Фамилия:</label>
-          <input class="profile__input" type="text" id="firstName" v-model="firstName"/>
+        <div v-else class="profile__admin-badge">
+          <SvgIcon name="user-alt-light"/>
+          <span>пользователь</span>
         </div>
         <div class="profile__input-wrapper">
-          <label class="profile__label" for="lastName">Имя:</label>
-          <input class="profile__input" type="text" id="lastName" v-model="lastName"/>
+          <BaseInput class="profile__input" type="text" id="firstName" v-model="firstName" label="Фамилия"/>
         </div>
         <div class="profile__input-wrapper">
-          <label class="profile__label" for="username">Псевдоним:</label>
-          <input class="profile__input" type="text" id="username" v-model="userName"/>
+          <BaseInput class="profile__input" type="text" id="lastName" v-model="lastName" label="Имя"/>
         </div>
         <div class="profile__input-wrapper">
-          <label class="profile__label" for="email">E-mail:</label>
-          <input class="profile__input" disabled type="text" id="email" v-model="email"/>
+          <BaseInput class="profile__input" type="text" id="username" v-model="userName" label="Псевдоним"/>
+        </div>
+        <div class="profile__input-wrapper">
+          <BaseInput class="profile__input" disabled type="text" id="email" v-model="email" label="E-mail"/>
         </div>
         <button @click="updateProfile">Save Changes</button>
       </div>
@@ -36,6 +36,7 @@ import Modal from "../components/UI/Modal";
 import { useAuthUserStore } from '@/stores/auth-user'
 import {ref, computed} from 'vue'
 import SvgIcon from "../components/UI/SvgIcon";
+import BaseInput from "../components/UI/BaseInput";
 
 const modalMessage = ref("Changes were saved!")
 const modalActive = ref(null)
@@ -146,26 +147,6 @@ const email = computed(() => {
 
   &__input-wrapper {
     margin: 16px 0;
-  }
-
-  &__input {
-    width: 100%;
-    border: none;
-    background-color: #f2f7f6;
-    padding: 8px;
-    height: 50px;
-    @media (min-width: 900px) {
-    }
-
-    &:focus {
-      outline: none;
-    }
-  }
-
-  &__label {
-    font-size: 14px;
-    display: block;
-    padding-bottom: 6px;
   }
 }
 </style>
