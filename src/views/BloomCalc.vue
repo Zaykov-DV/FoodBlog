@@ -5,18 +5,9 @@
         <Modal v-if="modalActive" :modal-message="modalMessage" v-on:close-modal="closeModal"/>
         <h4 class="calc__title">Калькулятор расчета желатина</h4>
         <form class="calc__form">
-          <label for="#recipeBloom" class="calc__label">
-            Сила желатина в рецепте
-          </label>
-          <input id="#recipeBloom" type="number" placeholder="0" v-model="recipeBloom">
-          <label for="#recipeWeight" class="calc__label">
-            Сколько грамм по рецепту?
-          </label>
-          <input id="#recipeWeight" type="number" placeholder="0" v-model="recipeWeight">
-          <label for="#currentBloom" class="calc__label">
-            Сила имеющегося желатина
-          </label>
-          <input id="#currentBloom" type="number" placeholder="0" v-model="currentBloom">
+          <BaseInput type="number" placeholder="0" v-model="recipeBloom" label="Сила желатина в рецепте"/>
+          <BaseInput type="number" placeholder="0" v-model="recipeWeight" label="Сколько грамм по рецепту?"/>
+          <BaseInput type="number" placeholder="0" v-model="currentBloom" label="Сила имеющегося желатина"/>
         </form>
 
         <p v-if="currentWeight !== 0">Нужно взять <strong>{{ currentWeight }}</strong> грамм желатина силой
@@ -28,14 +19,8 @@
       <div class="calc__wrapper">
         <h4 class="calc__title">Пересчет на другую форму</h4>
         <form class="calc__form">
-          <label for="#recipeDiameter" class="calc__label">
-            Диаметр формы в рецепте:
-          </label>
-          <input id="#recipeDiameter" type="number" placeholder="0" v-model="recipeDiameter">
-          <label for="#recipeDiameter" class="calc__label">
-            Пересчет на форму:
-          </label>
-          <input id="#ownDiameter" type="number" placeholder="0" v-model="ownDiameter">
+          <BaseInput type="number" placeholder="0" v-model="recipeDiameter" label="Диаметр формы в рецепте:"/>
+          <BaseInput type="number" placeholder="0" v-model="ownDiameter" label="Пересчет на форму:" />
         </form>
         <p v-if="koefIngredients !== null">Коэффициент для рассчета ингридиентов <strong>{{ koefIngredients }}</strong>
         </p>
@@ -49,6 +34,7 @@
 import Modal from "@/components/UI/Modal";
 
 import {ref} from 'vue'
+import BaseInput from "../components/UI/BaseInput";
 
 const recipeBloom = ref(null)
 const recipeWeight = ref(null)
@@ -102,11 +88,6 @@ const calcIngredients = () => {
     border-radius: 60px;
     padding: 40px;
     box-shadow: 0 4px 6px -1px rgba(231, 249, 253, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  }
-
-  &__label {
-    display: flex;
-    margin-bottom: 2px;
   }
 
   &__title {

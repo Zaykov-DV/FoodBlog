@@ -5,8 +5,8 @@
       <div class="profile__info">
         <h4 class="profile__subtitle">Добавить админа</h4>
         <div class="profile__input-wrapper">
-          <input class="profile__input" placeholder="Введите e-mail пользователя"
-                 type="text" id="addAdmins" v-model="adminEmail"/>
+          <BaseInput placeholder="Введите e-mail пользователя"
+                 type="text" v-model="adminEmail"/>
         </div>
         <span class="profile__message">{{ functionMsg }}</span>
         <button @click="addAdmin" class="button">Добавить администратора</button>
@@ -23,6 +23,7 @@ import "firebase/compat/functions";
 import {ref} from 'vue'
 import db from "../firebase/firebaseInit";
 import Modal from "../components/UI/Modal";
+import BaseInput from "../components/UI/BaseInput";
 
 const adminEmail = ref('')
 const functionMsg = ref(null)

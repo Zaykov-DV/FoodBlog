@@ -6,7 +6,7 @@
       <!--      <WelcomeScreen />-->
       <!--    </div>-->
       <section class="home-page__section">
-        <carousel :items-to-show="1" :items-to-scroll="1">
+        <carousel :items-to-show="1" :items-to-scroll="1" autoplay>
           <slide v-for="(post, index) in blogPostsFeed" :key="index">
             <BlogPost :post="post" />
           </slide>
@@ -63,7 +63,11 @@ const blogPostsCards = computed(() => {
   }
 
   &__section {
-    margin-bottom: 160px;
+    margin-bottom: 50px;
+
+    &:not(:first-child) {
+      padding: 20px;
+    }
   }
 
   &__recent-title {
@@ -123,6 +127,10 @@ const blogPostsCards = computed(() => {
   .home-page {
     &__container {
       padding: 0 20px;
+    }
+
+    &__section {
+      margin-bottom: 20px;
     }
 
     &__recent-title {

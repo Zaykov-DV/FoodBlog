@@ -72,8 +72,8 @@ const authorInitials = () => {
     background: #E7FAFE;
     border-radius: 30px;
     align-items: center;
-    min-height: 600px;
-    max-height: 600px;
+    min-height: 550px;
+    max-height: 550px;
   }
 
   &__title {
@@ -319,14 +319,14 @@ const authorInitials = () => {
     }
 
     &__link {
-      padding: 11px 18px;
+      padding: 10px 16px;
       font-size: 12px;
       line-height: 0;
     }
 
     &__link-icon {
-      width: 18px;
-      height: 18px;
+      width: 15px;
+      height: 15px;
     }
 
     &__descr {
