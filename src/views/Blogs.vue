@@ -1,6 +1,6 @@
 <template class="blogs">
   <div class="blogs__container">
-    <div v-if="authUserStore.user.isAdmin" class="blogs__edit">
+    <div v-if="authUserStore.isAdmin" class="blogs__edit">
       <span class="blogs__edit-label">редактирование постов</span>
       <input type="checkbox" v-model="editPost">
     </div>
