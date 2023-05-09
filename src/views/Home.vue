@@ -6,21 +6,23 @@
       <!--      <WelcomeScreen />-->
       <!--    </div>-->
       <section class="home-page__section">
-        <carousel :items-to-show="1" :items-to-scroll="1" autoplay>
+        <carousel :items-to-show="1" :items-to-scroll="1" :autoplay='500' :wrapAround='true' :transition="3000">
           <slide v-for="(post, index) in blogPostsFeed" :key="index">
-            <BlogPost :post="post" />
+            <BlogPost :post="post"/>
           </slide>
         </carousel>
       </section>
-      <section class="home-page__section">
+      <section class="home-page__section home-page__section_categories">
         <BlogCategories/>
       </section>
       <section class="home-page__section">
-        <h2 class="home-page__recent-title">
-          Попробуй приготовить по этим рецептам <br> и день станет лучше!
-        </h2>
-        <div class="home-page__recent-blogs blog-cards">
-          <BlogRecent :post="post" v-for="(post, index) in blogPostsCards" :key="index"/>
+        <div class="home-page__recent">
+          <h2 class="home-page__recent-title">
+            Попробуй приготовить по этим рецептам <br> и день станет лучше!
+          </h2>
+          <div class="home-page__recent-blogs blog-cards">
+            <BlogRecent :post="post" v-for="(post, index) in blogPostsCards" :key="index"/>
+          </div>
         </div>
       </section>
     </div>
@@ -33,9 +35,9 @@ import BlogCategories from "../components/BlogCategories";
 import BlogRecent from "../components/BlogRecent";
 // import WelcomeScreen from "../components/WelcomeScreen";
 import {computed} from 'vue'
-import { useBlogsStore } from '@/stores/blogs-store'
+import {useBlogsStore} from '@/stores/blogs-store'
 import 'vue3-carousel/dist/carousel.css'
-import { Carousel, Slide } from 'vue3-carousel'
+import {Carousel, Slide} from 'vue3-carousel'
 
 const blogsStore = useBlogsStore()
 
@@ -64,10 +66,10 @@ const blogPostsCards = computed(() => {
 
   &__section {
     margin-bottom: 50px;
+  }
 
-    &:not(:first-child) {
-      padding: 20px;
-    }
+  &__recent {
+    padding: 0 20px;
   }
 
   &__recent-title {
@@ -92,6 +94,10 @@ const blogPostsCards = computed(() => {
 @media (max-width: 1281px) {
   .home-page__recent-blogs {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  .carousel__slide {
+    padding: 0 20px;
   }
 }
 
@@ -133,6 +139,10 @@ const blogPostsCards = computed(() => {
       margin-bottom: 20px;
     }
 
+    &__recent {
+      padding: 0;
+    }
+
     &__recent-title {
       font-size: 32px;
       line-height: 38px;
@@ -140,12 +150,16 @@ const blogPostsCards = computed(() => {
     }
 
     &__recent-blogs {
+      padding: 0 8px;
       grid-template-columns: repeat(1, 1fr);
     }
   }
+
+  .carousel__slide {
+    touch-action: pan-x;
+    padding: 15px 5px 0;
+  }
 }
 
-.carousel__slide {
-  padding: 20px;
-}
+
 </style>

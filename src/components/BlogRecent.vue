@@ -37,6 +37,7 @@ const blogCategory = () => {
 <style lang="scss" scoped>
 
 .blog-recent {
+
   &__item {
     display: flex;
     flex-direction: column;
