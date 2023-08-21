@@ -12,7 +12,7 @@
         <router-link v-if="!user" class="navigation__link" :to="{ name: 'Login' }">Логин/Регистрация</router-link>
       </ul>
       <div v-if="user" class="navigation__profile-wrapper">
-        <router-link v-if="user && !mobile" class="navigation__link" :to="{ name: 'CreatePost' }">Добавить пост</router-link>
+        <router-link v-if="authUserStore.isAdmin && !mobile" class="navigation__link" :to="{ name: 'CreatePost' }">Добавить пост</router-link>
         <div class="navigation__profile" @click="toggleProfileMenu" ref="profile">
           <span>{{authUserStore.profileInitials}}</span>
         </div>
@@ -33,7 +33,7 @@
               <SvgIcon class="navigation__icon" name="user-alt-light"/>
               <p class="navigation__text">Профиль</p>
             </router-link>
-            <router-link class="navigation__option" :to="{name: 'Admin'}">
+            <router-link v-if="authUserStore.isAdmin" class="navigation__option" :to="{name: 'Admin'}">
               <SvgIcon class="navigation__icon" name="user-crown-light"/>
               <p class="navigation__text">Админ</p>
             </router-link>
@@ -62,7 +62,7 @@
           <router-link class="navigation__link" :to="{ name: 'Quiz' }">Квиз</router-link>
         </li>
         <li v-if="user" @click="toggleMobileNav" class="link">
-          <router-link v-if="user" class="navigation__link" :to="{ name: 'CreatePost' }">Добавить пост</router-link>
+          <router-link v-if="authUserStore.isAdmin" class="navigation__link" :to="{ name: 'CreatePost' }">Добавить пост</router-link>
         </li>
         <li v-if="!user" @click="toggleMobileNav" class="link">
           <router-link v-if="!user" class="navigation__link" :to="{ name: 'Login' }">Логин/Регистрация</router-link>

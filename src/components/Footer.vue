@@ -4,13 +4,13 @@
       <div class="footer__block">
         <div>
           <router-link class="footer__title" :to="{ name: 'Home' }">FoodBlog</router-link>
-          <p>Lorem ipsum dolor sit amet, consectetur.</p>
+          <p>Самые лучшие рецепты.</p>
         </div>
         <ul class="footer__links">
-          <router-link class="footer__link" :to="{ name: 'Home' }">Home</router-link>
-          <router-link class="footer__link" :to="{ name: 'Blogs' }">Blogs</router-link>
-          <router-link class="footer__link" :to="{ name: 'CreatePost' }">Create Post</router-link>
-          <router-link v-if="!user" class="footer__link" :to="{ name: 'Login' }">Login/Register</router-link>
+          <router-link class="footer__link" :to="{ name: 'Home' }">Домашняя</router-link>
+          <router-link class="footer__link" :to="{ name: 'Blogs' }">Рецепты</router-link>
+          <router-link v-if="authUserStore.isAdmin" class="footer__link" :to="{ name: 'CreatePost' }">Добавить пост</router-link>
+          <router-link v-if="!user" class="footer__link" :to="{ name: 'Login' }">Логин/Регистрация</router-link>
         </ul>
       </div>
       <div class="footer__copyright">

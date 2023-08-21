@@ -2,21 +2,23 @@
   <div class="auth">
     <div class="auth__wrapper">
       <form class="auth__form">
-        <!--      <p class="login-register">-->
-        <!--        Don't have an account?-->
-        <!--        <router-link class="router-link" :to="{ name: 'Register' }">Register</router-link>-->
-        <!--      </p>-->
+              <p class="auth__register">
+                Нет аккаунта?
+                <router-link class="auth__register-link" :to="{ name: 'Register' }">Зарегистрироваться</router-link>
+              </p>
         <h2 class="auth__title">Вход в FoodBlogs</h2>
         <div class="auth__inputs">
           <div class="auth__input-wrapper">
-            <input class="auth__input" type="text" placeholder="Email" v-model="email">
-            <SvgIcon class="auth__icon" name="envelope-regular"/>
+            <BaseInput class="auth__input" type="text" placeholder="Email" v-model="email" withIcon>
+              <SvgIcon class="auth__icon" name="envelope-regular"/>
+            </BaseInput>
           </div>
           <div class="auth__input-wrapper">
-            <input class="auth__input" type="password" placeholder="Password" v-model="password">
-            <SvgIcon class="auth__icon" name="lock-alt-solid"/>
+            <BaseInput class="auth__input" type="password" placeholder="Password" v-model="password" withIcon>
+              <SvgIcon class="auth__icon" name="lock-alt-solid"/>
+            </BaseInput>
           </div>
-          <div class="auth__error" v-show="error">{{ errorMessage }}</div>
+          <div class="auth__error">{{ errorMessage }}</div>
         </div>
         <router-link class="auth__forgot-password" :to="{ name: 'ForgotPassword' }">Забыли пароль?</router-link>
         <button @click.prevent="signIn">Войти</button>
@@ -33,6 +35,7 @@ import {signInWithEmailAndPassword, getAuth} from 'firebase/auth'
 import {ref} from 'vue'
 import {useRouter} from 'vue-router'
 import SvgIcon from "../components/UI/SvgIcon";
+import BaseInput from "../components/UI/BaseInput";
 
 const router = useRouter()
 
@@ -49,9 +52,21 @@ const signIn = () => {
         error.value = false;
         errorMessage.value = ''
       })
-      .catch((err) => {
-        error.value = true;
-        errorMessage.value = err.message
+      .catch((error) => {
+        switch (error.code) {
+          case 'auth/invalid-email':
+            errorMessage.value = 'Некорректный е-мейл';
+            break;
+          case 'auth/user-not-found':
+            errorMessage.value = 'Аккаунт с таким е-мейлом не найден';
+            break;
+          case 'auth/wrong-password':
+            errorMessage.value = 'Неправильный пароль';
+            break;
+          default:
+            errorMessage.value = 'Е-мейл или пароль неверный';
+            break;
+        }
       })
 }
 </script>
@@ -67,6 +82,14 @@ const signIn = () => {
     display: flex;
     width: 100%;
     margin: 40px 80px 80px;
+  }
+
+  &__register {
+    margin-bottom: 20px;
+  }
+
+  &__register-link {
+    color: #00b1ff;
   }
 
   &__form {
@@ -101,27 +124,8 @@ const signIn = () => {
   &__input-wrapper {
     position: relative;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
     margin-bottom: 8px;
-  }
-
-  &__input {
-    width: 100%;
-    border: none;
-    background-color: #f2f7f6;
-    padding: 4px 4px 4px 30px;
-    height: 50px;
-
-    &:focus {
-      outline: none;
-    }
-  }
-
-  &__icon {
-    width: 12px;
-    position: absolute;
-    left: 6px;
   }
 
   &__forgot-password {
@@ -129,7 +133,7 @@ const signIn = () => {
     color: #000;
     cursor: pointer;
     font-size: 14px;
-    margin: 16px 0 32px;
+    margin: 30px 0 15px;
     border-bottom: 1px solid transparent;
     transition: 0.5s ease all;
 
@@ -138,8 +142,19 @@ const signIn = () => {
     }
   }
 
+  &__icon-password {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+  }
+
   &__text {
     margin-bottom: 10px;
+  }
+
+  &__error {
+    height: 20px;
+    color: #e87171;
   }
 }
 

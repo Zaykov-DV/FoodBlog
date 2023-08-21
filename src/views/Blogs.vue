@@ -1,6 +1,6 @@
 <template class="blogs">
   <div class="blogs__container">
-    <div v-if="profileUser" class="blogs__edit">
+    <div v-if="authUserStore.isAdmin" class="blogs__edit">
       <span class="blogs__edit-label">редактирование постов</span>
       <input type="checkbox" v-model="editPost">
     </div>
@@ -83,10 +83,6 @@ const editPost = computed({
   set(payload) {
     blogsStore.toggleEditPost(payload)
   }
-})
-
-const profileUser = computed(() => {
-  return authUserStore.user;
 })
 
 // navigation

@@ -42,6 +42,10 @@ const handleClick = (id) => {
 
 .blog-categories {
 
+  &__container {
+    padding: 0 20px;
+  }
+
   &__header {
     display: flex;
     align-items: center;
@@ -179,6 +183,11 @@ const handleClick = (id) => {
 
 @media (max-width: 540px) {
   .blog-categories {
+
+    &__container {
+      padding: 0 8px;
+    }
+
     &__header {
       margin-bottom: 40px;
     }
