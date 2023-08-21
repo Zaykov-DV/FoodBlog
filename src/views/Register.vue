@@ -9,32 +9,32 @@
       <h2 class="auth__title">Зарегестировать аккаунт</h2>
         <div class="auth__inputs">
           <div class="auth__input-wrapper">
-            <BaseInput class="auth__input" type="text" placeholder="Имя" v-model="firstName" withIcon>
+            <BaseInput class="auth__input" type="text" placeholder="Имя" v-model.trim="firstName" withIcon>
               <SvgIcon class="auth__icon" name="user-alt-light"/>
             </BaseInput>
           </div>
           <div class="auth__input-wrapper">
-            <BaseInput class="auth__input" type="text" placeholder="Фамилия" v-model="lastName" withIcon>
+            <BaseInput class="auth__input" type="text" placeholder="Фамилия" v-model.trim="lastName" withIcon>
               <SvgIcon class="auth__icon" name="user-alt-light"/>
             </BaseInput>
           </div>
           <div class="auth__input-wrapper">
-            <BaseInput class="auth__input" type="text" placeholder="Псевдоним" v-model="formData.userName" withIcon>
+            <BaseInput class="auth__input" type="text" placeholder="Псевдоним" v-model.trim="formData.userName" withIcon>
               <SvgIcon class="auth__icon" name="user-alt-light"/>
             </BaseInput>
             <span class="auth__error" v-for="error in v$.userName.$errors" :key="error.$uid">{{ error.$message }}</span>
           </div>
           <div class="auth__input-wrapper">
-            <BaseInput class="auth__input" type="text" placeholder="Е-мейл" v-model="formData.email" withIcon>
+            <BaseInput class="auth__input" type="text" placeholder="Е-мейл" v-model.trim="formData.email" withIcon>
               <SvgIcon class="auth__icon" name="envelope-regular"/>
             </BaseInput>
             <span class="auth__error" v-for="error in v$.email.$errors" :key="error.$uid">{{ error.$message }}</span>
           </div>
           <div class="auth__input-wrapper">
-            <BaseInput v-if="showPassword" type="text" class="input" v-model="formData.password" withIcon>
+            <BaseInput v-if="showPassword" type="text" class="input" v-model.trim="formData.password" withIcon>
               <SvgIcon class="auth__icon" name="lock-alt-solid" />
             </BaseInput>
-            <BaseInput v-else type="password" placeholder="Password" v-model="formData.password" withIcon>
+            <BaseInput v-else type="password" placeholder="Password" v-model.trim="formData.password" withIcon>
               <SvgIcon class="auth__icon" name="lock-alt-solid" />
             </BaseInput>
             <div class="auth__icon-password" @click="toggleShow">
@@ -46,7 +46,7 @@
             <span class="auth__error" v-for="error in v$.password.$errors" :key="error.$uid">{{ error.$message }}</span>
           </div>
           <div class="auth__input-wrapper">
-            <BaseInput type="password" placeholder="Confirm password" v-model="formData.confirmPassword" withIcon>
+            <BaseInput type="password" placeholder="Confirm password" v-model.trim="formData.confirmPassword" withIcon>
               <SvgIcon class="auth__icon" name="lock-alt-solid" />
             </BaseInput>
             <span class="auth__error" v-for="error in v$.confirmPassword.$errors" :key="error.$uid">

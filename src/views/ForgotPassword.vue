@@ -14,8 +14,9 @@
           </p>
           <div class="auth__inputs">
             <div class="auth__input-wrapper">
-              <input class="auth__input" type="text" placeholder="Email" v-model="email">
-              <SvgIcon class="auth__icon" name="envelope-regular"/>
+              <BaseInput class="auth__input" type="password" placeholder="Password" v-model.trim="email" withIcon>
+                <SvgIcon class="auth__icon" name="lock-alt-solid"/>
+              </BaseInput>
             </div>
           </div>
           <button @click.prevent="resetPassword">Сбросить</button>
@@ -30,6 +31,7 @@
 <script setup>
 import Modal from "../components/UI/Modal";
 import Loading from "../components/UI/Loading";
+import BaseInput from "../components/UI/BaseInput";
 
 import {getAuth, sendPasswordResetEmail} from 'firebase/auth'
 

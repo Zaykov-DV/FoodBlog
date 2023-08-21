@@ -2,19 +2,19 @@
   <div class="auth">
     <div class="auth__wrapper">
       <form class="auth__form">
-              <p class="auth__register">
-                Нет аккаунта?
-                <router-link class="auth__register-link" :to="{ name: 'Register' }">Зарегистрироваться</router-link>
-              </p>
+        <!--      <p class="login-register">-->
+        <!--        Don't have an account?-->
+        <!--        <router-link class="router-link" :to="{ name: 'Register' }">Register</router-link>-->
+        <!--      </p>-->
         <h2 class="auth__title">Вход в FoodBlogs</h2>
         <div class="auth__inputs">
           <div class="auth__input-wrapper">
-            <BaseInput class="auth__input" type="text" placeholder="Email" v-model="email" withIcon>
+            <BaseInput class="auth__input" type="text" placeholder="Email" v-model.trim="email" withIcon>
               <SvgIcon class="auth__icon" name="envelope-regular"/>
             </BaseInput>
           </div>
           <div class="auth__input-wrapper">
-            <BaseInput class="auth__input" type="password" placeholder="Password" v-model="password" withIcon>
+            <BaseInput class="auth__input" type="password" placeholder="Password" v-model.trim="password" withIcon>
               <SvgIcon class="auth__icon" name="lock-alt-solid"/>
             </BaseInput>
           </div>
