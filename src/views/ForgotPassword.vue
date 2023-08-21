@@ -14,7 +14,7 @@
           </p>
           <div class="auth__inputs">
             <div class="auth__input-wrapper">
-              <BaseInput class="auth__input" type="password" placeholder="Password" v-model.trim="email" withIcon>
+              <BaseInput class="auth__input" type="text" placeholder="Password" v-model.trim="email" withIcon>
                 <SvgIcon class="auth__icon" name="lock-alt-solid"/>
               </BaseInput>
             </div>
