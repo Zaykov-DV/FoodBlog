@@ -40,7 +40,7 @@ const blogsStore = useBlogsStore()
 const props = defineProps(['post'])
 
 const deletePost = () => {
-  blogsStore.deletePost(props.post.blogID)
+  blogsStore.deletePost(props.post)
 }
 const editBlog = () => {
   router.push({name: 'EditPost', params: { blogid: props.post.blogID }})

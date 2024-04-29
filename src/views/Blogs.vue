@@ -63,16 +63,16 @@ const categoryActive = ref(0)
 const filterProducts = (category) => {
   currentPage.value = 1;
   if (category === 0 || undefined) {
-    blogsStore.showAllCategories()
+    blogsStore.getPost()
     categoryActive.value = 0
   } else {
     categoryActive.value = category
-    blogsStore.filterCategory(category)
+    blogsStore.getFilteredPosts(category)
   }
 }
 
 const filterBlogs = computed(() => {
-  return blogsStore.filterBlogPosts.slice((currentPage.value - 1) * itemsPerPage.value, currentPage.value * itemsPerPage.value)
+  return blogsStore.blogPosts.slice((currentPage.value - 1) * itemsPerPage.value, currentPage.value * itemsPerPage.value)
 })
 
 
@@ -92,7 +92,7 @@ const onPageChange = (page) => {
   currentPage.value = page;
 }
 const countTotalPages = computed(() => {
-  return Math.ceil(blogsStore.filterBlogPosts.length / itemsPerPage.value)
+  return Math.ceil(blogsStore.blogPosts.length / itemsPerPage.value)
 })
 
 // mobile

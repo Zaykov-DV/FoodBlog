@@ -3,9 +3,8 @@
     <label class="base-input__label" v-if="label">{{ label }}</label>
     <input class="base-input__input"
            :class="{'with-icon' : withIcon}"
-           :value="modelValue"
            :disabled="disabled"
-           @input="$emit('update:modelValue', $event.target.value)"
+           v-model="model"
            v-bind="$attrs">
     <div class="base-input__icon" :class="{'is-disabled' : disabled}" v-if="withIcon">
       <slot></slot>
@@ -16,14 +15,12 @@
 <script setup>
 import { defineProps } from "vue";
 
+const model = defineModel()
+
 defineProps({
   label: {
     type: [String, Boolean],
     default: false
-  },
-  modelValue: {
-    type: String,
-    default: ''
   },
   withIcon: {
     type: Boolean,
@@ -53,7 +50,7 @@ defineProps({
     color: #000;
     outline: none;
     transition: box-shadow 0.3s ease-in-out;
-    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
 
     &.with-icon {
       padding: 5px 5px 5px 45px;
@@ -64,15 +61,15 @@ defineProps({
     }
 
     &:hover {
-      box-shadow: 0px 0px 0px 1px #00ccff;
+      box-shadow: 0 0 0 1px #00ccff;
     }
 
     &:focus {
-      box-shadow: 0px 0px 0px 2px #00ccff;
+      box-shadow: 0 0 0 2px #00ccff;
     }
 
     &:disabled {
-      box-shadow: 0px 0px 0px 1px #b7b7b7;
+      box-shadow: 0 0 0 1px #b7b7b7;
     }
   }
 

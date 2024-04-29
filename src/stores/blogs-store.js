@@ -1,12 +1,12 @@
-import { defineStore } from 'pinia'
+import {defineStore} from 'pinia'
 import 'firebase/compat/auth'
 import db from "../firebase/firebaseInit";
+import firebase from "firebase/compat/app";
 
 export const useBlogsStore = defineStore('BlogsStore', {
     state: () => {
         return {
             blogPosts: [],
-            filterBlogPosts: [],
             postLoaded: false,
             blogHTML: '',
             blogTitle: '',
@@ -17,15 +17,15 @@ export const useBlogsStore = defineStore('BlogsStore', {
             editPost: null,
             blogAuthor: null,
             categories: [
-                { id: 0, category: 'Все категории', image: 'soybeans'},
-                { id: 1, category: 'Выпечка', image: 'bread' },
-                { id: 2, category: 'Завтрак', image: 'bowl' },
-                { id: 4, category: 'Вторые блюда', image: 'chicken' },
-                { id: 5, category: 'Салаты', image: 'avocado' },
-                { id: 6, category: 'Десерты', image: 'cake' },
-                { id: 7, category: 'Соусы и маринады', image: 'cola' },
-                { id: 8, category: 'Закуски', image: 'hot-dog' },
-                { id: 9, category: 'Напитки', image: 'drink' },
+                {id: 0, category: 'Все категории', image: 'soybeans'},
+                {id: 1, category: 'Выпечка', image: 'bread'},
+                {id: 2, category: 'Завтрак', image: 'bowl'},
+                {id: 4, category: 'Вторые блюда', image: 'chicken'},
+                {id: 5, category: 'Салаты', image: 'avocado'},
+                {id: 6, category: 'Десерты', image: 'cake'},
+                {id: 7, category: 'Соусы и маринады', image: 'cola'},
+                {id: 8, category: 'Закуски', image: 'hot-dog'},
+                {id: 9, category: 'Напитки', image: 'drink'},
             ],
             selectedCategory: null,
             navigateToCategory: 0,
@@ -83,18 +83,6 @@ export const useBlogsStore = defineStore('BlogsStore', {
         toggleEditPost(payload) {
             this.editPost = payload
         },
-        filterBlogPost(payload) {
-            this.blogPosts = this.blogPosts.filter(post => post.blogID !== payload)
-            this.filterBlogPosts = this.blogPosts
-        },
-        // фильтр по категории
-        filterCategory(payload) {
-            this.filterBlogPosts = this.blogPosts.filter(post => post.selectedCategory === payload)
-        },
-        // сбросить фильтры по категории
-        showAllCategories() {
-            this.filterBlogPosts = this.blogPosts
-        },
         setBlogState(payload) {
             this.blogTitle = payload.blogTitle;
             this.blogDescr = payload.blogDescr;
@@ -116,8 +104,25 @@ export const useBlogsStore = defineStore('BlogsStore', {
         },
 
         async getPost() {
-            const dataBase = await db.collection("blogPosts").orderBy("date", "desc");
+            const dataBase = await db.collection("blogPosts")
+                .orderBy("date", "desc")
+
             const dbResults = await dataBase.get();
+
+            await this.setBlogPosts(dbResults)
+        },
+
+        async getFilteredPosts(categoryId) {
+            const dataBase = await db.collection("blogPosts")
+                .where("categoryID", "==", categoryId)
+
+            const dbResults = await dataBase.get();
+
+            await this.setBlogPosts(dbResults)
+        },
+
+        async setBlogPosts(dbResults) {
+            this.blogPosts = []
             dbResults.forEach((doc) => {
                 if (!this.blogPosts.some((post) => post.blogID === doc.id)) {
                     const data = {
@@ -136,18 +141,15 @@ export const useBlogsStore = defineStore('BlogsStore', {
                 }
             });
             this.postLoaded = true;
-            this.filterBlogPosts = this.blogPosts
-        },
-
-        async updatePost(payload) {
-            this.filterBlogPost(payload)
-            await this.getPost()
         },
 
         async deletePost(payload) {
-            const getPost = await db.collection('blogPosts').doc(payload);
-            await getPost.delete();
-            this.filterBlogPost(payload)
+            const storageRef = firebase.storage().ref();
+
+            await db.collection('blogPosts').doc(payload.blogID)?.delete();
+            await storageRef.child(`documents/BlogCoverPhotos/${payload.blogCoverPhotoName}`).delete();
+
+            await this.getPost()
         },
     }
 })

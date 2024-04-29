@@ -95,45 +95,20 @@ const editorSettings = ref({
   module: BlotFormatter,
   options: {/* options */}
 })
-
 const blogPhoto = ref(null)
 const modalActive = ref(false)
 
 
-const handlePreview = () => {
-  modalActive.value = !modalActive.value
-}
-
 onMounted(async () => {
   routeID.value = route.params.blogid;
-  currentBlog.value = await blogsStore.blogPosts.filter((post) => {
+  currentBlog.value = blogsStore.blogPosts.filter((post) => {
     return post.blogID === routeID.value;
   });
   blogsStore.setBlogState(currentBlog.value[0])
 })
 
-// methods
-const fileChange = () => {
-  file.value = blogPhoto.value.files[0];
-  const fileName = file.value.name;
-  blogsStore.fileNameChange(fileName)
-  blogsStore.createFileURL(URL.createObjectURL(file.value))
-}
-
-const openPreview = () => {
-  blogsStore.openPhotoPreview()
-}
-
-const closeBlogPhotoPreviewModal = () => {
-  blogsStore.openPhotoPreview()
-}
-
-const checkTerms = computed(() => {
-  return blogTitle.value.length !== 0 && blogHTML.value.length !== 0 && selectedCategory.value !== 0 && blogCookingTime.value
-})
-
 const updateBlog = async () => {
-  const dataBase = await db.collection("blogPosts").doc(routeID.value);
+  const dataBase = db.collection("blogPosts").doc(routeID.value);
   if (checkTerms.value) {
     if (file.value) {
       loading.value = true;
@@ -150,17 +125,8 @@ const updateBlog = async () => {
           },
           async () => {
             const downloadURL = await docRef.getDownloadURL();
-
-            await dataBase.update({
-              blogHTML: blogHTML.value,
-              blogCoverPhoto: downloadURL,
-              blogCoverPhotoName: blogCoverPhotoName.value,
-              blogTitle: blogTitle.value,
-              blogDescr: blogDescr.value,
-              blogCookingTime: blogCookingTime.value,
-              categoryID: selectedCategory.value
-            });
-            await blogsStore.updatePost(routeID.value)
+            await updateDataBase(dataBase, downloadURL)
+            await blogsStore.getPost()
             loading.value = false;
             await router.push({name: "ViewBlog", params: {blogid: dataBase.id}});
           }
@@ -168,16 +134,9 @@ const updateBlog = async () => {
       return;
     }
     loading.value = true;
-    await dataBase.update({
-      blogHTML: blogHTML.value,
-      blogCoverPhotoName: blogCoverPhotoName.value,
-      blogTitle: blogTitle.value,
-      blogDescr: blogDescr.value,
-      blogCookingTime: blogCookingTime.value,
-      categoryID: selectedCategory.value
-    })
+    await updateDataBase(dataBase)
 
-    await blogsStore.updatePost(routeID.value)
+    await blogsStore.getPost()
     loading.value = false;
     await router.push({name: "ViewBlog", params: {blogid: dataBase.id}});
 
@@ -189,6 +148,30 @@ const updateBlog = async () => {
   }, 5000);
 }
 
+const updateDataBase = async (db, url) => {
+  await db.update({
+    blogHTML: blogHTML.value,
+    blogCoverPhotoName: blogCoverPhotoName.value,
+    blogTitle: blogTitle.value,
+    blogDescr: blogDescr.value,
+    blogCookingTime: blogCookingTime.value,
+    categoryID: selectedCategory.value,
+    blogCoverPhoto: url ?? '',
+  })
+}
+
+// computed
+const openPreview = () => {
+  blogsStore.openPhotoPreview()
+}
+
+const closeBlogPhotoPreviewModal = () => {
+  blogsStore.openPhotoPreview()
+}
+
+const checkTerms = computed(() => {
+  return blogTitle.value.length !== 0 && blogHTML.value.length !== 0 && selectedCategory.value !== 0 && blogCookingTime.value
+})
 
 const blogCoverPhotoName = computed(() => {
   return blogsStore.blogPhotoName
@@ -238,4 +221,15 @@ const blogCookingTime = computed({
     blogsStore.updateBlogCookingTime(payload);
   },
 })
+
+// methods
+const handlePreview = () => {
+  modalActive.value = !modalActive.value
+}
+const fileChange = () => {
+  file.value = blogPhoto.value.files[0];
+  const fileName = file.value.name;
+  blogsStore.fileNameChange(fileName)
+  blogsStore.createFileURL(URL.createObjectURL(file.value))
+}
 </script>
