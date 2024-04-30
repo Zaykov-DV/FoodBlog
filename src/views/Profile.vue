@@ -1,6 +1,6 @@
 <template>
   <div class="profile">
-    <Modal v-if="modalActive" :modalMessage="modalMessage" v-on:close-modal="closeModal"/>
+    <Modal v-if="modalActive" :modalMessage="modalMessage" @close-modal="closeModal"/>
     <div class="profile__container">
       <h2 class="profile__title">Настройки аккаунта</h2>
       <div class="profile__info">

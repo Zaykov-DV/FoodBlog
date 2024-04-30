@@ -1,7 +1,7 @@
 <template>
   <div class="create-post">
     <div class="create-post__container">
-      <Modal v-if="blogsStore.blogPhotoPreview" modalSize="l'" v-on:close-modal="closeBlogPhotoPreviewModal">
+      <Modal v-if="blogsStore.blogPhotoPreview" modalSize="l'" @close-modal="handlePreviewModal">
         <img :src="blogsStore.blogPhotoFileURL" :alt="blogsStore.blogPhotoFileURL"/>
       </Modal>
       <Loading v-if="loading"/>
@@ -13,7 +13,7 @@
               <label class="create-post__uploader-label" for="blog-photo">Загрузить обложку</label>
               <input class="create-post__uploader-input" type="file" ref="blogPhoto" id="blog-photo"
                      @change="fileChange" accept=".png, .jpg, ,jpeg"/>
-              <button @click="openPreview" class="create-post__btn-preview"
+              <button @click="handlePreviewModal" class="create-post__btn-preview"
                       :disabled="!blogsStore.blogPhotoFileURL"
                       :class="{ 'button-inactive': !blogsStore.blogPhotoFileURL }">
                 Посмотреть обложку
@@ -52,14 +52,14 @@
         </div>
         <div class="create-post__actions">
           <button @click="updateBlog" :class="{ 'button-inactive': !checkTerms }" :disabled="!checkTerms">Сохранить изменения</button>
-          <Modal v-if="modalActive" v-on:close-modal="handlePreview" :modal-title="'Превью поста'" :modal-size="'xl'" :class="{ 'button-inactive': !checkTerms }" :disabled="!checkTerms">
+          <Modal v-if="modalActive" @close-modal="handlePreview" :modal-title="'Превью поста'" :modal-size="'xl'" :class="{ 'button-inactive': !checkTerms }" :disabled="!checkTerms">
             <BlogPreview/>
           </Modal>
           <button @click="handlePreview">Посмотреть изменения</button>
         </div>
       </div>
     </div>
-    <Modal v-if="modalActive" v-on:close-modal="handlePreview" :modal-title="'Превью поста'" :modal-size="'xl'">
+    <Modal v-if="modalActive" @close-modal="handlePreview" :modal-title="'Превью поста'" :modal-size="'xl'">
       <BlogPreview/>
     </Modal>
   </div>
@@ -127,6 +127,7 @@ const updateBlog = async () => {
             const downloadURL = await docRef.getDownloadURL();
             await updateDataBase(dataBase, downloadURL)
             await blogsStore.getPost()
+
             loading.value = false;
             await router.push({name: "ViewBlog", params: {blogid: dataBase.id}});
           }
@@ -149,6 +150,8 @@ const updateBlog = async () => {
 }
 
 const updateDataBase = async (db, url) => {
+  console.log(url)
+  console.log(blogCoverPhotoUrl.value)
   await db.update({
     blogHTML: blogHTML.value,
     blogCoverPhotoName: blogCoverPhotoName.value,
@@ -156,25 +159,21 @@ const updateDataBase = async (db, url) => {
     blogDescr: blogDescr.value,
     blogCookingTime: blogCookingTime.value,
     categoryID: selectedCategory.value,
-    blogCoverPhoto: url ?? '',
+    blogCoverPhoto: url ?? blogCoverPhotoUrl.value,
   })
 }
 
 // computed
-const openPreview = () => {
-  blogsStore.openPhotoPreview()
-}
-
-const closeBlogPhotoPreviewModal = () => {
-  blogsStore.openPhotoPreview()
-}
-
 const checkTerms = computed(() => {
   return blogTitle.value.length !== 0 && blogHTML.value.length !== 0 && selectedCategory.value !== 0 && blogCookingTime.value
 })
 
 const blogCoverPhotoName = computed(() => {
   return blogsStore.blogPhotoName
+})
+
+const blogCoverPhotoUrl = computed(() => {
+  return blogsStore.blogPhotoFileURL
 })
 
 const blogTitle = computed({
@@ -223,6 +222,9 @@ const blogCookingTime = computed({
 })
 
 // methods
+const handlePreviewModal = () => {
+  blogsStore.openPhotoPreview()
+}
 const handlePreview = () => {
   modalActive.value = !modalActive.value
 }

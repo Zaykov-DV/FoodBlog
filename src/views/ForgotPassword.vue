@@ -1,7 +1,7 @@
 <template>
   <div class="auth">
     <div class="auth__wrapper">
-      <Modal v-if="modalActive" :modal-message="modalMessage" v-on:close-modal="closeModal"/>
+      <Modal v-if="modalActive" :modal-message="modalMessage" @close-modal="closeModal"/>
       <Loading v-if="loading"/>
         <form class="auth__form">
           <p class="auth__forgot-password">

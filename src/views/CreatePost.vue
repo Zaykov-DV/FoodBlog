@@ -1,7 +1,7 @@
 <template>
   <div class="create-post">
     <div class="create-post__container">
-      <Modal v-if="blogsStore.blogPhotoPreview" modalSize="l'" v-on:close-modal="closeBlogPhotoPreviewModal">
+      <Modal v-if="blogsStore.blogPhotoPreview" modalSize="l'" @close-modal="closeBlogPhotoPreviewModal">
         <img :src="blogsStore.blogPhotoFileURL" :alt="blogsStore.blogPhotoFileURL"/>
       </Modal>
       <Loading v-if="loading"/>
@@ -59,7 +59,7 @@
         </div>
       </div>
     </div>
-    <Modal v-if="modalActive" v-on:close-modal="handlePreview" :modal-title="'Превью поста'" :modal-size="'xl'">
+    <Modal v-if="modalActive" @close-modal="handlePreview" :modal-title="'Превью поста'" :modal-size="'xl'">
       <BlogPreview/>
     </Modal>
   </div>

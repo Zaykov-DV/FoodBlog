@@ -32,7 +32,7 @@ onMounted(async () => {
     authUserStore.updateUser(user)
     if (user) authUserStore.getCurrentUser(user)
   })
-  await blogsStore.getPost()
+  await blogsStore.getPost(10)
 })
 
 </script>

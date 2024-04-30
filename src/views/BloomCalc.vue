@@ -2,7 +2,7 @@
   <div class="calc">
     <div class="calc__container">
       <div class="calc__wrapper">
-        <Modal v-if="modalActive" :modal-message="modalMessage" v-on:close-modal="closeModal"/>
+        <Modal v-if="modalActive" :modal-message="modalMessage" @close-modal="closeModal"/>
         <h4 class="calc__title">Калькулятор расчета желатина</h4>
         <form class="calc__form">
           <BaseInput type="number" placeholder="0" v-model="recipeBloom" label="Сила желатина в рецепте"/>

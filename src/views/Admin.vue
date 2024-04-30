@@ -12,7 +12,7 @@
         <button @click="addAdmin" class="button">Добавить администратора</button>
       </div>
     </div>
-    <Modal v-if="modalActive" v-on:close-modal="handlePreview" :modal-title="modalTitle">
+    <Modal v-if="modalActive" @close-modal="handlePreview" :modal-title="modalTitle">
       {{modalMessage}}
     </Modal>
   </div>

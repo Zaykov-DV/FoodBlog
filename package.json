@@ -12,6 +12,7 @@
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
     "@vueup/vue-quill": "^1.2.0",
+    "@vueuse/core": "^10.9.0",
     "core-js": "^3.36.1",
     "firebase": "^9.23.0",
     "pinia": "^2.1.7",
