@@ -29,14 +29,10 @@
     </div>
     <div class="blogs__cards">
       <BlogCard :post="post" v-for="(post, index) in filterBlogs" :key="index"/>
-      <Pagination class="blogs__pagination"
-                  v-if="countTotalPages > 1"
-                  :total-pages="countTotalPages"
-                  :total="113"
-                  :per-page="itemsPerPage"
-                  :current-page="currentPage"
-                  @pagechanged="onPageChange">
-      </Pagination>
+      <div v-intersection-observer="[onIntersectionObserver]">
+        <p v-if="blogsStore.lastDocSnapshot">loading</p>
+      </div>
+
       <div class="blogs__not-found" v-show="filterBlogs.length <= 0">
         <span>В данной категории рецептов нет</span>
         <button @click="filterProducts(0)">Вернуться к рецептам</button>
@@ -48,33 +44,30 @@
 
 <script setup>
 import BlogCard from "../components/BlogCard";
-import Pagination from "../components/UI/Pagination";
 import {computed, ref, onBeforeUnmount, onMounted} from 'vue'
 import SvgIcon from "../components/UI/SvgIcon";
-
-import { useBlogsStore } from '@/stores/blogs-store'
-import { useAuthUserStore } from '@/stores/auth-user'
+import {useBlogsStore} from '@/stores/blogs-store'
+import {useAuthUserStore} from '@/stores/auth-user'
+import {vIntersectionObserver} from '@vueuse/components'
 
 const authUserStore = useAuthUserStore()
 const blogsStore = useBlogsStore()
-
 const categoryActive = ref(0)
+const isVisible = ref(false)
 
 const filterProducts = (category) => {
-  currentPage.value = 1;
   if (category === 0 || undefined) {
-    blogsStore.getPost(10)
+    blogsStore.getPost()
     categoryActive.value = 0
   } else {
     categoryActive.value = category
-    blogsStore.getFilteredPosts(category, 10)
+    blogsStore.getFilteredPosts(category)
   }
 }
 
 const filterBlogs = computed(() => {
-  return blogsStore.blogPosts.slice((currentPage.value - 1) * itemsPerPage.value, currentPage.value * itemsPerPage.value)
+  return blogsStore.blogPosts
 })
-
 
 const editPost = computed({
   get() {
@@ -83,16 +76,6 @@ const editPost = computed({
   set(payload) {
     blogsStore.toggleEditPost(payload)
   }
-})
-
-// navigation
-const currentPage = ref(1)
-const itemsPerPage = ref(5)
-const onPageChange = (page) => {
-  currentPage.value = page;
-}
-const countTotalPages = computed(() => {
-  return Math.ceil(blogsStore.blogPosts.length / itemsPerPage.value)
 })
 
 // mobile
@@ -118,6 +101,20 @@ onMounted(() => {
 onBeforeUnmount(() => {
   blogsStore.toggleEditPost(false)
 })
+
+const onIntersectionObserver = ([{isIntersecting}]) => {
+  isVisible.value = isIntersecting
+
+  if (isVisible.value && blogsStore.lastDocSnapshot && !categoryActive.value) {
+    blogsStore.getPost()
+  }
+  if (isVisible.value && blogsStore.lastDocSnapshot && categoryActive.value) {
+    blogsStore.getFilteredPosts(categoryActive.value)
+  }
+  else {
+    isVisible.value = false
+  }
+}
 
 </script>
 
@@ -218,6 +215,7 @@ onBeforeUnmount(() => {
       padding: 20px 20px 40px;
       flex-direction: column;
     }
+
     &__filter {
       min-width: 100%;
       padding-right: 0;

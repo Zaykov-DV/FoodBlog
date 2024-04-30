@@ -7,6 +7,8 @@ export const useBlogsStore = defineStore('BlogsStore', {
     state: () => {
         return {
             blogPosts: [],
+            limitBlogs: 10,
+            lastDocSnapshot: null,
             postLoaded: false,
             blogHTML: '',
             blogTitle: '',
@@ -104,43 +106,63 @@ export const useBlogsStore = defineStore('BlogsStore', {
         },
 
         async getPost() {
-            const dataBase = await db.collection("blogPosts")
+            let dataBase = await db.collection("blogPosts")
                 .orderBy("date", "desc")
+                .limit(10)
 
-            const dbResults = await dataBase.get();
+            if (this.lastDocSnapshot) {
+                dataBase = dataBase.startAfter(this.lastDocSnapshot)
+            }
 
-            await this.setBlogPosts(dbResults)
+            const dbSnapshot = await dataBase.get()
+            this.lastDocSnapshot = dbSnapshot.docs[dbSnapshot.docs.length - 1]
+
+            const result =  await this.mapBlogPosts(dbSnapshot)
+
+            this.blogPosts.push(...result)
+            this.postLoaded = true;
+
+            return result.length
         },
 
         async getFilteredPosts(categoryId) {
-            const dataBase = await db.collection("blogPosts")
+            let dataBase = await db.collection("blogPosts")
+                .orderBy("date", "desc")
                 .where("categoryID", "==", categoryId)
+                .limit(10)
 
-            const dbResults = await dataBase.get();
+            const dbSnapshot = await dataBase.get()
 
-            await this.setBlogPosts(dbResults)
+            if (this.lastDocSnapshot && dbSnapshot.docs.length > 10) {
+                dataBase = dataBase.startAfter(this.lastDocSnapshot)
+            }
+
+            this.lastDocSnapshot = dbSnapshot.docs[dbSnapshot.docs.length - 1]
+
+            const result = await this.mapBlogPosts(dbSnapshot)
+            this.blogPosts = []
+            this.blogPosts.push(...result)
+
+            this.postLoaded = true;
+
+            return result.length
         },
 
-        async setBlogPosts(dbResults) {
-            this.blogPosts = []
-            dbResults.forEach((doc) => {
-                if (!this.blogPosts.some((post) => post.blogID === doc.id)) {
-                    const data = {
-                        blogID: doc.data().blogID,
-                        blogHTML: doc.data().blogHTML,
-                        blogCoverPhoto: doc.data().blogCoverPhoto,
-                        blogTitle: doc.data().blogTitle,
-                        blogDescr: doc.data().blogDescr,
-                        blogCookingTime: doc.data().blogCookingTime,
-                        blogDate: doc.data().date,
-                        blogCoverPhotoName: doc.data().blogCoverPhotoName,
-                        selectedCategory: doc.data().categoryID,
-                        blogAuthor: doc.data().blogAuthor
-                    };
-                    this.blogPosts.push(data);
-                }
+        async mapBlogPosts(dbResults) {
+           return dbResults.docs.map((doc) => {
+             return {
+                    blogID: doc.data().blogID,
+                    blogHTML: doc.data().blogHTML,
+                    blogCoverPhoto: doc.data().blogCoverPhoto,
+                    blogTitle: doc.data().blogTitle,
+                    blogDescr: doc.data().blogDescr,
+                    blogCookingTime: doc.data().blogCookingTime,
+                    blogDate: doc.data().date,
+                    blogCoverPhotoName: doc.data().blogCoverPhotoName,
+                    selectedCategory: doc.data().categoryID,
+                    blogAuthor: doc.data().blogAuthor
+                };
             });
-            this.postLoaded = true;
         },
 
         async deletePost(payload) {

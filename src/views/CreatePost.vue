@@ -66,7 +66,6 @@
 </template>
 
 <script setup>
-
 import Loading from "../components/UI/Loading";
 import firebase from "firebase/compat/app";
 import "firebase/compat/storage";
@@ -134,10 +133,10 @@ const uploadBlog = () => {
       docRef.put(file.value).on(
           "state_changed",
           (snapshot) => {
-            console.log('snapshot ' + snapshot);
+            console.log(snapshot);
           },
           (err) => {
-            console.log(err);
+            console.log(err)
             loading.value = false;
           },
           async () => {

@@ -150,8 +150,6 @@ const updateBlog = async () => {
 }
 
 const updateDataBase = async (db, url) => {
-  console.log(url)
-  console.log(blogCoverPhotoUrl.value)
   await db.update({
     blogHTML: blogHTML.value,
     blogCoverPhotoName: blogCoverPhotoName.value,
