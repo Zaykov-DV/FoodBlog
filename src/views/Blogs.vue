@@ -61,6 +61,7 @@ const filterProducts = (category) => {
     categoryActive.value = 0
   } else {
     categoryActive.value = category
+    blogsStore.clearPosts()
     blogsStore.getFilteredPosts(category)
   }
 }

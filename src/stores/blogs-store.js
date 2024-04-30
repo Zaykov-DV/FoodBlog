@@ -105,10 +105,14 @@ export const useBlogsStore = defineStore('BlogsStore', {
             this.blogPhotoName = '';
         },
 
+        clearPosts() {
+          this.blogPosts = []
+        },
+
         async getPost() {
             let dataBase = await db.collection("blogPosts")
                 .orderBy("date", "desc")
-                .limit(10)
+                .limit(3)
 
             if (this.lastDocSnapshot) {
                 dataBase = dataBase.startAfter(this.lastDocSnapshot)
@@ -129,18 +133,17 @@ export const useBlogsStore = defineStore('BlogsStore', {
             let dataBase = await db.collection("blogPosts")
                 .orderBy("date", "desc")
                 .where("categoryID", "==", categoryId)
-                .limit(10)
+                .limit(3)
 
-            const dbSnapshot = await dataBase.get()
 
-            if (this.lastDocSnapshot && dbSnapshot.docs.length > 10) {
+            if (this.lastDocSnapshot) {
                 dataBase = dataBase.startAfter(this.lastDocSnapshot)
             }
-
+            const dbSnapshot = await dataBase.get()
             this.lastDocSnapshot = dbSnapshot.docs[dbSnapshot.docs.length - 1]
 
             const result = await this.mapBlogPosts(dbSnapshot)
-            this.blogPosts = []
+
             this.blogPosts.push(...result)
 
             this.postLoaded = true;
