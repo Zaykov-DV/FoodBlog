@@ -1,8 +1,8 @@
 <template>
   <div class="create-post">
     <div class="create-post__container">
-      <Modal v-if="blogsStore.blogPhotoPreview" modalSize="l'" @close-modal="handlePreviewModal">
-        <img :src="blogsStore.blogPhotoFileURL" :alt="blogsStore.blogPhotoFileURL"/>
+      <Modal v-if="postStore.blogPhotoPreview" modalSize="l'" @close-modal="handlePreviewModal">
+        <img :src="postStore.blogPhotoFileURL" :alt="postStore.blogPhotoFileURL"/>
       </Modal>
       <Loading v-if="loading"/>
       <div class="create-post__content">
@@ -14,11 +14,11 @@
               <input class="create-post__uploader-input" type="file" ref="blogPhoto" id="blog-photo"
                      @change="fileChange" accept=".png, .jpg, ,jpeg"/>
               <button @click="handlePreviewModal" class="create-post__btn-preview"
-                      :disabled="!blogsStore.blogPhotoFileURL"
-                      :class="{ 'button-inactive': !blogsStore.blogPhotoFileURL }">
+                      :disabled="!postStore.blogPhotoFileURL"
+                      :class="{ 'button-inactive': !postStore.blogPhotoFileURL }">
                 Посмотреть обложку
               </button>
-              <span>Выбранный файл: {{ blogsStore.blogPhotoName }}</span>
+              <span>Выбранный файл: {{ postStore.blogPhotoName }}</span>
             </div>
           </div>
           <div class="create-post__description">
@@ -46,7 +46,7 @@
 
             <div>
               <input class="create-post__input" type="number" placeholder="Введите время готовки"
-                     v-model="blogsStore.blogCookingTime"/>
+                     v-model="postStore.blogCookingTime"/>
             </div>
           </div>
         </div>
@@ -79,8 +79,10 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import {ref, computed, onMounted} from 'vue'
 import {useRouter, useRoute} from 'vue-router'
 import { useBlogsStore } from '@/stores/blogs-store'
+import {usePostStore} from "@/stores/post-store";
 
 const blogsStore = useBlogsStore()
+const postStore = usePostStore()
 
 const router = useRouter()
 const route = useRoute()
@@ -104,7 +106,7 @@ onMounted(async () => {
   currentBlog.value = blogsStore.blogPosts.filter((post) => {
     return post.blogID === routeID.value;
   });
-  blogsStore.setBlogState(currentBlog.value[0])
+  postStore.setBlogState(currentBlog.value[0])
 })
 
 const updateBlog = async () => {
@@ -113,7 +115,7 @@ const updateBlog = async () => {
     if (file.value) {
       loading.value = true;
       const storageRef = firebase.storage().ref();
-      const docRef = storageRef.child(`documents/BlogCoverPhotos/${blogsStore.blogPhotoName}`);
+      const docRef = storageRef.child(`documents/BlogCoverPhotos/${postStore.blogPhotoName}`);
       docRef.put(file.value).on(
           "state_changed",
           (snapshot) => {
@@ -167,61 +169,61 @@ const checkTerms = computed(() => {
 })
 
 const blogCoverPhotoName = computed(() => {
-  return blogsStore.blogPhotoName
+  return postStore.blogPhotoName
 })
 
 const blogCoverPhotoUrl = computed(() => {
-  return blogsStore.blogPhotoFileURL
+  return postStore.blogPhotoFileURL
 })
 
 const blogTitle = computed({
   get() {
-    return blogsStore.blogTitle;
+    return postStore.blogTitle;
   },
   set(payload) {
-    blogsStore.updateBlogTitle(payload);
+    postStore.updateBlogTitle(payload);
   },
 })
 
 const blogDescr = computed({
   get() {
-    return blogsStore.blogDescr;
+    return postStore.blogDescr;
   },
   set(payload) {
-    blogsStore.updateBlogDescr(payload);
+    postStore.updateBlogDescr(payload);
   },
 })
 
 const blogHTML = computed({
   get() {
-    return blogsStore.blogHTML;
+    return postStore.blogHTML;
   },
   set(payload) {
-    blogsStore.newBlogPost(payload);
+    postStore.newBlogPost(payload);
   },
 })
 
 const selectedCategory = computed({
   get() {
-    return blogsStore.selectedCategory;
+    return postStore.selectedCategory;
   },
   set(payload) {
-    blogsStore.updateBlogCategory(payload);
+    postStore.updateBlogCategory(payload);
   }
 })
 
 const blogCookingTime = computed({
   get() {
-    return blogsStore.blogCookingTime;
+    return postStore.blogCookingTime;
   },
   set(payload) {
-    blogsStore.updateBlogCookingTime(payload);
+    postStore.updateBlogCookingTime(payload);
   },
 })
 
 // methods
 const handlePreviewModal = () => {
-  blogsStore.openPhotoPreview()
+  postStore.openPhotoPreview()
 }
 const handlePreview = () => {
   modalActive.value = !modalActive.value
@@ -229,7 +231,7 @@ const handlePreview = () => {
 const fileChange = () => {
   file.value = blogPhoto.value.files[0];
   const fileName = file.value.name;
-  blogsStore.fileNameChange(fileName)
-  blogsStore.createFileURL(URL.createObjectURL(file.value))
+  postStore.fileNameChange(fileName)
+  postStore.createFileURL(URL.createObjectURL(file.value))
 }
 </script>

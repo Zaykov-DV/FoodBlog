@@ -30,11 +30,11 @@
     <div class="blogs__cards">
       <BlogCard :post="post" v-for="(post, index) in filterBlogs" :key="index"/>
       <div v-intersection-observer="[onIntersectionObserver]">
-        <p v-if="isVisible">loading</p>
+          <PizzaLoader class="blogs__loading" v-if="isVisible" />
       </div>
 
-      <div v-show="isLoading">
-        LOADING!!!!!!
+      <div class="blogs__loading" v-show="isLoading">
+        <PizzaLoader />
       </div>
       <div class="blogs__not-found" v-show="blogsStore.blogPosts.length <= 0 && !isLoading">
         <span>В данной категории рецептов нет</span>
@@ -52,9 +52,12 @@ import SvgIcon from "../components/UI/SvgIcon";
 import {useBlogsStore} from '@/stores/blogs-store'
 import {useAuthUserStore} from '@/stores/auth-user'
 import {vIntersectionObserver} from '@vueuse/components'
+import PizzaLoader from "../components/UI/PizzaLoader.vue";
+import {usePostStore} from "../stores/post-store";
 
 const authUserStore = useAuthUserStore()
 const blogsStore = useBlogsStore()
+const postStore = usePostStore()
 const categoryActive = ref(0)
 const isVisible = ref(false)
 const isLoading = ref(true)
@@ -72,7 +75,6 @@ const filterProducts = (category) => {
       .then(() => {
         isLoading.value = false
       })
-
 }
 
 const filterBlogs = computed(() => {
@@ -81,10 +83,10 @@ const filterBlogs = computed(() => {
 
 const editPost = computed({
   get() {
-    return blogsStore.editPost
+    return postStore.editPost
   },
   set(payload) {
-    blogsStore.toggleEditPost(payload)
+    postStore.toggleEditPost(payload)
   }
 })
 
@@ -109,7 +111,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-  blogsStore.toggleEditPost(false)
+  postStore.toggleEditPost(false)
 })
 
 const onIntersectionObserver = ([{isIntersecting}]) => {
@@ -138,6 +140,12 @@ const onIntersectionObserver = ([{isIntersecting}]) => {
     display: flex;
     flex-direction: column;
     gap: 35px;
+    margin: 0 auto;
+  }
+
+  &__loading {
+    display: block;
+    margin: 0 auto;
   }
 
   &__edit {

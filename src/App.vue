@@ -27,7 +27,7 @@ const authUserStore = useAuthUserStore()
 const blogsStore = useBlogsStore()
 
 onMounted(async () => {
-  const auth = await getAuth()
+  const auth = getAuth()
   auth.onAuthStateChanged((user) => {
     authUserStore.updateUser(user)
     if (user) authUserStore.getCurrentUser(user)

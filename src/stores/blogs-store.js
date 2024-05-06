@@ -2,6 +2,7 @@ import {defineStore} from 'pinia'
 import 'firebase/compat/auth'
 import db from "../firebase/firebaseInit";
 import firebase from "firebase/compat/app";
+import mapBlogPosts from "../helpers/mapBlogPosts";
 
 export const useBlogsStore = defineStore('BlogsStore', {
     state: () => {
@@ -11,14 +12,6 @@ export const useBlogsStore = defineStore('BlogsStore', {
             dataBase: null,
             dbSnapshot: null,
             postLoaded: false,
-            blogHTML: '',
-            blogTitle: '',
-            blogDescr: '',
-            blogPhotoName: '',
-            blogPhotoFileURL: null,
-            blogPhotoPreview: null,
-            editPost: null,
-            blogAuthor: null,
             categories: [
                 {id: 0, category: 'Все категории', image: 'soybeans'},
                 {id: 1, category: 'Выпечка', image: 'bread'},
@@ -30,9 +23,7 @@ export const useBlogsStore = defineStore('BlogsStore', {
                 {id: 8, category: 'Закуски', image: 'hot-dog'},
                 {id: 9, category: 'Напитки', image: 'drink'},
             ],
-            selectedCategory: null,
             navigateToCategory: 0,
-            blogCookingTime: 0
         }
     },
     getters: {
@@ -62,65 +53,17 @@ export const useBlogsStore = defineStore('BlogsStore', {
         }
     },
     actions: {
-        newBlogPost(payload) {
-            this.blogHTML = payload;
-        },
-        updateBlogTitle(payload) {
-            this.blogTitle = payload
-        },
-        updateBlogDescr(payload) {
-            this.blogDescr = payload
-        },
-        updateBlogCookingTime(payload) {
-            this.blogCookingTime = payload
-        },
-        updateBlogCategory(payload) {
-            this.selectedCategory = payload
-        },
-        fileNameChange(payload) {
-            this.blogPhotoName = payload;
-        },
-        createFileURL(payload) {
-            this.blogPhotoFileURL = payload
-        },
-        openPhotoPreview() {
-            this.blogPhotoPreview = !this.blogPhotoPreview;
-        },
-        toggleEditPost(payload) {
-            this.editPost = payload
-        },
-        setBlogState(payload) {
-            this.blogTitle = payload.blogTitle;
-            this.blogDescr = payload.blogDescr;
-            this.blogCookingTime = payload.blogCookingTime;
-            this.selectedCategory = payload.selectedCategory;
-            this.blogHTML = payload.blogHTML;
-            this.blogPhotoFileURL = payload.blogCoverPhoto;
-            this.blogPhotoName = payload.blogCoverPhotoName;
-        },
-
-        // очистить стейт
-        clearBlogState() {
-            this.blogTitle = '';
-            this.blogDescr = '';
-            this.blogCookingTime = 0;
-            this.selectedCategory = 0;
-            this.blogHTML = '';
-            this.blogPhotoFileURL = null;
-            this.blogPhotoName = '';
-        },
-
         clearPosts() {
-          this.blogPosts = []
-          this.lastDocSnapshot = null
+            this.blogPosts = []
+            this.lastDocSnapshot = null
         },
 
         async getPosts(categoryId) {
             let dataBase
             if (!categoryId) {
-                    dataBase = await db.collection("blogPosts")
-                        .orderBy("date", "desc")
-                        .limit(10)
+                dataBase = await db.collection("blogPosts")
+                    .orderBy("date", "desc")
+                    .limit(10)
             } else {
                 dataBase = await db.collection("blogPosts")
                     .orderBy("date", "desc")
@@ -136,7 +79,7 @@ export const useBlogsStore = defineStore('BlogsStore', {
 
             this.lastDocSnapshot = dbSnapshot.docs[dbSnapshot.docs.length - 1]
 
-            const result =  await this.mapBlogPosts(dbSnapshot)
+            const result = await mapBlogPosts(dbSnapshot)
 
             this.blogPosts.push(...result)
 
@@ -145,32 +88,15 @@ export const useBlogsStore = defineStore('BlogsStore', {
             return result.length
         },
 
-        async mapBlogPosts(dbResults) {
-           return dbResults.docs.map((doc) => {
-             return {
-                    blogID: doc.data().blogID,
-                    blogHTML: doc.data().blogHTML,
-                    blogCoverPhoto: doc.data().blogCoverPhoto,
-                    blogTitle: doc.data().blogTitle,
-                    blogDescr: doc.data().blogDescr,
-                    blogCookingTime: doc.data().blogCookingTime,
-                    blogDate: doc.data().date,
-                    blogCoverPhotoName: doc.data().blogCoverPhotoName,
-                    selectedCategory: doc.data().categoryID,
-                    blogAuthor: doc.data().blogAuthor
-                };
-            });
-        },
-
         async deletePost(payload) {
             const storageRef = firebase.storage().ref();
 
             await db.collection('blogPosts').doc(payload.blogID)?.delete();
             await storageRef.child(`documents/BlogCoverPhotos/${payload.blogCoverPhotoName}`).delete();
 
-            await this.getPosts()
+            this.blogPosts = this.blogPosts.filter(blog => {
+                return blog.blogID !== payload.blogID
+            })
         },
     }
 })
-
-

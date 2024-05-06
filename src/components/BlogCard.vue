@@ -32,10 +32,12 @@ import SvgIcon from "./UI/SvgIcon";
 import { useBlogsStore } from '@/stores/blogs-store'
 import {defineProps, computed} from "vue";
 import { useRouter } from 'vue-router'
+import {usePostStore} from "../stores/post-store";
 
 const router = useRouter()
 
 const blogsStore = useBlogsStore()
+const postStore = usePostStore()
 
 const props = defineProps(['post'])
 
@@ -47,7 +49,7 @@ const editBlog = () => {
 }
 
 const editPost = computed(() => {
-  return blogsStore.editPost
+  return postStore.editPost
 });
 
 </script>

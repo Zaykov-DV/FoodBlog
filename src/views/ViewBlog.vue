@@ -33,8 +33,10 @@ import { onMounted, ref} from "vue";
 import {useRoute} from 'vue-router'
 import SvgIcon from "../components/UI/SvgIcon";
 import { useBlogsStore } from '@/stores/blogs-store'
+import {usePostStore} from "../stores/post-store";
 
 const blogsStore = useBlogsStore()
+const postStore = usePostStore()
 const route = useRoute()
 
 const currentBlog = ref(null);
@@ -47,9 +49,7 @@ const blogCategory = () => {
 }
 
 onMounted(async () => {
-  currentBlog.value = blogsStore.blogPosts.filter((post) => {
-    return post.blogID === route.params.blogid;
-  })
+  currentBlog.value = await postStore.getPost(route.params.blogid)
 })
 
 </script>

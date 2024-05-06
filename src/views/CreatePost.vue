@@ -1,8 +1,8 @@
 <template>
   <div class="create-post">
     <div class="create-post__container">
-      <Modal v-if="blogsStore.blogPhotoPreview" modalSize="l'" @close-modal="closeBlogPhotoPreviewModal">
-        <img :src="blogsStore.blogPhotoFileURL" :alt="blogsStore.blogPhotoFileURL"/>
+      <Modal v-if="postStore.blogPhotoPreview" modalSize="l'" @close-modal="closeBlogPhotoPreviewModal">
+        <img :src="postStore.blogPhotoFileURL" :alt="postStore.blogPhotoFileURL"/>
       </Modal>
       <Loading v-if="loading"/>
       <div class="create-post__content">
@@ -14,11 +14,11 @@
               <input class="create-post__uploader-input" type="file" ref="blogPhoto" id="blog-photo"
                      @change="fileChange" accept=".png, .jpg, ,jpeg"/>
               <button @click="openPreview" class="create-post__btn-preview"
-                      :disabled="!blogsStore.blogPhotoFileURL"
-                      :class="{ 'button-inactive': !blogsStore.blogPhotoFileURL }">
+                      :disabled="!postStore.blogPhotoFileURL"
+                      :class="{ 'button-inactive': !postStore.blogPhotoFileURL }">
                 Посмотреть обложку
               </button>
-              <span>Выбранный файл: {{ blogsStore.blogPhotoName }}</span>
+              <span>Выбранный файл: {{ postStore.blogPhotoName }}</span>
             </div>
           </div>
           <div class="create-post__description">
@@ -79,9 +79,11 @@ import Modal from "../components/UI/Modal";
 import BlogPreview from "./BlogPreview";
 import { useBlogsStore } from '@/stores/blogs-store'
 import { useAuthUserStore } from '@/stores/auth-user'
+import {usePostStore} from "@/stores/post-store";
 
 const router = useRouter()
 const blogsStore = useBlogsStore()
+const postStore = usePostStore()
 const authUserStore = useAuthUserStore()
 
 const editor = ref('')
@@ -98,7 +100,7 @@ const editorSettings = ref({
 
 
 const closeBlogPhotoPreviewModal = () => {
-  blogsStore.openPhotoPreview()
+  postStore.openPhotoPreview()
 }
 
 const handlePreview = () => {
@@ -108,16 +110,16 @@ const handlePreview = () => {
 const fileChange = () => {
   file.value = blogPhoto.value.files[0];
   const fileName = file.value.name;
-  blogsStore.fileNameChange(fileName)
-  blogsStore.createFileURL(URL.createObjectURL(file.value))
+  postStore.fileNameChange(fileName)
+  postStore.createFileURL(URL.createObjectURL(file.value))
 }
 
 const openPreview = () => {
-  blogsStore.openPhotoPreview()
+  postStore.openPhotoPreview()
 }
 
 const clearPost = () => {
-  blogsStore.clearBlogState()
+  postStore.clearBlogState()
 }
 
 const checkTerms = computed(() => {
@@ -129,7 +131,7 @@ const uploadBlog = () => {
     if (file.value) {
       loading.value = true;
       const storageRef = firebase.storage().ref();
-      const docRef = storageRef.child(`documents/BlogCoverPhotos/${blogsStore.blogPhotoName}`);
+      const docRef = storageRef.child(`documents/BlogCoverPhotos/${postStore.blogPhotoName}`);
       docRef.put(file.value).on(
           "state_changed",
           (snapshot) => {
@@ -157,7 +159,6 @@ const uploadBlog = () => {
               categoryID: selectedCategory.value,
               blogAuthor: authorName()
             });
-            await blogsStore.getPosts();
             loading.value = false;
             await router.push({name: "ViewBlog", params: {blogid: dataBase.id}});
             clearPost()
@@ -182,16 +183,16 @@ const profileId = computed(() => {
 })
 
 const blogCoverPhotoName = computed(() => {
-  return blogsStore.blogPhotoName
+  return postStore.blogPhotoName
 })
 
 const selectedCategory = computed(
     {
       get() {
-        return blogsStore.selectedCategory;
+        return postStore.selectedCategory;
       },
       set(payload) {
-        blogsStore.updateBlogCategory(payload)
+        postStore.updateBlogCategory(payload)
       }
     }
 )
@@ -199,10 +200,10 @@ const selectedCategory = computed(
 const blogTitle = computed(
     {
       get() {
-        return blogsStore.blogTitle;
+        return postStore.blogTitle;
       },
       set(payload) {
-        blogsStore.updateBlogTitle(payload)
+        postStore.updateBlogTitle(payload)
       },
     }
 )
@@ -210,10 +211,10 @@ const blogTitle = computed(
 const blogDescr = computed(
     {
       get() {
-        return blogsStore.blogDescr;
+        return postStore.blogDescr;
       },
       set(payload) {
-        blogsStore.updateBlogDescr(payload)
+        postStore.updateBlogDescr(payload)
       },
     }
 )
@@ -221,10 +222,10 @@ const blogDescr = computed(
 const blogHTML = computed(
     {
       get() {
-        return blogsStore.blogHTML;
+        return postStore.blogHTML;
       },
       set(payload) {
-        blogsStore.newBlogPost(payload)
+        postStore.newBlogPost(payload)
       },
     }
 )
@@ -232,10 +233,10 @@ const blogHTML = computed(
 const blogCookingTime = computed(
     {
       get() {
-        return blogsStore.blogCookingTime;
+        return postStore.blogCookingTime;
       },
       set(payload) {
-        blogsStore.updateBlogCookingTime(payload)
+        postStore.updateBlogCookingTime(payload)
       },
     }
 )

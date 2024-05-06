@@ -31,28 +31,30 @@
 import {computed} from "vue";
 import { useBlogsStore } from '@/stores/blogs-store'
 import SvgIcon from "../components/UI/SvgIcon";
+import {usePostStore} from "../stores/post-store";
 
 const blogsStore = useBlogsStore()
+const postStore = usePostStore()
 
 const blogTitle = computed(() => {
-  return blogsStore.blogTitle;
+  return postStore.blogTitle;
 })
 
 const blogDescr = computed(() => {
-  return blogsStore.blogDescr;
+  return postStore.blogDescr;
 })
 
 const blogHTML= computed(() => {
-  return blogsStore.blogHTML;
+  return postStore.blogHTML;
 })
 
 const blogCookingTime= computed(() => {
-  return blogsStore.blogCookingTime;
+  return postStore.blogCookingTime;
 })
 
 const blogCategory = () => {
   for (let category of blogsStore.categories) {
-    if (blogsStore.selectedCategory === category.id)
+    if (postStore.selectedCategory === category.id)
       return category.category
   }
 }
