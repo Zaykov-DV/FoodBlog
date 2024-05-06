@@ -126,7 +126,7 @@ const updateBlog = async () => {
           async () => {
             const downloadURL = await docRef.getDownloadURL();
             await updateDataBase(dataBase, downloadURL)
-            await blogsStore.getPost()
+            await blogsStore.getPosts()
 
             loading.value = false;
             await router.push({name: "ViewBlog", params: {blogid: dataBase.id}});
@@ -137,7 +137,7 @@ const updateBlog = async () => {
     loading.value = true;
     await updateDataBase(dataBase)
 
-    await blogsStore.getPost()
+    await blogsStore.getPosts()
     loading.value = false;
     await router.push({name: "ViewBlog", params: {blogid: dataBase.id}});
 

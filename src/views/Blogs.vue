@@ -30,10 +30,13 @@
     <div class="blogs__cards">
       <BlogCard :post="post" v-for="(post, index) in filterBlogs" :key="index"/>
       <div v-intersection-observer="[onIntersectionObserver]">
-        <p v-if="blogsStore.lastDocSnapshot">loading</p>
+        <p v-if="isVisible">loading</p>
       </div>
 
-      <div class="blogs__not-found" v-show="filterBlogs.length <= 0">
+      <div v-show="isLoading">
+        LOADING!!!!!!
+      </div>
+      <div class="blogs__not-found" v-show="blogsStore.blogPosts.length <= 0 && !isLoading">
         <span>В данной категории рецептов нет</span>
         <button @click="filterProducts(0)">Вернуться к рецептам</button>
         <img src="../assets/images/recept-not-found.jpg" alt="not-found">
@@ -54,16 +57,22 @@ const authUserStore = useAuthUserStore()
 const blogsStore = useBlogsStore()
 const categoryActive = ref(0)
 const isVisible = ref(false)
+const isLoading = ref(true)
 
 const filterProducts = (category) => {
   if (category === 0 || undefined) {
-    blogsStore.getPost()
     categoryActive.value = 0
   } else {
     categoryActive.value = category
-    blogsStore.clearPosts()
-    blogsStore.getFilteredPosts(category)
   }
+  isLoading.value = true
+  blogsStore.clearPosts()
+
+  blogsStore.getPosts(category)
+      .then(() => {
+        isLoading.value = false
+      })
+
 }
 
 const filterBlogs = computed(() => {
@@ -106,13 +115,9 @@ onBeforeUnmount(() => {
 const onIntersectionObserver = ([{isIntersecting}]) => {
   isVisible.value = isIntersecting
 
-  if (isVisible.value && blogsStore.lastDocSnapshot && !categoryActive.value) {
-    blogsStore.getPost()
-  }
-  if (isVisible.value && blogsStore.lastDocSnapshot && categoryActive.value) {
-    blogsStore.getFilteredPosts(categoryActive.value)
-  }
-  else {
+  if (isVisible.value && blogsStore.getLastDocSnapshot) {
+    blogsStore.getPosts()
+  } else {
     isVisible.value = false
   }
 }

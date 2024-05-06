@@ -7,8 +7,9 @@ export const useBlogsStore = defineStore('BlogsStore', {
     state: () => {
         return {
             blogPosts: [],
-            limitBlogs: 10,
             lastDocSnapshot: null,
+            dataBase: null,
+            dbSnapshot: null,
             postLoaded: false,
             blogHTML: '',
             blogTitle: '',
@@ -35,6 +36,9 @@ export const useBlogsStore = defineStore('BlogsStore', {
         }
     },
     getters: {
+        getLastDocSnapshot() {
+            return this.lastDocSnapshot
+        },
         getBlogPostsFeed() {
             return this.blogPosts.slice(0, 9);
         },
@@ -94,6 +98,7 @@ export const useBlogsStore = defineStore('BlogsStore', {
             this.blogPhotoFileURL = payload.blogCoverPhoto;
             this.blogPhotoName = payload.blogCoverPhotoName;
         },
+
         // очистить стейт
         clearBlogState() {
             this.blogTitle = '';
@@ -107,42 +112,31 @@ export const useBlogsStore = defineStore('BlogsStore', {
 
         clearPosts() {
           this.blogPosts = []
+          this.lastDocSnapshot = null
         },
 
-        async getPost() {
-            let dataBase = await db.collection("blogPosts")
-                .orderBy("date", "desc")
-                .limit(3)
+        async getPosts(categoryId) {
+            let dataBase
+            if (!categoryId) {
+                    dataBase = await db.collection("blogPosts")
+                        .orderBy("date", "desc")
+                        .limit(10)
+            } else {
+                dataBase = await db.collection("blogPosts")
+                    .orderBy("date", "desc")
+                    .where("categoryID", "==", categoryId)
+                    .limit(10)
+            }
 
             if (this.lastDocSnapshot) {
                 dataBase = dataBase.startAfter(this.lastDocSnapshot)
             }
 
             const dbSnapshot = await dataBase.get()
+
             this.lastDocSnapshot = dbSnapshot.docs[dbSnapshot.docs.length - 1]
 
             const result =  await this.mapBlogPosts(dbSnapshot)
-
-            this.blogPosts.push(...result)
-            this.postLoaded = true;
-
-            return result.length
-        },
-
-        async getFilteredPosts(categoryId) {
-            let dataBase = await db.collection("blogPosts")
-                .orderBy("date", "desc")
-                .where("categoryID", "==", categoryId)
-                .limit(3)
-
-
-            if (this.lastDocSnapshot) {
-                dataBase = dataBase.startAfter(this.lastDocSnapshot)
-            }
-            const dbSnapshot = await dataBase.get()
-            this.lastDocSnapshot = dbSnapshot.docs[dbSnapshot.docs.length - 1]
-
-            const result = await this.mapBlogPosts(dbSnapshot)
 
             this.blogPosts.push(...result)
 
@@ -174,7 +168,7 @@ export const useBlogsStore = defineStore('BlogsStore', {
             await db.collection('blogPosts').doc(payload.blogID)?.delete();
             await storageRef.child(`documents/BlogCoverPhotos/${payload.blogCoverPhotoName}`).delete();
 
-            await this.getPost()
+            await this.getPosts()
         },
     }
 })
