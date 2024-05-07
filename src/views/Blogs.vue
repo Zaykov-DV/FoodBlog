@@ -16,7 +16,6 @@
         <h4 class="blogs__filter-title">Фильтр рецептов</h4>
         <SvgIcon @click="toggleMobileNav" name="arrow-down-circle"/>
       </div>
-
       <Transition name="slide-fade" mode="out-in">
         <div v-show="mobileNav === true">
           <div v-for="category in blogsStore.categories" :key="category.id">
@@ -25,21 +24,21 @@
           </div>
         </div>
       </Transition>
-
     </div>
     <div class="blogs__cards">
       <BlogCard :post="post" v-for="(post, index) in filterBlogs" :key="index"/>
       <div v-intersection-observer="[onIntersectionObserver]">
-          <PizzaLoader class="blogs__loading" v-if="isVisible" />
+        <div class="blogs__loading" v-if="isVisible">
+          <SvgIcon class="blogs__loader" name="donut"/>
+        </div>
       </div>
-
-      <div class="blogs__loading" v-show="isLoading">
-        <PizzaLoader />
+      <div class="blogs__loading" v-if="isLoading">
+        <SvgIcon class="blogs__loader" name="donut"/>
       </div>
       <div class="blogs__not-found" v-show="blogsStore.blogPosts.length <= 0 && !isLoading">
         <span>В данной категории рецептов нет</span>
+        <img class="blogs__not-found-img" src="../assets/images/recept-not-found.jpg" alt="not-found">
         <button @click="filterProducts(0)">Вернуться к рецептам</button>
-        <img src="../assets/images/recept-not-found.jpg" alt="not-found">
       </div>
     </div>
   </div>
@@ -52,7 +51,6 @@ import SvgIcon from "../components/UI/SvgIcon";
 import {useBlogsStore} from '@/stores/blogs-store'
 import {useAuthUserStore} from '@/stores/auth-user'
 import {vIntersectionObserver} from '@vueuse/components'
-import PizzaLoader from "../components/UI/PizzaLoader.vue";
 import {usePostStore} from "../stores/post-store";
 
 const authUserStore = useAuthUserStore()
@@ -127,7 +125,6 @@ const onIntersectionObserver = ([{isIntersecting}]) => {
 </script>
 
 <style lang="scss" scoped>
-
 .blogs {
 
   &__container {
@@ -139,13 +136,22 @@ const onIntersectionObserver = ([{isIntersecting}]) => {
   &__cards {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 35px;
     margin: 0 auto;
   }
 
   &__loading {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin: 0 auto;
+  }
+
+  &__loader {
+    width: 52px;
+    height: 52px;
+    animation: rotate 3s infinite linear;
   }
 
   &__edit {
@@ -216,6 +222,10 @@ const onIntersectionObserver = ([{isIntersecting}]) => {
     padding-top: 80px;
   }
 
+  &__not-found-img {
+    height: 400px;
+  }
+
   &__pagination {
     display: flex;
     justify-content: center;
@@ -261,5 +271,14 @@ const onIntersectionObserver = ([{isIntersecting}]) => {
 .slide-fade-leave-to {
   transform: translateX(20px);
   opacity: 0;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
