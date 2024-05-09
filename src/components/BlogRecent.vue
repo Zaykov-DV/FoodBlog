@@ -6,7 +6,7 @@
       <div class="blog-recent__labels">
         <div class="blog-recent__label" v-if="post.blogCookingTime">
           <SvgIcon class="blog-recent__label-icon" name="timer"/>
-          <span class="blog-recent__label-text">{{post.blogCookingTime}} минут</span>
+          <span class="blog-recent__label-text">{{ post.blogCookingTime }} минут</span>
         </div>
         <div class="blog-recent__label">
           <SvgIcon class="blog-recent__label-icon" name="category"/>
@@ -20,7 +20,7 @@
 <script setup>
 import SvgIcon from "./UI/SvgIcon";
 import {defineProps} from "vue";
-import { useBlogsStore } from '@/stores/blogs-store'
+import {useBlogsStore} from '@/stores/blogs-store'
 
 const blogsStore = useBlogsStore()
 
@@ -109,7 +109,8 @@ const blogCategory = () => {
   .blog-recent {
 
     &__item {
-     width: 100%;
+      width: 100%;
+      min-width: 100%;
     }
 
     &__item-image {

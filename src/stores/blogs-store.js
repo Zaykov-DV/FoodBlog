@@ -30,8 +30,8 @@ export const useBlogsStore = defineStore('BlogsStore', {
         getLastDocSnapshot() {
             return this.lastDocSnapshot
         },
-        getBlogPostsFeed() {
-            return this.blogPosts.slice(0, 9);
+        getLastBlogPost() {
+            return this.blogPosts[0]
         },
         getBlogPostsCards() {
             if (document.documentElement.clientWidth > 1280) {

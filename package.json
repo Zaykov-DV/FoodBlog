@@ -22,8 +22,7 @@
     "sass": "^1.75.0",
     "vue": "^3.4.21",
     "vue-loader": "^17.4.2",
-    "vue-router": "^4.3.0",
-    "vue3-carousel": "^0.3.3"
+    "vue-router": "^4.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.4",

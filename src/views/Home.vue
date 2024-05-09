@@ -1,16 +1,8 @@
 <template>
   <main class="home-page">
     <div class="home-page__container">
-      <!--    пока не юзается   -->
-      <!--    <div v-if="!user" class="updates">-->
-      <!--      <WelcomeScreen />-->
-      <!--    </div>-->
       <section class="home-page__section">
-        <carousel :items-to-show="1" :items-to-scroll="1" :autoplay='500' :wrapAround='true' :transition="3000">
-          <slide v-for="(post, index) in blogPostsFeed" :key="index">
-            <BlogPost :post="post"/>
-          </slide>
-        </carousel>
+        <BlogPost :post="lastBlogPost" />
       </section>
       <section class="home-page__section home-page__section_categories">
         <BlogCategories/>
@@ -33,27 +25,18 @@
 import BlogPost from "../components/BlogPost";
 import BlogCategories from "../components/BlogCategories";
 import BlogRecent from "../components/BlogRecent";
-// import WelcomeScreen from "../components/WelcomeScreen";
 import {computed} from 'vue'
 import {useBlogsStore} from '@/stores/blogs-store'
-import 'vue3-carousel/dist/carousel.css'
-import {Carousel, Slide} from 'vue3-carousel'
 
 const blogsStore = useBlogsStore()
 
-const blogPostsFeed = computed(() => {
-  return blogsStore.getBlogPostsFeed;
+const lastBlogPost = computed(() => {
+  return blogsStore.getLastBlogPost;
 });
 
 const blogPostsCards = computed(() => {
   return blogsStore.getBlogPostsCards;
 });
-
-// определяем если пользователь залогинен
-// const user = computed(() => {
-//   return blogsStore.user
-// });
-
 </script>
 
 <style lang="scss" scoped>

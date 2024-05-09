@@ -68,20 +68,18 @@ const authorInitials = () => {
 
   &__container {
     display: grid;
-    grid-template-columns: repeat(1, 50%);
+    grid-template-columns: repeat(2, 1fr);
     background: #E7FAFE;
     border-radius: 30px;
     align-items: center;
-    min-height: 550px;
-    max-height: 550px;
   }
 
   &__title {
     font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: 600;
-    font-size: 64px;
-    line-height: 77px;
+    font-size: 48px;
+    line-height: 54px;
     letter-spacing: -0.04em;
     color: #000000;
     margin-bottom: 24px;
@@ -108,9 +106,7 @@ const authorInitials = () => {
   }
 
   &__block {
-
     &:first-child {
-      grid-column: 1/2;
       padding: 50px;
       display: flex;
       flex-direction: column;
@@ -119,7 +115,6 @@ const authorInitials = () => {
     }
 
     &:last-child {
-      grid-column: 2/2;
       height: 100%;
     }
   }
