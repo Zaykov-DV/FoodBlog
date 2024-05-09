@@ -109,7 +109,7 @@ const blogCategory = () => {
   .blog-recent {
 
     &__item {
-      max-width: 100%;
+     width: 100%;
     }
 
     &__item-image {
@@ -117,5 +117,4 @@ const blogCategory = () => {
     }
   }
 }
-
 </style>
