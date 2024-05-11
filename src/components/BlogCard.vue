@@ -79,12 +79,9 @@ const editPost = computed(() => {
 
   &__title {
     @include h3;
+    @include text-ellipsis;
     color: #000000;
     margin-bottom: 16px;
-
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
   }
 
   &__descr {

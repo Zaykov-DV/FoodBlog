@@ -55,12 +55,9 @@ const blogCategory = () => {
 
   &__item-title {
     @include P18-medium;
+    @include text-ellipsis;
     letter-spacing: -0.04em;
     color: #000000;
-
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
   }
 
   &__labels {
