@@ -40,5 +40,12 @@ module.exports = {
         }
       ]
     }
+  },
+  css: {
+    loaderOptions: {
+      sass: {
+        additionalData: `@use "@/assets/styles/mixins/mixins.scss" as *;`
+      }
+    }
   }
 }

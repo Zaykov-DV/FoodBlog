@@ -135,10 +135,7 @@ onMounted(() => {
   }
 
   &__title {
-    font-family: 'Lobster Two', cursive;
-    font-size: 36px;
-    font-weight: 400;
-    line-height: 30px;
+   @include P36-Lobster;
   }
 
   &__content {
@@ -210,11 +207,12 @@ onMounted(() => {
   }
 
   &__text {
+    @include P14;
     color: #fff;
     font-size: 14px;
 
     &_m {
-      font-size: 16px;
+      @include P16;
     }
   }
 

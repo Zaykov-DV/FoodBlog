@@ -54,16 +54,13 @@ const handleClick = (id) => {
   }
 
   &__title {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 48px;
-    line-height: 58px;
+    @include h1;
     letter-spacing: -0.04em;
     color: #000000;
   }
 
   &__btn {
+    @include P16-medium;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -72,11 +69,6 @@ const handleClick = (id) => {
     height: 60px;
     background: #E7FAFE;
     border-radius: 16px;
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 19px;
     letter-spacing: -0.02em;
     color: #000000;
   }
@@ -133,11 +125,7 @@ const handleClick = (id) => {
   }
 
   &__item-title {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 22px;
+    @include P18-medium;
     text-align: center;
     letter-spacing: -0.02em;
     color: #000000;
@@ -175,7 +163,7 @@ const handleClick = (id) => {
     }
 
     &__title {
-      font-size: 40px;
+      @include h2;
       text-align: left;
     }
   }
@@ -193,7 +181,7 @@ const handleClick = (id) => {
     }
 
     &__title {
-      font-size: 24px;
+      @include h3;
     }
 
     &__items {
@@ -216,7 +204,6 @@ const handleClick = (id) => {
     &__btn {
       height: 32px;
       width: 240px;
-      font-size: 14px;
       line-height: 0;
     }
   }

@@ -19,7 +19,6 @@
 
 <script setup>
 import SvgIcon from "./UI/SvgIcon";
-import {defineProps} from "vue";
 import {useBlogsStore} from '@/stores/blogs-store'
 
 const blogsStore = useBlogsStore()
@@ -55,11 +54,7 @@ const blogCategory = () => {
   }
 
   &__item-title {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 26px;
+    @include P18-medium;
     letter-spacing: -0.04em;
     color: #000000;
 
@@ -87,11 +82,7 @@ const blogCategory = () => {
   }
 
   &__label-text {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 17px;
+    @include P14-medium;
     letter-spacing: -0.02em;
     color: rgba(0, 0, 0, 0.6);
   }

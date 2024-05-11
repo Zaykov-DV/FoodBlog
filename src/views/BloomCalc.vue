@@ -91,12 +91,8 @@ const calcIngredients = () => {
   }
 
   &__title {
+    @include P18-medium;
     margin-bottom: 20px;
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 24px;
     letter-spacing: -0.04em;
     color: #000000;
 

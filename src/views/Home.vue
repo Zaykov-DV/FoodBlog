@@ -56,12 +56,7 @@ const blogPostsCards = computed(() => {
   }
 
   &__recent-title {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 48px;
-    line-height: 58px;
-    letter-spacing: -0.04em;
+    @include h1;
     color: #000000;
     margin-bottom: 80px;
   }
@@ -127,8 +122,7 @@ const blogPostsCards = computed(() => {
     }
 
     &__recent-title {
-      font-size: 32px;
-      line-height: 38px;
+      @include h2;
       margin-bottom: 40px;
     }
 

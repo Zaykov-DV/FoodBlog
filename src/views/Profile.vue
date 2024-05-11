@@ -94,17 +94,16 @@ const email = computed(() => {
   }
 
   &__title {
+    @include h2;
     text-align: center;
     margin-bottom: 16px;
-    font-weight: 400;
-    font-size: 24px;
   }
 
   &__initials {
+    @include h2;
     position: initial;
     width: 80px;
     height: 80px;
-    font-size: 32px;
     background-color: #303030;
     color: #fff;
     display: flex;

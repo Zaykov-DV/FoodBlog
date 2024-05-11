@@ -13,8 +13,6 @@
 </template>
 
 <script setup>
-import { defineProps } from "vue";
-
 const model = defineModel()
 
 defineProps({
@@ -90,8 +88,8 @@ defineProps({
   }
 
   &__label {
+    @include P14;
     display: block;
-    font-size: 14px;
     margin-bottom: 6px;
   }
 }

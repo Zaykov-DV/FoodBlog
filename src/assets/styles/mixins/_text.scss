@@ -1,0 +1,158 @@
+@mixin h1 {
+    font-family: 'Inter Semi Bold', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 47px;
+    letter-spacing: -0.04em;
+}
+
+@mixin h2 {
+    font-family: 'Inter Light BETA', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 32px;
+    line-height: 36px;
+}
+
+@mixin h3 {
+    font-family: 'Inter Semi Bold', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+    letter-spacing: -0.04em;
+}
+
+@mixin h4 {
+    font-family: 'Inter Light BETA', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -0.04em;
+}
+
+@mixin h5 {
+    font-family: 'Inter Bold', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+    letter-spacing: -0.02em;
+}
+
+@mixin h6 {
+    font-family: 'Inter Regular', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+}
+
+@mixin P10 {
+    font-family: 'Inter Regular', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+}
+
+@mixin P12 {
+    font-family: 'Inter Regular', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+}
+
+@mixin P14 {
+    font-family: 'Inter Regular', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+@mixin P14-medium {
+    font-family: 'Inter Medium', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+@mixin P16 {
+    font-family: 'Inter Regular', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+@mixin P16-medium {
+    font-family: 'Inter Medium', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+@mixin P16-bold {
+    font-family: 'Inter Bold', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+@mixin P18 {
+    font-family: 'Inter Regular', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    letter-spacing: -0.02em;
+}
+
+@mixin P18-medium {
+    font-family: 'Inter Medium', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
+    letter-spacing: -0.02em;
+}
+
+@mixin P18-bold {
+    font-family: 'Inter Bold', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    letter-spacing: -0.02em;
+}
+
+@mixin P16-Lobster {
+    font-family: "Lobster Two Italic", cursive;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+}
+
+@mixin P24-Lobster {
+    font-family: "Lobster Two Italic", cursive;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 30px;
+}
+
+@mixin P36-Lobster {
+    font-family: 'Lobster Two Italic', cursive;
+    font-style: italic;
+    font-size: 36px;
+    font-weight: 400;
+    line-height: 30px;
+}

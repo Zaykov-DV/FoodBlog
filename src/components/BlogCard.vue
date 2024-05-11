@@ -30,7 +30,7 @@
 <script setup>
 import SvgIcon from "./UI/SvgIcon";
 import { useBlogsStore } from '@/stores/blogs-store'
-import {defineProps, computed} from "vue";
+import {computed} from "vue";
 import { useRouter } from 'vue-router'
 import {usePostStore} from "../stores/post-store";
 
@@ -55,7 +55,6 @@ const editPost = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-
 .blog-card {
 
   &__container {
@@ -79,12 +78,7 @@ const editPost = computed(() => {
   }
 
   &__title {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 24px;
-    line-height: 29px;
-    letter-spacing: -0.04em;
+    @include h3;
     color: #000000;
     margin-bottom: 16px;
 
@@ -94,11 +88,7 @@ const editPost = computed(() => {
   }
 
   &__descr {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 28px;
+    @include P16;
     color: rgba(0, 0, 0, 0.6);
     margin-bottom: 32px;
 
@@ -122,23 +112,15 @@ const editPost = computed(() => {
   }
 
   &__author-name {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 19px;
+    @include P16-bold;
     letter-spacing: -0.02em;
     color: #000000;
   }
 
   &__date {
+    @include P14-medium;
     display: flex;
     align-items: center;
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 17px;
     letter-spacing: -0.02em;
     color: rgba(0, 0, 0, 0.6);
     padding-left: 25px;

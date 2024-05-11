@@ -282,9 +282,9 @@ onMounted(() => {
   }
 
   &__uploader-label {
+    @include P14;
     transition: all .5s ease-in-out;
     align-self: center;
-    font-size: 14px;
     cursor: pointer;
     border-radius: 20px;
     padding: 12px 24px;

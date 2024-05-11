@@ -106,9 +106,8 @@ const signIn = () => {
   }
 
   &__title {
+    @include h2;
     text-align: center;
-    font-size: 32px;
-    line-height: 40px;
     color: #303030;
     margin-bottom: 40px;
     @media (min-width: 900px) {
@@ -129,10 +128,10 @@ const signIn = () => {
   }
 
   &__forgot-password {
+    @include P14-medium;
     text-decoration: none;
     color: #000;
     cursor: pointer;
-    font-size: 14px;
     margin: 30px 0 15px;
     border-bottom: 1px solid transparent;
     transition: 0.5s ease all;

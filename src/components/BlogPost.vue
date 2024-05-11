@@ -40,7 +40,6 @@
 </template>
 
 <script setup>
-import {defineProps} from "vue";
 import SvgIcon from "./UI/SvgIcon";
 import { useBlogsStore } from '@/stores/blogs-store'
 
@@ -75,12 +74,7 @@ const authorInitials = () => {
   }
 
   &__title {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 48px;
-    line-height: 54px;
-    letter-spacing: -0.04em;
+    @include h1;
     color: #000000;
     margin-bottom: 24px;
 
@@ -91,11 +85,7 @@ const authorInitials = () => {
   }
 
   &__descr {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 28px;
+    @include P16;
     color: rgba(0, 0, 0, 0.6);
     margin-bottom: 24px;
 
@@ -126,17 +116,13 @@ const authorInitials = () => {
   }
 
   &__label {
+    @include P14-medium;
     padding: 12px 20px;
     display: flex;
     align-items: center;
     background: rgba(0, 0, 0, 0.05);
     border-radius: 30px;
     min-width: 140px;
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 17px;
     letter-spacing: -0.02em;
     color: rgba(0, 0, 0, 0.6);
     gap: 10px;
@@ -183,21 +169,13 @@ const authorInitials = () => {
   }
 
   &__author-name {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 19px;
+    @include P16-bold;
     letter-spacing: -0.02em;
     color: #000000;
   }
 
   &__date {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 17px;
+    @include P14-medium;
     letter-spacing: -0.02em;
     color: rgba(0, 0, 0, 0.6);
   }
@@ -233,8 +211,7 @@ const authorInitials = () => {
 @media (max-width: 1280px) {
   .post {
     &__title {
-      font-size: 40px;
-      line-height: 42px;
+      @include h1;
     }
 
     &__blog {
@@ -277,8 +254,7 @@ const authorInitials = () => {
     }
 
     &__title {
-      font-size: 30px;
-      line-height: 32px;
+      @include h2;
       text-align: left;
     }
 
@@ -302,8 +278,8 @@ const authorInitials = () => {
     }
 
     &__label {
+      @include P10;
       padding: 8px 12px;
-      font-size: 10px;
       min-width: auto;
       gap: 5px;
     }
@@ -314,8 +290,8 @@ const authorInitials = () => {
     }
 
     &__link {
+      @include P14;
       padding: 10px 16px;
-      font-size: 12px;
       line-height: 0;
     }
 
@@ -345,8 +321,7 @@ const authorInitials = () => {
     }
 
     &__title {
-      font-size: 24px;
-      line-height: 24px;
+      @include h3;
       margin-bottom: 10px;
     }
 
@@ -370,11 +345,11 @@ const authorInitials = () => {
     }
 
     &__author-name {
-      font-size: 14px;
+      @include P14;
     }
 
     &__date {
-      font-size: 14px;
+      @include P14;
     }
   }
 }

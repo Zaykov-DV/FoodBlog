@@ -4,7 +4,7 @@
       <div class="footer__block">
         <div>
           <router-link class="footer__title" :to="{ name: 'Home' }">FoodBlog</router-link>
-          <p>Самые лучшие рецепты.</p>
+          <p class="footer__descr">Самые лучшие рецепты.</p>
         </div>
         <ul class="footer__links">
           <router-link class="footer__link" :to="{ name: 'Home' }">Домашняя</router-link>
@@ -67,13 +67,13 @@ const user = computed(() => {
   }
 
   &__title {
-    font-family: "Lobster Two", cursive;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 24px;
-    line-height: 30px;
+    @include P24-Lobster;
     color: #000000;
     border-bottom: none;
+  }
+
+  &__descr {
+    @include P16-Lobster;
   }
 
   &__block {
@@ -117,22 +117,14 @@ const user = computed(() => {
   }
 
   &__info-text {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 23px;
+    @include P16;
     letter-spacing: -0.02em;
     color: rgba(0, 0, 0, 0.6);
     margin-bottom: 5px;
   }
 
   &__info-link {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 23px;
+    @include P14;
     letter-spacing: -0.02em;
     color: rgba(0, 0, 0, 0.6);
 

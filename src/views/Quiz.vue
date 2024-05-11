@@ -188,14 +188,14 @@ const nextQuestion = () => {
   }
 
   &__question {
+    @include P18-medium;
     color: #8F8F8F;
-    font-size: 1.25rem;
     max-width: 450px;
   }
 
   &__score {
     color: #FFF;
-    font-size: 1.25rem;
+    @include P18-medium;
   }
 
   &__options {
@@ -236,6 +236,7 @@ const nextQuestion = () => {
   }
 
   &__button {
+    @include P18-bold;
     appearance: none;
     outline: none;
     border: none;
@@ -243,9 +244,7 @@ const nextQuestion = () => {
     padding: 0.5rem 1rem;
     background-color: #2cce7d;
     color: #2d213f;
-    font-weight: 700;
     text-transform: uppercase;
-    font-size: 1.2rem;
     border-radius: 0.5rem;
 
     &:disabled {

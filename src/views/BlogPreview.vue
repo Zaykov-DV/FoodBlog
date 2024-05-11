@@ -62,7 +62,6 @@ const blogCategory = () => {
 </script>
 
 <style lang="scss">
-
 .preview-blog {
 
   &__container {
@@ -74,12 +73,7 @@ const blogCategory = () => {
   }
 
   &__title {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 40px;
-    line-height: 47px;
-    letter-spacing: -0.04em;
+    @include h1;
     color: #000000;
     text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
     margin-bottom: 40px;
@@ -130,21 +124,13 @@ const blogCategory = () => {
   }
 
   &__author-name {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 19px;
+    @include P16-bold;
     letter-spacing: -0.02em;
     color: #000000;
   }
 
   &__date {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 17px;
+    @include P14-medium;
     letter-spacing: -0.02em;
     color: rgba(0, 0, 0, 0.6);
   }

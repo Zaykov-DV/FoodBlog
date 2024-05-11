@@ -1,9 +1,7 @@
+@import "../mixins/mixins";
+
 .link {
-  font-family: 'Inter', sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 19px;
+  @include P16-medium;
   color: #333333;
   transition: all 0.3s ease-in-out;
   border-bottom: none;

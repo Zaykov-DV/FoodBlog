@@ -163,11 +163,7 @@ const onIntersectionObserver = ([{isIntersecting}]) => {
   }
 
   &__edit-label {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 20px;
+    @include P14;
     color: #000000;
     margin-right: 15px;
   }
@@ -184,22 +180,14 @@ const onIntersectionObserver = ([{isIntersecting}]) => {
   }
 
   &__filter-title {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 36px;
-    line-height: 44px;
+    @include h2;
     letter-spacing: -0.04em;
     color: #000000;
     margin-bottom: 40px;
   }
 
   &__filter-text {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 22px;
+    @include P18;
     letter-spacing: -0.02em;
     color: #333333;
     margin-bottom: 10px;
@@ -251,8 +239,7 @@ const onIntersectionObserver = ([{isIntersecting}]) => {
     }
 
     &__filter-title {
-      font-size: 24px;
-      line-height: 28px;
+      @include h3;
       margin-bottom: 0;
     }
   }
