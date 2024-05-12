@@ -209,7 +209,6 @@ onMounted(() => {
   &__text {
     @include P14;
     color: #fff;
-    font-size: 14px;
 
     &_m {
       @include P16;
