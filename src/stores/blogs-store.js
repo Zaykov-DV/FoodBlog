@@ -59,12 +59,16 @@ export const useBlogsStore = defineStore('BlogsStore', {
         },
 
         async getPosts(categoryId) {
+            console.log('getPosts')
+            console.log(categoryId)
             let dataBase
             if (!categoryId) {
+                console.log('if')
                 dataBase = await db.collection("blogPosts")
                     .orderBy("date", "desc")
                     .limit(10)
             } else {
+                console.log('else')
                 dataBase = await db.collection("blogPosts")
                     .orderBy("date", "desc")
                     .where("categoryID", "==", categoryId)
@@ -82,6 +86,8 @@ export const useBlogsStore = defineStore('BlogsStore', {
             const result = await mapBlogPosts(dbSnapshot)
 
             this.blogPosts.push(...result)
+
+            if (result.length === 0) this.lastDocSnapshot = null
 
             this.postLoaded = true;
 

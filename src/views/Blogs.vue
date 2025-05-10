@@ -116,7 +116,7 @@ const onIntersectionObserver = ([{isIntersecting}]) => {
   isVisible.value = isIntersecting
 
   if (isVisible.value && blogsStore.getLastDocSnapshot) {
-    blogsStore.getPosts()
+    blogsStore.getPosts(categoryActive.value)
   } else {
     isVisible.value = false
   }
