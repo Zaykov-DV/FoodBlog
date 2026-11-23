@@ -2,7 +2,9 @@
   <div class="app" >
     <Navigation />
     <main>
-      <NuxtPage v-show="blogsStore.postLoaded" />
+      <div class="app__page" v-show="blogsStore.postLoaded">
+        <NuxtPage />
+      </div>
       <Loading v-if="!blogsStore.postLoaded" />
     </main>
     <Footer />
@@ -49,5 +51,11 @@ main {
   display: flex;
   flex-direction: column;
   flex: 1;
+}
+
+.app__page {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 }
 </style>
