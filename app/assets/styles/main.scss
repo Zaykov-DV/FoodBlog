@@ -1,7 +1,6 @@
-// тк мы к ним обращаемся везде ниже
-@import "utils/vars";
-@import "utils/reset";
-@import "common/common";
+@use "utils/vars" as *;
+@use "utils/reset";
+@use "common/common";
 
 * {
   margin: 0;
