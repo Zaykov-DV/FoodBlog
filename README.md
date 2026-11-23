@@ -1,26 +1,19 @@
-# foodblog
+# FoodBlog
+
+Nuxt 4 application for the FoodBlog site.
 
 https://foodblog-c62fc.web.app/
 
-## Project setup
-```
+## Development
+
+```bash
 npm install
+npm run dev
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Production
 
-### Compiles and minifies for production
-```
+```bash
 npm run build
+npm run preview
 ```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
