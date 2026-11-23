@@ -1,0 +1,29 @@
+// Import the functions you need from the SDKs you need
+import firebase from "firebase/compat/app";
+import 'firebase/compat/firestore';
+
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyAWkNsMgq2plYDjNajBsE-6vQvI9yYTQrE",
+    authDomain: "foodblog-c62fc.firebaseapp.com",
+    projectId: "foodblog-c62fc",
+    storageBucket: "foodblog-c62fc.appspot.com",
+    messagingSenderId: "534908125520",
+    appId: "1:534908125520:web:5f456de6455683d83b6c55"
+};
+
+// Initialize Firebase only in the browser. SSR has no Firebase Auth/Firestore client context.
+const firebaseApp = firebase.apps.length
+    ? firebase.app()
+    : firebase.initializeApp(firebaseConfig);
+
+const timestamp = import.meta.client && firebase.firestore
+    ? firebase.firestore.FieldValue.serverTimestamp
+    : null;
+
+export { timestamp }
+
+export default import.meta.client ? firebaseApp.firestore() : null
