@@ -2,8 +2,8 @@
   <div class="app" >
     <Navigation />
     <main>
-      <NuxtPage v-if="blogsStore.postLoaded" />
-      <Loading v-else />
+      <NuxtPage v-show="blogsStore.postLoaded" />
+      <Loading v-if="!blogsStore.postLoaded" />
     </main>
     <Footer />
   </div>
