@@ -2,7 +2,7 @@
   <main class="home-page">
     <div class="home-page__container">
       <section class="home-page__section">
-        <BlogPost :post="lastBlogPost" />
+        <BlogPost v-if="lastBlogPost" :post="lastBlogPost" />
       </section>
       <section class="home-page__section home-page__section_categories">
         <BlogCategories/>
